@@ -1,0 +1,5 @@
+# Ignore all data files
+data/
+
+# 忽略虚拟环境文件夹
+.venv/

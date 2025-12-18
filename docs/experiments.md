@@ -56,3 +56,52 @@
   - 归档：`data/raw` 按类别整理（kmb/、irn_download/、detector_locations/ 等）。
   - 里程：基于路网最短路径，`cum_dist_m`、`link_dist_m` 均按中心线长度估算。
   - 运行日志：加载 CENTERLINE 约 36k 行，构图 ~7.86M 节点/10.69M 边，生成 CSV 完成；Shapely 距离计算出现若干 RuntimeWarning（空/无效几何），未影响输出。
+
+## 2025-12-18 — Week 1 自动化基线构建（Data/Sim/Analyst Agents）
+
+- **线路/方向/时间窗**：KMB 68X（元朗公园 -> 旺角/佐敦），方向 `Inbound`（对应 API bound `I`），时间窗 `17:35 – 18:35` (UTC/HKT 自动对齐)。
+- **数据来源与采样**：
+  - KMB Raw ETA (`data/raw/kmb/route-eta/*.json`)：清洗出 `station_eta.csv` (8773 条记录)。
+  - `clean_kmb_eta.py`：自动识别 `eta_seq=1` 的到站/离站事件，已处理 UTC/HKT 时区差异（Pandas UTC 模式）。
+- **SUMO 场景版本**：
+  - 路网：`sumo/net/hk_baseline.net.xml` (OSM 基础)。
+  - 站点：`sumo/additional/bus_stops.add.xml` (自动映射，过滤掉距离路网 >100m 的 15 个孤立站点，修正停靠长度 10m->15m 以适配双层巴士)。
+  - 线路：`sumo/routes/baseline.rou.xml` (自动填充路段空白 `edge_X` -> `edge_X+1` 以修复连通性，生成 `flow_68X`，间隔 600s/班)。
+  - 配置：`sumo/config/baseline.sumocfg` (步长 1s，时长 3600s)。
+- **关键参数默认值**：`accel=2.5`, `decel=4.5`, `sigma=0.5`, `length=12`, `minGap=2.5`, `maxSpeed=20.0` (m/s)。
+- **运行命令**：
+  - 数据清洗：`python scripts/clean_kmb_eta.py`
+  - 场景生成：`python scripts/generate_sumo_stops.py` && `python scripts/generate_sumo_routes.py`
+  - 仿真运行：`sumo -c sumo/config/baseline.sumocfg`
+  - 基线对比：`python scripts/compare_week1.py`
+- **输出/日志路径**：
+  - 仿真输出：`sumo/output/stopinfo.xml` (含 `started`, `ended`, `delay` 等)。
+  - 对比结果：`data/processed/week1_comparison.csv` (站点 ID 对齐，L1 初步误差)。
+  - 问题清单：`docs/week1_problem_list.md`。
+- **观察/结论**：
+  - **流程跑通**：能够从原始 JSON 直出对比 CSV，闭环验证成功。
+  - **拓扑修复**：OSM 路网简陋导致大量站点必须被 Skip，且路线连通性靠“猜名字”修补，不可持续。Week 2 必须引入 `RdNet_IRNP.gdb`。
+  - **指标对齐**：SUMO `started` 属性对应实际到站时间；CSV 中已合并展示，待计算 RMSE。
+
+## 2025-12-18 — Week 1 路段层（Layer 2）指标实现与特征合并
+
+- **线路/方向/时间窗**：同上（68X Inbound, 17:35-18:35）。
+- **任务目标**：(1) 生成路段层运行指标（Link Travel Time/Speed）；(2) 合并外部环境特征（Weather, Incident, Traffic）。
+- **实现方案**：
+  - **数据清洗**：`clean_kmb_links.py` 从连续的 `station_eta` 记录中推导站间 `(seq_i -> seq_i+1)` 的出发/到达时间，结合静态站间距离 `kmb_route_stop_dist.csv` 计算路段均速。异常剔除策略：`dt > 10s` 且 `2 < v < 100 km/h`。
+  - **特征工程**：`merge_features.py` 使用 `pd.merge_asof` 将 HKO（气温/降雨）、STN（交通事件数）、JTI（主干道平均行车时间）按时间戳对齐合并到路段记录。
+  - **指标计算**：`compare_link_metrics.py` 计算 Real vs Sim 的 L2 级核心指标：
+    - **分布统计**：P10/P50/P90 分位速度、均值、标准差。
+    - **距离度量**：Wasserstein Distance (EMD) 和 KS 统计量。
+- **运行命令**：
+  - `python scripts/clean_kmb_links.py`
+  - `python scripts/merge_features.py`
+  - `python scripts/compare_link_metrics.py`
+- **输出结果**：
+  - 原始记录：`data/processed/link_times.csv` (每车每路段), `link_speeds.csv` (同上)。
+  - 增强数据：`data/processed/enriched_link_stats.csv` (含 Temp, Rain, Incidents)。
+  - 评价指标：`data/processed/link_metrics_overall.csv` (EMD, KS, Real/Sim Stats)。
+- **观察/结论（Initial Insights）**：
+  - **仿真未校准**：Link 1-2 真实均速 3.44 km/h，仿真均速 78.64 km/h (EMD=75.19)，表明仿真处于完全自由流状态，极度缺乏拥堵机制。
+  - **长直路段准确**：Link 15-16 (高速段) 真实 57.4 km/h vs 仿真 60.6 km/h，EMD 仅 3.2，证明车辆动力学参数基本正确，误差源于交通流缺失。
+  - **数据覆盖**：因真实数据清洗过滤，部分拥堵路段无有效速度记录，已修复脚本以静态距离表为基准，确保仿真侧指标计算完整。

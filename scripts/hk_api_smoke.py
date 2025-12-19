@@ -14,6 +14,8 @@ Checks:
 
 from __future__ import annotations
 
+import time
+from pathlib import Path
 import json
 import requests
 
@@ -37,11 +39,20 @@ URL_JTI = "https://resource.data.one.gov.hk/td/jss/Journeytimev2.xml"
 URL_TDAS_ROUTE = "https://tdas-api.hkemobility.gov.hk/tdas/api/route"
 
 
-def hit(name: str, url: str, params=None):
+def hit(name: str, url: str, params=None, save_path: str = None):
     try:
-        resp = requests.get(url, params=params, timeout=10)
+        resp = requests.get(url, params=params, timeout=30)
         entry = {"status": resp.status_code}
         if resp.ok:
+            if save_path:
+                try:
+                    p = Path(save_path)
+                    p.parent.mkdir(parents=True, exist_ok=True)
+                    p.write_bytes(resp.content)
+                    entry["saved"] = str(p)
+                except Exception as e:
+                    entry["save_error"] = str(e)
+
             ct = resp.headers.get("Content-Type", "")
             if "json" in ct:
                 try:
@@ -65,6 +76,7 @@ def hit(name: str, url: str, params=None):
 
 
 def main():
+    timestamp = time.strftime("%Y%m%d-%H%M%S")
     summary = {}
     # KMB endpoints
     summary["route"] = hit("route", f"{BASE_KMB}/route")
@@ -81,14 +93,18 @@ def main():
 
     # IRN average speed (processed, 2min)
     summary["irn_avg_speed"] = hit("irn_avg_speed", URL_IRN_SPEED)
-    summary["irn_avg_speed_dl"] = hit("irn_avg_speed_dl", URL_IRN_SPEED_DL)
+    # Save IRN speed data as well, as it is related to the data collection task
+    summary["irn_avg_speed_dl"] = hit("irn_avg_speed_dl", URL_IRN_SPEED_DL, save_path=f"data/raw/irnAvgSpeed-all-{timestamp}.xml")
+
     # Detector locations (CSV)
     summary["detector_locations"] = hit("detector_locations", URL_TSM_LOC)
     # Road network segments (CSV)
     summary["road_network_segments"] = hit("road_network_segments", URL_TSM_SEG)
     # Raw speed/volume/occupancy (optional)
     summary["tsm_raw"] = hit("tsm_raw", URL_TSM_RAW)
-    summary["tsm_raw_dl"] = hit("tsm_raw_dl", URL_TSM_RAW_DL)
+    
+    # Save rawSpeedVol-all as requested
+    summary["tsm_raw_dl"] = hit("tsm_raw_dl", URL_TSM_RAW_DL, save_path=f"data/raw/detector_locations/rawSpeedVol-all-{timestamp}.xml")
 
     # Special Traffic News (XML direct)
     summary["stn"] = hit("stn", URL_STN)

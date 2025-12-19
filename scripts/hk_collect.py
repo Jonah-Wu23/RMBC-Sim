@@ -58,6 +58,13 @@ def save_text(name: str, content: str) -> Path:
     return path
 
 
+def save_bytes(name: str, content: bytes) -> Path:
+    path = RAW_DIR / name
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(content)
+    return path
+
+
 def fetch(url: str, params=None, binary: bool = False) -> Tuple[int, str]:
     resp = requests.get(url, params=params, timeout=20)
     resp.raise_for_status()
@@ -127,7 +134,12 @@ def poll_once(routes: Iterable[str], svc: str) -> None:
 
     safe_call(
         "irnAvgSpeed-all",
-        lambda: (RAW_DIR / f"irnAvgSpeed-all-{timestamp}.xml").write_bytes(fetch(URL_IRN_SPEED_DL, binary=True)[1]),
+        lambda: save_bytes(f"irnAvgSpeed-all-{timestamp}.xml", fetch(URL_IRN_SPEED_DL, binary=True)[1]),
+    )
+
+    safe_call(
+        "rawSpeedVol-all",
+        lambda: save_bytes(f"detector_locations/rawSpeedVol-all-{timestamp}.xml", fetch(URL_TSM_RAW_DL, binary=True)[1]),
     )
 
     safe_call(

@@ -12,6 +12,23 @@
 
 ---
 
+## 2025-12-18 — Week 1 L1/L2 Metric Validation
+- **线路/方向**: KMB 68X Inbound (元朗 -> 旺角)
+- **数据集**:
+    - Real: `enriched_link_stats.csv` (N=Cleaned Link Samples)
+    - Sim: `stopinfo.xml` (Baseline Traffic)
+- **指标结果 (Baseline)**:
+    - **L1 (Macro)**:
+        - Real End-to-End Time: **8962.4s**
+        - Sim End-to-End Time: **2255.8s**
+        - Error: **-6706.6s (-74.8%)** -> 仿真严重偏快（由轨迹图确认）。
+    - **L2 (Micro)**:
+        - Top Bottleneck: Link 5-6 (Real 542s vs Sim 42s), 缺失大量延误。
+        - 速度分布：EMD 距离极大，KS 检验 p-value ~ 0.0。
+- **结论**:
+    - 当前 OSM 路网 + 自由流配置无法复现真实公交运行。
+    - **必须**进行高精度路网重建（引入信号灯/路口延误）及拥堵注入。Week 2 重点明确。
+
 ## 待填写记录
 - 日期：
 - 线路/方向/时间窗：
@@ -107,3 +124,45 @@
   - **仿真未校准**：Link 1-2 真实均速 3.44 km/h，仿真均速 78.64 km/h (EMD=75.19)，表明仿真处于完全自由流状态，极度缺乏拥堵机制。
   - **长直路段准确**：Link 15-16 (高速段) 真实 57.4 km/h vs 仿真 60.6 km/h，EMD 仅 3.2，证明车辆动力学参数基本正确，误差源于交通流缺失。
   - **数据覆盖**：因真实数据清洗过滤，部分拥堵路段无有效速度记录，已修复脚本以静态距离表为基准，确保仿真侧指标计算完整。
+
+## 2025-12-19 — Week 2 Network Reconstruction
+- **线路/方向**: KMB 68X / 960 (Inbound/Outbound)
+- **目标**: 替换 OSM 路网，解决拓扑断裂、站点无法映射、车道属性错误问题。
+- **数据源**:
+    - `RdNet_IRNP.gdb` (High Precision Road Network): Centerline, Speed Limit, Turn Table.
+    - `JSON_BUS.json` (Bus Shapes).
+    - `kmb_route_stop_dist.csv` (Mapped Stops).
+- **实现方案**:
+    1. **解析**: `inspect_irn_gdb.py` 确认 IRN 结构。
+    2. **转换**: `convert_irn_to_sumo_xml.py` 将 GDB 转为 `.nod.xml`, `.edg.xml`，并解析 `TURN` 表生成 `.con.xml` (显式连接)。
+       - **关键修复 1 (双向路)**: 解析 `TRAVEL_DIRECTION` (3=Bi, 1=Forward)，自动生成 `_rev` 反向边。
+       - **关键修复 2 (显式连接)**: 自动生成 25,400+ 条基于 TURN 表的连接，解决立交桥/隧道断路。
+    3. **生成**: `netconvert` 配置 `irn_xml.netccfg`。
+       - **关键修复 3 (坐标系)**: 启用 `offset.disable-normalization` 和 `proj.plain-geo`，保持 HK 1980 Grid 原始坐标。
+    4. **映射**: `generate_sumo_stops_irn.py` 使用 `pyproj` (WGS84->HK1980) 将 106 个站点成功吸附 (100% 成功率)。
+- **验证结果**:
+    - **连通性**: WCC 占比 99.2% (物理连通)；Route 68X/960 连通性检查仅剩 ~9 个断点 (主要在隧道口/私家路汇入)，仿真可容错。
+    - **仿真**: `hk_irn.sumocfg` 成功运行，车辆按真实站点停靠，无严重死锁。
+- **结论**:
+    - 路网重建完成，质量远超 Week 1 OSM 版本。
+    - 此版本路网 (`hk_irn.net.xml`) 已准备好用于 L1 微观校准。
+
+## 2025-12-19 — Week 2 Experiment 1: Network Reconstruction with Signals
+- **线路/方向**: KMB 68X / 960 (Inbound/Outbound)
+- **目标**: 在重建的 IRN 路网上启用信号灯，验证其对仿真行程时间的影响。
+- **配置变更**:
+    - **Base**: `hk_irn.net.xml` (Based on IRN High Precision Network).
+    - **Variation**: 
+        - V1 (No Signals): `netconvert` config without TLS guessing.
+        - V2 (With Signals): Included `<tls.guess value="true"/>` and `<tls.join value="true"/>`.
+- **验证结果 (End-to-End Travel Time Error)**:
+    - **Real World**: ~8962s (149 min).
+    - **Week 1 (OSM)**: 2256s (Error: **-74.8%**).
+    - **Week 2 (IRN No TLS)**: 2857s (Error: **-68.1%**).
+    - **Week 2 (IRN With TLS)**: 3394s (Error: **-62.1%**).
+- **观察**:
+    - 引入信号灯增加了约 9 分钟 (540s) 的行程延误，误差收敛了 6 个百分点。
+    - 依然存在严重偏差 (-62%)，说明单纯依靠静态路网和信号灯无法复现真实路况。
+    - **新问题**: 启用信号灯后，Teleport (Wrong Lane) 警告增加，表明自动猜测的红绿灯连接逻辑在某些复杂路口（如转向限制）可能存在冲突。
+- **下一步**:
+    - 必须引入 **Micro-Calibration**：调整 `speedFactor`，增加 `dwell time` (停靠时间)，并注入背景交通流 (Background Traffic)。

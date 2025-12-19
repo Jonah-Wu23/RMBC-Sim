@@ -1,0 +1,596 @@
+Loading net-file from 'sumo/config/../net/hk_irn.net.xml' ... done (7067ms).
+Loading additional-files from 'sumo/config/../additional/bus_stops_irn.add.xml' ... done (2ms).
+Warning: Program '0' at tlLogic 'joinedS_11076_cluster_11074_11075' is incompatible with logic at junction 'cluster_11074_11075' (mutual conflict between link indices 3,14 tl indices 18,29 phase 5).
+  To avoid deadlock/collisions, either: rebuild the signal plan with a newer version of netconvert/netedit
+  or rebuild the network with option '--tls.ignore-internal-junction-jam' or include the program when building.
+Loading done.
+Simulation version 1.20.0 started with time: 0.00.
+Warning: busStop 'AB0F79ED382081D0' on lane '275813_rev_0' is too short for vehicle 'flow_68X_outbound.0'.
+Warning: busStop 'A81B13297DB1C481' on lane '115546_0' is too short for vehicle 'flow_960_inbound.0'.
+Warning: No connection between edge '106831_rev' and edge '105817' found.
+Warning: Vehicle 'flow_68X_inbound.0' has no valid route from edge '106831_rev' to stop edge '105817'.
+Warning: No connection between edge '272309' and edge '115789' found.
+Warning: Vehicle 'flow_68X_inbound.0' has no valid route from edge '272309' to stop edge '115789'.
+Warning: No connection between edge '95598' and edge '95600' found.
+Warning: Vehicle 'flow_68X_inbound.0' has no valid route from edge '95598' to stop edge '95600'.
+Warning: No connection between edge '97153_rev' and edge '96253' found.
+Warning: Vehicle 'flow_68X_inbound.0' has no valid route from edge '97153_rev' to stop edge '96253'.
+Warning: No connection between edge '96253' and edge '96273_rev' found.
+Warning: Vehicle 'flow_68X_inbound.0' has no valid route from edge '96253' to stop edge '96273_rev'.
+Warning: No connection between edge '96478' and edge '94947_rev' found.
+Warning: Vehicle 'flow_68X_inbound.0' has no valid route from edge '96478' to stop edge '94947_rev'.
+Warning: No connection between edge '94947_rev' and edge '142955' found.
+Warning: Vehicle 'flow_68X_inbound.0' has no valid route from edge '94947_rev' to stop edge '142955'.
+Warning: No connection between edge '142955' and edge '96285' found.
+Warning: Vehicle 'flow_68X_inbound.0' has no valid route from edge '142955' to stop edge '96285'.
+Warning: No connection between edge '96285' and edge '260430' found.
+Warning: Vehicle 'flow_68X_inbound.0' has no valid route from edge '96285' to stop edge '260430'.
+Warning: No connection between edge '5291' and edge '2731' found.
+Warning: Vehicle 'flow_960_inbound.0' has no valid route from edge '5291' to stop edge '2731'.
+Warning: No connection between edge '115546' and edge '4833' found.
+Warning: Vehicle 'flow_960_inbound.0' has no valid route from edge '115546' to stop edge '4833'.
+Warning: No connection between edge '121514_rev' and edge '95208' found.
+Warning: Vehicle 'flow_960_inbound.0' has no valid route from edge '121514_rev' to stop edge '95208'.
+Warning: No connection between edge '95208' and edge '96999' found.
+Warning: Vehicle 'flow_960_inbound.0' has no valid route from edge '95208' to stop edge '96999'.
+Warning: No connection between edge '94457' and edge '97018' found.
+Warning: Vehicle 'flow_960_inbound.0' has no valid route from edge '94457' to stop edge '97018'.
+Warning: No connection between edge '97018' and edge '94642' found.
+Warning: Vehicle 'flow_960_inbound.0' has no valid route from edge '97018' to stop edge '94642'.
+Warning: No connection between edge '94642' and edge '94266' found.
+Warning: Vehicle 'flow_960_inbound.0' has no valid route from edge '94642' to stop edge '94266'.
+Warning: No connection between edge '94266' and edge '94664_rev' found.
+Warning: Vehicle 'flow_960_inbound.0' has no valid route from edge '94266' to stop edge '94664_rev'.
+Warning: No connection between edge '94664_rev' and edge '266384' found.
+Warning: Vehicle 'flow_960_inbound.0' has no valid route from edge '94664_rev' to stop edge '266384'.
+Warning: No connection between edge '260430' and edge '97403' found.
+Warning: Vehicle 'flow_68X_outbound.0' has no valid route from edge '260430' to stop edge '97403'.
+Warning: No connection between edge '97403' and edge '96300' found.
+Warning: Vehicle 'flow_68X_outbound.0' has no valid route from edge '97403' to stop edge '96300'.
+Warning: No connection between edge '96300' and edge '142955' found.
+Warning: Vehicle 'flow_68X_outbound.0' has no valid route from edge '96300' to stop edge '142955'.
+Warning: No connection between edge '142955' and edge '97070' found.
+Warning: Vehicle 'flow_68X_outbound.0' has no valid route from edge '142955' to stop edge '97070'.
+Warning: No connection between edge '97070' and edge '97407' found.
+Warning: Vehicle 'flow_68X_outbound.0' has no valid route from edge '97070' to stop edge '97407'.
+Warning: No connection between edge '95598' and edge '95592' found.
+Warning: Vehicle 'flow_68X_outbound.0' has no valid route from edge '95598' to stop edge '95592'.
+Warning: No connection between edge '8000_rev' and edge '106606' found.
+Warning: Vehicle 'flow_68X_outbound.0' has no valid route from edge '8000_rev' to stop edge '106606'.
+Warning: No connection between edge '106831_rev' and edge '105734' found.
+Warning: Vehicle 'flow_68X_outbound.0' has no valid route from edge '106831_rev' to stop edge '105734'.
+Warning: No connection between edge '105734' and edge '105735_rev' found.
+Warning: Vehicle 'flow_68X_outbound.0' has no valid route from edge '105734' to stop edge '105735_rev'.
+Warning: No connection between edge '94236_rev' and edge '94664_rev' found.
+Warning: Vehicle 'flow_960_outbound.0' has no valid route from edge '94236_rev' to stop edge '94664_rev'.
+Warning: No connection between edge '94664_rev' and edge '94266' found.
+Warning: Vehicle 'flow_960_outbound.0' has no valid route from edge '94664_rev' to stop edge '94266'.
+Warning: No connection between edge '94266' and edge '94642' found.
+Warning: Vehicle 'flow_960_outbound.0' has no valid route from edge '94266' to stop edge '94642'.
+Warning: No connection between edge '94457' and edge '94968_rev' found.
+Warning: Vehicle 'flow_960_outbound.0' has no valid route from edge '94457' to stop edge '94968_rev'.
+Warning: No connection between edge '96999' and edge '96344' found.
+Warning: Vehicle 'flow_960_outbound.0' has no valid route from edge '96999' to stop edge '96344'.
+Warning: No connection between edge '96344' and edge '93953_rev' found.
+Warning: Vehicle 'flow_960_outbound.0' has no valid route from edge '96344' to stop edge '93953_rev'.
+Warning: No connection between edge '96965' and edge '97116' found.
+Warning: Vehicle 'flow_960_outbound.0' has no valid route from edge '96965' to stop edge '97116'.
+Warning: No connection between edge '106944_rev' and edge '2468_rev' found.
+Warning: Vehicle 'flow_960_outbound.0' has no valid route from edge '106944_rev' to stop edge '2468_rev'.
+Warning: No connection between edge '3895' and edge '4287_rev' found.
+Warning: Vehicle 'flow_960_outbound.0' has no valid route from edge '3895' to stop edge '4287_rev'.
+Warning: Teleporting vehicle 'flow_68X_outbound.0'; waited too long (wrong lane), lane='260430_0', time=333.00.
+Warning: Vehicle 'flow_68X_outbound.0' ends teleporting on edge '97403', time=333.00.
+Warning: Teleporting vehicle 'flow_960_outbound.0'; waited too long (wrong lane), lane='94236_rev_0', time=418.00.
+Warning: Vehicle 'flow_960_outbound.0' ends teleporting on edge '94664_rev', time=418.00.
+Warning: No connection between edge '106831_rev' and edge '105817' found.
+Warning: Vehicle 'flow_68X_inbound.1' has no valid route from edge '106831_rev' to stop edge '105817'.
+Warning: No connection between edge '272309' and edge '115789' found.
+Warning: Vehicle 'flow_68X_inbound.1' has no valid route from edge '272309' to stop edge '115789'.
+Warning: No connection between edge '95598' and edge '95600' found.
+Warning: Vehicle 'flow_68X_inbound.1' has no valid route from edge '95598' to stop edge '95600'.
+Warning: No connection between edge '97153_rev' and edge '96253' found.
+Warning: Vehicle 'flow_68X_inbound.1' has no valid route from edge '97153_rev' to stop edge '96253'.
+Warning: No connection between edge '96253' and edge '96273_rev' found.
+Warning: Vehicle 'flow_68X_inbound.1' has no valid route from edge '96253' to stop edge '96273_rev'.
+Warning: No connection between edge '96478' and edge '94947_rev' found.
+Warning: Vehicle 'flow_68X_inbound.1' has no valid route from edge '96478' to stop edge '94947_rev'.
+Warning: No connection between edge '94947_rev' and edge '142955' found.
+Warning: Vehicle 'flow_68X_inbound.1' has no valid route from edge '94947_rev' to stop edge '142955'.
+Warning: No connection between edge '142955' and edge '96285' found.
+Warning: Vehicle 'flow_68X_inbound.1' has no valid route from edge '142955' to stop edge '96285'.
+Warning: No connection between edge '96285' and edge '260430' found.
+Warning: Vehicle 'flow_68X_inbound.1' has no valid route from edge '96285' to stop edge '260430'.
+Warning: No connection between edge '5291' and edge '2731' found.
+Warning: Vehicle 'flow_960_inbound.1' has no valid route from edge '5291' to stop edge '2731'.
+Warning: No connection between edge '115546' and edge '4833' found.
+Warning: Vehicle 'flow_960_inbound.1' has no valid route from edge '115546' to stop edge '4833'.
+Warning: No connection between edge '121514_rev' and edge '95208' found.
+Warning: Vehicle 'flow_960_inbound.1' has no valid route from edge '121514_rev' to stop edge '95208'.
+Warning: No connection between edge '95208' and edge '96999' found.
+Warning: Vehicle 'flow_960_inbound.1' has no valid route from edge '95208' to stop edge '96999'.
+Warning: No connection between edge '94457' and edge '97018' found.
+Warning: Vehicle 'flow_960_inbound.1' has no valid route from edge '94457' to stop edge '97018'.
+Warning: No connection between edge '97018' and edge '94642' found.
+Warning: Vehicle 'flow_960_inbound.1' has no valid route from edge '97018' to stop edge '94642'.
+Warning: No connection between edge '94642' and edge '94266' found.
+Warning: Vehicle 'flow_960_inbound.1' has no valid route from edge '94642' to stop edge '94266'.
+Warning: No connection between edge '94266' and edge '94664_rev' found.
+Warning: Vehicle 'flow_960_inbound.1' has no valid route from edge '94266' to stop edge '94664_rev'.
+Warning: No connection between edge '94664_rev' and edge '266384' found.
+Warning: Vehicle 'flow_960_inbound.1' has no valid route from edge '94664_rev' to stop edge '266384'.
+Warning: No connection between edge '260430' and edge '97403' found.
+Warning: Vehicle 'flow_68X_outbound.1' has no valid route from edge '260430' to stop edge '97403'.
+Warning: No connection between edge '97403' and edge '96300' found.
+Warning: Vehicle 'flow_68X_outbound.1' has no valid route from edge '97403' to stop edge '96300'.
+Warning: No connection between edge '96300' and edge '142955' found.
+Warning: Vehicle 'flow_68X_outbound.1' has no valid route from edge '96300' to stop edge '142955'.
+Warning: No connection between edge '142955' and edge '97070' found.
+Warning: Vehicle 'flow_68X_outbound.1' has no valid route from edge '142955' to stop edge '97070'.
+Warning: No connection between edge '97070' and edge '97407' found.
+Warning: Vehicle 'flow_68X_outbound.1' has no valid route from edge '97070' to stop edge '97407'.
+Warning: No connection between edge '95598' and edge '95592' found.
+Warning: Vehicle 'flow_68X_outbound.1' has no valid route from edge '95598' to stop edge '95592'.
+Warning: No connection between edge '8000_rev' and edge '106606' found.
+Warning: Vehicle 'flow_68X_outbound.1' has no valid route from edge '8000_rev' to stop edge '106606'.
+Warning: No connection between edge '106831_rev' and edge '105734' found.
+Warning: Vehicle 'flow_68X_outbound.1' has no valid route from edge '106831_rev' to stop edge '105734'.
+Warning: No connection between edge '105734' and edge '105735_rev' found.
+Warning: Vehicle 'flow_68X_outbound.1' has no valid route from edge '105734' to stop edge '105735_rev'.
+Warning: No connection between edge '94236_rev' and edge '94664_rev' found.
+Warning: Vehicle 'flow_960_outbound.1' has no valid route from edge '94236_rev' to stop edge '94664_rev'.
+Warning: No connection between edge '94664_rev' and edge '94266' found.
+Warning: Vehicle 'flow_960_outbound.1' has no valid route from edge '94664_rev' to stop edge '94266'.
+Warning: No connection between edge '94266' and edge '94642' found.
+Warning: Vehicle 'flow_960_outbound.1' has no valid route from edge '94266' to stop edge '94642'.
+Warning: No connection between edge '94457' and edge '94968_rev' found.
+Warning: Vehicle 'flow_960_outbound.1' has no valid route from edge '94457' to stop edge '94968_rev'.
+Warning: No connection between edge '96999' and edge '96344' found.
+Warning: Vehicle 'flow_960_outbound.1' has no valid route from edge '96999' to stop edge '96344'.
+Warning: No connection between edge '96344' and edge '93953_rev' found.
+Warning: Vehicle 'flow_960_outbound.1' has no valid route from edge '96344' to stop edge '93953_rev'.
+Warning: No connection between edge '96965' and edge '97116' found.
+Warning: Vehicle 'flow_960_outbound.1' has no valid route from edge '96965' to stop edge '97116'.
+Warning: No connection between edge '106944_rev' and edge '2468_rev' found.
+Warning: Vehicle 'flow_960_outbound.1' has no valid route from edge '106944_rev' to stop edge '2468_rev'.
+Warning: No connection between edge '3895' and edge '4287_rev' found.
+Warning: Vehicle 'flow_960_outbound.1' has no valid route from edge '3895' to stop edge '4287_rev'.
+Warning: Teleporting vehicle 'flow_68X_outbound.0'; waited too long (wrong lane), lane='97403_0', time=672.00.
+Warning: Vehicle 'flow_68X_outbound.0' ends teleporting on edge '96300', time=672.00.
+Warning: Teleporting vehicle 'flow_960_outbound.0'; waited too long (wrong lane), lane='94664_rev_0', time=769.00.
+Warning: Vehicle 'flow_960_outbound.0' ends teleporting on edge '94266', time=769.00.
+Warning: Teleporting vehicle 'flow_960_inbound.0'; waited too long (wrong lane), lane='5291_0', time=909.00.
+Warning: Vehicle 'flow_960_inbound.0' ends teleporting on edge '2731', time=909.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.1'; waited too long (wrong lane), lane='260430_0', time=932.00.
+Warning: Vehicle 'flow_68X_outbound.1' ends teleporting on edge '97403', time=932.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.0'; waited too long (wrong lane), lane='96300_0', time=1019.00.
+Warning: Vehicle 'flow_68X_outbound.0' ends teleporting on edge '142955', time=1019.00.
+Warning: Teleporting vehicle 'flow_960_outbound.0'; waited too long (wrong lane), lane='94266_0', time=1104.00.
+Warning: Vehicle 'flow_960_outbound.0' ends teleporting on edge '94642', time=1104.00.
+Warning: Teleporting vehicle 'flow_960_outbound.1'; waited too long (wrong lane), lane='94236_rev_0', time=1125.00.
+Warning: Vehicle 'flow_960_outbound.1' ends teleporting on edge '94664_rev', time=1125.00.
+Warning: No connection between edge '106831_rev' and edge '105817' found.
+Warning: Vehicle 'flow_68X_inbound.2' has no valid route from edge '106831_rev' to stop edge '105817'.
+Warning: No connection between edge '272309' and edge '115789' found.
+Warning: Vehicle 'flow_68X_inbound.2' has no valid route from edge '272309' to stop edge '115789'.
+Warning: No connection between edge '95598' and edge '95600' found.
+Warning: Vehicle 'flow_68X_inbound.2' has no valid route from edge '95598' to stop edge '95600'.
+Warning: No connection between edge '97153_rev' and edge '96253' found.
+Warning: Vehicle 'flow_68X_inbound.2' has no valid route from edge '97153_rev' to stop edge '96253'.
+Warning: No connection between edge '96253' and edge '96273_rev' found.
+Warning: Vehicle 'flow_68X_inbound.2' has no valid route from edge '96253' to stop edge '96273_rev'.
+Warning: No connection between edge '96478' and edge '94947_rev' found.
+Warning: Vehicle 'flow_68X_inbound.2' has no valid route from edge '96478' to stop edge '94947_rev'.
+Warning: No connection between edge '94947_rev' and edge '142955' found.
+Warning: Vehicle 'flow_68X_inbound.2' has no valid route from edge '94947_rev' to stop edge '142955'.
+Warning: No connection between edge '142955' and edge '96285' found.
+Warning: Vehicle 'flow_68X_inbound.2' has no valid route from edge '142955' to stop edge '96285'.
+Warning: No connection between edge '96285' and edge '260430' found.
+Warning: Vehicle 'flow_68X_inbound.2' has no valid route from edge '96285' to stop edge '260430'.
+Warning: No connection between edge '5291' and edge '2731' found.
+Warning: Vehicle 'flow_960_inbound.2' has no valid route from edge '5291' to stop edge '2731'.
+Warning: No connection between edge '115546' and edge '4833' found.
+Warning: Vehicle 'flow_960_inbound.2' has no valid route from edge '115546' to stop edge '4833'.
+Warning: No connection between edge '121514_rev' and edge '95208' found.
+Warning: Vehicle 'flow_960_inbound.2' has no valid route from edge '121514_rev' to stop edge '95208'.
+Warning: No connection between edge '95208' and edge '96999' found.
+Warning: Vehicle 'flow_960_inbound.2' has no valid route from edge '95208' to stop edge '96999'.
+Warning: No connection between edge '94457' and edge '97018' found.
+Warning: Vehicle 'flow_960_inbound.2' has no valid route from edge '94457' to stop edge '97018'.
+Warning: No connection between edge '97018' and edge '94642' found.
+Warning: Vehicle 'flow_960_inbound.2' has no valid route from edge '97018' to stop edge '94642'.
+Warning: No connection between edge '94642' and edge '94266' found.
+Warning: Vehicle 'flow_960_inbound.2' has no valid route from edge '94642' to stop edge '94266'.
+Warning: No connection between edge '94266' and edge '94664_rev' found.
+Warning: Vehicle 'flow_960_inbound.2' has no valid route from edge '94266' to stop edge '94664_rev'.
+Warning: No connection between edge '94664_rev' and edge '266384' found.
+Warning: Vehicle 'flow_960_inbound.2' has no valid route from edge '94664_rev' to stop edge '266384'.
+Warning: No connection between edge '260430' and edge '97403' found.
+Warning: Vehicle 'flow_68X_outbound.2' has no valid route from edge '260430' to stop edge '97403'.
+Warning: No connection between edge '97403' and edge '96300' found.
+Warning: Vehicle 'flow_68X_outbound.2' has no valid route from edge '97403' to stop edge '96300'.
+Warning: No connection between edge '96300' and edge '142955' found.
+Warning: Vehicle 'flow_68X_outbound.2' has no valid route from edge '96300' to stop edge '142955'.
+Warning: No connection between edge '142955' and edge '97070' found.
+Warning: Vehicle 'flow_68X_outbound.2' has no valid route from edge '142955' to stop edge '97070'.
+Warning: No connection between edge '97070' and edge '97407' found.
+Warning: Vehicle 'flow_68X_outbound.2' has no valid route from edge '97070' to stop edge '97407'.
+Warning: No connection between edge '95598' and edge '95592' found.
+Warning: Vehicle 'flow_68X_outbound.2' has no valid route from edge '95598' to stop edge '95592'.
+Warning: No connection between edge '8000_rev' and edge '106606' found.
+Warning: Vehicle 'flow_68X_outbound.2' has no valid route from edge '8000_rev' to stop edge '106606'.
+Warning: No connection between edge '106831_rev' and edge '105734' found.
+Warning: Vehicle 'flow_68X_outbound.2' has no valid route from edge '106831_rev' to stop edge '105734'.
+Warning: No connection between edge '105734' and edge '105735_rev' found.
+Warning: Vehicle 'flow_68X_outbound.2' has no valid route from edge '105734' to stop edge '105735_rev'.
+Warning: No connection between edge '94236_rev' and edge '94664_rev' found.
+Warning: Vehicle 'flow_960_outbound.2' has no valid route from edge '94236_rev' to stop edge '94664_rev'.
+Warning: No connection between edge '94664_rev' and edge '94266' found.
+Warning: Vehicle 'flow_960_outbound.2' has no valid route from edge '94664_rev' to stop edge '94266'.
+Warning: No connection between edge '94266' and edge '94642' found.
+Warning: Vehicle 'flow_960_outbound.2' has no valid route from edge '94266' to stop edge '94642'.
+Warning: No connection between edge '94457' and edge '94968_rev' found.
+Warning: Vehicle 'flow_960_outbound.2' has no valid route from edge '94457' to stop edge '94968_rev'.
+Warning: No connection between edge '96999' and edge '96344' found.
+Warning: Vehicle 'flow_960_outbound.2' has no valid route from edge '96999' to stop edge '96344'.
+Warning: No connection between edge '96344' and edge '93953_rev' found.
+Warning: Vehicle 'flow_960_outbound.2' has no valid route from edge '96344' to stop edge '93953_rev'.
+Warning: No connection between edge '96965' and edge '97116' found.
+Warning: Vehicle 'flow_960_outbound.2' has no valid route from edge '96965' to stop edge '97116'.
+Warning: No connection between edge '106944_rev' and edge '2468_rev' found.
+Warning: Vehicle 'flow_960_outbound.2' has no valid route from edge '106944_rev' to stop edge '2468_rev'.
+Warning: No connection between edge '3895' and edge '4287_rev' found.
+Warning: Vehicle 'flow_960_outbound.2' has no valid route from edge '3895' to stop edge '4287_rev'.
+Warning: Teleporting vehicle 'flow_68X_inbound.0'; waited too long (wrong lane), lane='106831_rev_0', time=1219.00.
+Warning: Vehicle 'flow_68X_inbound.0' ends teleporting on edge '105817', time=1219.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.1'; waited too long (wrong lane), lane='97403_0', time=1271.00.
+Warning: Vehicle 'flow_68X_outbound.1' ends teleporting on edge '96300', time=1271.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.0'; waited too long (wrong lane), lane='142955_0', time=1343.00.
+Warning: Vehicle 'flow_68X_outbound.0' ends teleporting on edge '97070', time=1343.00.
+Warning: Teleporting vehicle 'flow_960_inbound.1'; waited too long (wrong lane), lane='5291_0', time=1449.00.
+Warning: Vehicle 'flow_960_inbound.1' ends teleporting on edge '2731', time=1449.00.
+Warning: Teleporting vehicle 'flow_960_outbound.1'; waited too long (wrong lane), lane='94664_rev_0', time=1479.00.
+Warning: Vehicle 'flow_960_outbound.1' ends teleporting on edge '94266', time=1479.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.2'; waited too long (wrong lane), lane='260430_0', time=1533.00.
+Warning: Vehicle 'flow_68X_outbound.2' ends teleporting on edge '97403', time=1533.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.1'; waited too long (wrong lane), lane='96300_0', time=1620.00.
+Warning: Vehicle 'flow_68X_outbound.1' ends teleporting on edge '142955', time=1620.00.
+Warning: Teleporting vehicle 'flow_960_outbound.0'; waited too long (wrong lane), lane='94457_0', time=1665.00.
+Warning: Vehicle 'flow_960_outbound.0' ends teleporting on edge '94968_rev', time=1665.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.0'; waited too long (wrong lane), lane='97070_0', time=1687.00.
+Warning: Vehicle 'flow_68X_outbound.0' ends teleporting on edge '97407', time=1687.00.
+Warning: Teleporting vehicle 'flow_68X_inbound.2'; waited too long (jam), lane=':21216_4_0', time=1729.00.
+Warning: Vehicle 'flow_68X_inbound.2' ends teleporting on edge '105528', time=1729.00.
+Warning: Teleporting vehicle 'flow_68X_inbound.1'; waited too long (wrong lane), lane='106831_rev_0', time=1760.00.
+Warning: Vehicle 'flow_68X_inbound.1' ends teleporting on edge '105817', time=1760.00.
+Warning: No connection between edge '106831_rev' and edge '105817' found.
+Warning: Vehicle 'flow_68X_inbound.3' has no valid route from edge '106831_rev' to stop edge '105817'.
+Warning: No connection between edge '272309' and edge '115789' found.
+Warning: Vehicle 'flow_68X_inbound.3' has no valid route from edge '272309' to stop edge '115789'.
+Warning: No connection between edge '95598' and edge '95600' found.
+Warning: Vehicle 'flow_68X_inbound.3' has no valid route from edge '95598' to stop edge '95600'.
+Warning: No connection between edge '97153_rev' and edge '96253' found.
+Warning: Vehicle 'flow_68X_inbound.3' has no valid route from edge '97153_rev' to stop edge '96253'.
+Warning: No connection between edge '96253' and edge '96273_rev' found.
+Warning: Vehicle 'flow_68X_inbound.3' has no valid route from edge '96253' to stop edge '96273_rev'.
+Warning: No connection between edge '96478' and edge '94947_rev' found.
+Warning: Vehicle 'flow_68X_inbound.3' has no valid route from edge '96478' to stop edge '94947_rev'.
+Warning: No connection between edge '94947_rev' and edge '142955' found.
+Warning: Vehicle 'flow_68X_inbound.3' has no valid route from edge '94947_rev' to stop edge '142955'.
+Warning: No connection between edge '142955' and edge '96285' found.
+Warning: Vehicle 'flow_68X_inbound.3' has no valid route from edge '142955' to stop edge '96285'.
+Warning: No connection between edge '96285' and edge '260430' found.
+Warning: Vehicle 'flow_68X_inbound.3' has no valid route from edge '96285' to stop edge '260430'.
+Warning: No connection between edge '5291' and edge '2731' found.
+Warning: Vehicle 'flow_960_inbound.3' has no valid route from edge '5291' to stop edge '2731'.
+Warning: No connection between edge '115546' and edge '4833' found.
+Warning: Vehicle 'flow_960_inbound.3' has no valid route from edge '115546' to stop edge '4833'.
+Warning: No connection between edge '121514_rev' and edge '95208' found.
+Warning: Vehicle 'flow_960_inbound.3' has no valid route from edge '121514_rev' to stop edge '95208'.
+Warning: No connection between edge '95208' and edge '96999' found.
+Warning: Vehicle 'flow_960_inbound.3' has no valid route from edge '95208' to stop edge '96999'.
+Warning: No connection between edge '94457' and edge '97018' found.
+Warning: Vehicle 'flow_960_inbound.3' has no valid route from edge '94457' to stop edge '97018'.
+Warning: No connection between edge '97018' and edge '94642' found.
+Warning: Vehicle 'flow_960_inbound.3' has no valid route from edge '97018' to stop edge '94642'.
+Warning: No connection between edge '94642' and edge '94266' found.
+Warning: Vehicle 'flow_960_inbound.3' has no valid route from edge '94642' to stop edge '94266'.
+Warning: No connection between edge '94266' and edge '94664_rev' found.
+Warning: Vehicle 'flow_960_inbound.3' has no valid route from edge '94266' to stop edge '94664_rev'.
+Warning: No connection between edge '94664_rev' and edge '266384' found.
+Warning: Vehicle 'flow_960_inbound.3' has no valid route from edge '94664_rev' to stop edge '266384'.
+Warning: No connection between edge '260430' and edge '97403' found.
+Warning: Vehicle 'flow_68X_outbound.3' has no valid route from edge '260430' to stop edge '97403'.
+Warning: No connection between edge '97403' and edge '96300' found.
+Warning: Vehicle 'flow_68X_outbound.3' has no valid route from edge '97403' to stop edge '96300'.
+Warning: No connection between edge '96300' and edge '142955' found.
+Warning: Vehicle 'flow_68X_outbound.3' has no valid route from edge '96300' to stop edge '142955'.
+Warning: No connection between edge '142955' and edge '97070' found.
+Warning: Vehicle 'flow_68X_outbound.3' has no valid route from edge '142955' to stop edge '97070'.
+Warning: No connection between edge '97070' and edge '97407' found.
+Warning: Vehicle 'flow_68X_outbound.3' has no valid route from edge '97070' to stop edge '97407'.
+Warning: No connection between edge '95598' and edge '95592' found.
+Warning: Vehicle 'flow_68X_outbound.3' has no valid route from edge '95598' to stop edge '95592'.
+Warning: No connection between edge '8000_rev' and edge '106606' found.
+Warning: Vehicle 'flow_68X_outbound.3' has no valid route from edge '8000_rev' to stop edge '106606'.
+Warning: No connection between edge '106831_rev' and edge '105734' found.
+Warning: Vehicle 'flow_68X_outbound.3' has no valid route from edge '106831_rev' to stop edge '105734'.
+Warning: No connection between edge '105734' and edge '105735_rev' found.
+Warning: Vehicle 'flow_68X_outbound.3' has no valid route from edge '105734' to stop edge '105735_rev'.
+Warning: No connection between edge '94236_rev' and edge '94664_rev' found.
+Warning: Vehicle 'flow_960_outbound.3' has no valid route from edge '94236_rev' to stop edge '94664_rev'.
+Warning: No connection between edge '94664_rev' and edge '94266' found.
+Warning: Vehicle 'flow_960_outbound.3' has no valid route from edge '94664_rev' to stop edge '94266'.
+Warning: No connection between edge '94266' and edge '94642' found.
+Warning: Vehicle 'flow_960_outbound.3' has no valid route from edge '94266' to stop edge '94642'.
+Warning: No connection between edge '94457' and edge '94968_rev' found.
+Warning: Vehicle 'flow_960_outbound.3' has no valid route from edge '94457' to stop edge '94968_rev'.
+Warning: No connection between edge '96999' and edge '96344' found.
+Warning: Vehicle 'flow_960_outbound.3' has no valid route from edge '96999' to stop edge '96344'.
+Warning: No connection between edge '96344' and edge '93953_rev' found.
+Warning: Vehicle 'flow_960_outbound.3' has no valid route from edge '96344' to stop edge '93953_rev'.
+Warning: No connection between edge '96965' and edge '97116' found.
+Warning: Vehicle 'flow_960_outbound.3' has no valid route from edge '96965' to stop edge '97116'.
+Warning: No connection between edge '106944_rev' and edge '2468_rev' found.
+Warning: Vehicle 'flow_960_outbound.3' has no valid route from edge '106944_rev' to stop edge '2468_rev'.
+Warning: No connection between edge '3895' and edge '4287_rev' found.
+Warning: Vehicle 'flow_960_outbound.3' has no valid route from edge '3895' to stop edge '4287_rev'.
+Warning: Teleporting vehicle 'flow_960_outbound.1'; waited too long (wrong lane), lane='94266_0', time=1814.00.
+Warning: Vehicle 'flow_960_outbound.1' ends teleporting on edge '94642', time=1814.00.
+Warning: Teleporting vehicle 'flow_960_outbound.2'; waited too long (wrong lane), lane='94236_rev_0', time=1832.00.
+Warning: Vehicle 'flow_960_outbound.2' ends teleporting on edge '94664_rev', time=1832.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.2'; waited too long (wrong lane), lane='97403_0', time=1872.00.
+Warning: Vehicle 'flow_68X_outbound.2' ends teleporting on edge '96300', time=1872.00.
+Warning: Teleporting vehicle 'flow_960_inbound.1'; waited too long (yield), lane='4939_0', time=1917.00.
+Warning: Vehicle 'flow_960_inbound.1' ends teleporting on edge '4384', time=1917.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.1'; waited too long (wrong lane), lane='142955_0', time=1945.00.
+Warning: Vehicle 'flow_68X_outbound.1' ends teleporting on edge '97070', time=1945.00.
+Warning: Teleporting vehicle 'flow_960_inbound.2'; waited too long (wrong lane), lane='5291_0', time=2075.00.
+Warning: Vehicle 'flow_960_inbound.2' ends teleporting on edge '2731', time=2075.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.3'; waited too long (wrong lane), lane='260430_0', time=2133.00.
+Warning: Vehicle 'flow_68X_outbound.3' ends teleporting on edge '97403', time=2133.00.
+Warning: Teleporting vehicle 'flow_960_inbound.0'; waited too long (wrong lane), lane='115546_0', time=2153.00.
+Warning: Vehicle 'flow_960_inbound.0' ends teleporting on edge '4833', time=2153.00.
+Warning: Teleporting vehicle 'flow_960_outbound.2'; waited too long (wrong lane), lane='94664_rev_0', time=2183.00.
+Warning: Vehicle 'flow_960_outbound.2' ends teleporting on edge '94266', time=2183.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.2'; waited too long (wrong lane), lane='96300_0', time=2221.00.
+Warning: Vehicle 'flow_68X_outbound.2' ends teleporting on edge '142955', time=2221.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.1'; waited too long (wrong lane), lane='97070_0', time=2294.00.
+Warning: Vehicle 'flow_68X_outbound.1' ends teleporting on edge '97407', time=2294.00.
+Warning: Teleporting vehicle 'flow_68X_inbound.3'; waited too long (jam), lane=':21216_4_0', time=2361.00.
+Warning: Vehicle 'flow_68X_inbound.3' ends teleporting on edge '105528', time=2361.00.
+Warning: Teleporting vehicle 'flow_960_outbound.0'; waited too long (wrong lane), lane='96999_0', time=2388.00.
+Warning: Vehicle 'flow_960_outbound.0' ends teleporting on edge '96344', time=2388.00.
+Warning: Teleporting vehicle 'flow_960_outbound.1'; waited too long (wrong lane), lane='94457_0', time=2389.00.
+Warning: Vehicle 'flow_960_outbound.1' ends teleporting on edge '94968_rev', time=2389.00.
+Warning: No connection between edge '106831_rev' and edge '105817' found.
+Warning: Vehicle 'flow_68X_inbound.4' has no valid route from edge '106831_rev' to stop edge '105817'.
+Warning: No connection between edge '272309' and edge '115789' found.
+Warning: Vehicle 'flow_68X_inbound.4' has no valid route from edge '272309' to stop edge '115789'.
+Warning: No connection between edge '95598' and edge '95600' found.
+Warning: Vehicle 'flow_68X_inbound.4' has no valid route from edge '95598' to stop edge '95600'.
+Warning: No connection between edge '97153_rev' and edge '96253' found.
+Warning: Vehicle 'flow_68X_inbound.4' has no valid route from edge '97153_rev' to stop edge '96253'.
+Warning: No connection between edge '96253' and edge '96273_rev' found.
+Warning: Vehicle 'flow_68X_inbound.4' has no valid route from edge '96253' to stop edge '96273_rev'.
+Warning: No connection between edge '96478' and edge '94947_rev' found.
+Warning: Vehicle 'flow_68X_inbound.4' has no valid route from edge '96478' to stop edge '94947_rev'.
+Warning: No connection between edge '94947_rev' and edge '142955' found.
+Warning: Vehicle 'flow_68X_inbound.4' has no valid route from edge '94947_rev' to stop edge '142955'.
+Warning: No connection between edge '142955' and edge '96285' found.
+Warning: Vehicle 'flow_68X_inbound.4' has no valid route from edge '142955' to stop edge '96285'.
+Warning: No connection between edge '96285' and edge '260430' found.
+Warning: Vehicle 'flow_68X_inbound.4' has no valid route from edge '96285' to stop edge '260430'.
+Warning: No connection between edge '5291' and edge '2731' found.
+Warning: Vehicle 'flow_960_inbound.4' has no valid route from edge '5291' to stop edge '2731'.
+Warning: No connection between edge '115546' and edge '4833' found.
+Warning: Vehicle 'flow_960_inbound.4' has no valid route from edge '115546' to stop edge '4833'.
+Warning: No connection between edge '121514_rev' and edge '95208' found.
+Warning: Vehicle 'flow_960_inbound.4' has no valid route from edge '121514_rev' to stop edge '95208'.
+Warning: No connection between edge '95208' and edge '96999' found.
+Warning: Vehicle 'flow_960_inbound.4' has no valid route from edge '95208' to stop edge '96999'.
+Warning: No connection between edge '94457' and edge '97018' found.
+Warning: Vehicle 'flow_960_inbound.4' has no valid route from edge '94457' to stop edge '97018'.
+Warning: No connection between edge '97018' and edge '94642' found.
+Warning: Vehicle 'flow_960_inbound.4' has no valid route from edge '97018' to stop edge '94642'.
+Warning: No connection between edge '94642' and edge '94266' found.
+Warning: Vehicle 'flow_960_inbound.4' has no valid route from edge '94642' to stop edge '94266'.
+Warning: No connection between edge '94266' and edge '94664_rev' found.
+Warning: Vehicle 'flow_960_inbound.4' has no valid route from edge '94266' to stop edge '94664_rev'.
+Warning: No connection between edge '94664_rev' and edge '266384' found.
+Warning: Vehicle 'flow_960_inbound.4' has no valid route from edge '94664_rev' to stop edge '266384'.
+Warning: No connection between edge '260430' and edge '97403' found.
+Warning: Vehicle 'flow_68X_outbound.4' has no valid route from edge '260430' to stop edge '97403'.
+Warning: No connection between edge '97403' and edge '96300' found.
+Warning: Vehicle 'flow_68X_outbound.4' has no valid route from edge '97403' to stop edge '96300'.
+Warning: No connection between edge '96300' and edge '142955' found.
+Warning: Vehicle 'flow_68X_outbound.4' has no valid route from edge '96300' to stop edge '142955'.
+Warning: No connection between edge '142955' and edge '97070' found.
+Warning: Vehicle 'flow_68X_outbound.4' has no valid route from edge '142955' to stop edge '97070'.
+Warning: No connection between edge '97070' and edge '97407' found.
+Warning: Vehicle 'flow_68X_outbound.4' has no valid route from edge '97070' to stop edge '97407'.
+Warning: No connection between edge '95598' and edge '95592' found.
+Warning: Vehicle 'flow_68X_outbound.4' has no valid route from edge '95598' to stop edge '95592'.
+Warning: No connection between edge '8000_rev' and edge '106606' found.
+Warning: Vehicle 'flow_68X_outbound.4' has no valid route from edge '8000_rev' to stop edge '106606'.
+Warning: No connection between edge '106831_rev' and edge '105734' found.
+Warning: Vehicle 'flow_68X_outbound.4' has no valid route from edge '106831_rev' to stop edge '105734'.
+Warning: No connection between edge '105734' and edge '105735_rev' found.
+Warning: Vehicle 'flow_68X_outbound.4' has no valid route from edge '105734' to stop edge '105735_rev'.
+Warning: No connection between edge '94236_rev' and edge '94664_rev' found.
+Warning: Vehicle 'flow_960_outbound.4' has no valid route from edge '94236_rev' to stop edge '94664_rev'.
+Warning: No connection between edge '94664_rev' and edge '94266' found.
+Warning: Vehicle 'flow_960_outbound.4' has no valid route from edge '94664_rev' to stop edge '94266'.
+Warning: No connection between edge '94266' and edge '94642' found.
+Warning: Vehicle 'flow_960_outbound.4' has no valid route from edge '94266' to stop edge '94642'.
+Warning: No connection between edge '94457' and edge '94968_rev' found.
+Warning: Vehicle 'flow_960_outbound.4' has no valid route from edge '94457' to stop edge '94968_rev'.
+Warning: No connection between edge '96999' and edge '96344' found.
+Warning: Vehicle 'flow_960_outbound.4' has no valid route from edge '96999' to stop edge '96344'.
+Warning: No connection between edge '96344' and edge '93953_rev' found.
+Warning: Vehicle 'flow_960_outbound.4' has no valid route from edge '96344' to stop edge '93953_rev'.
+Warning: No connection between edge '96965' and edge '97116' found.
+Warning: Vehicle 'flow_960_outbound.4' has no valid route from edge '96965' to stop edge '97116'.
+Warning: No connection between edge '106944_rev' and edge '2468_rev' found.
+Warning: Vehicle 'flow_960_outbound.4' has no valid route from edge '106944_rev' to stop edge '2468_rev'.
+Warning: No connection between edge '3895' and edge '4287_rev' found.
+Warning: Vehicle 'flow_960_outbound.4' has no valid route from edge '3895' to stop edge '4287_rev'.
+Warning: Teleporting vehicle 'flow_68X_outbound.3'; waited too long (wrong lane), lane='97403_0', time=2470.00.
+Warning: Vehicle 'flow_68X_outbound.3' ends teleporting on edge '96300', time=2470.00.
+Warning: Teleporting vehicle 'flow_960_outbound.2'; waited too long (wrong lane), lane='94266_0', time=2519.00.
+Warning: Vehicle 'flow_960_outbound.2' ends teleporting on edge '94642', time=2519.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.2'; waited too long (wrong lane), lane='142955_0', time=2546.00.
+Warning: Vehicle 'flow_68X_outbound.2' ends teleporting on edge '97070', time=2546.00.
+Warning: Teleporting vehicle 'flow_960_outbound.3'; waited too long (wrong lane), lane='94236_rev_0', time=2551.00.
+Warning: Vehicle 'flow_960_outbound.3' ends teleporting on edge '94664_rev', time=2551.00.
+Warning: Teleporting vehicle 'flow_960_inbound.3'; waited too long (wrong lane), lane='5291_0', time=2712.00.
+Warning: Vehicle 'flow_960_inbound.3' ends teleporting on edge '2731', time=2712.00.
+Warning: Teleporting vehicle 'flow_960_outbound.0'; waited too long (wrong lane), lane='96344_0', time=2715.00.
+Warning: Vehicle 'flow_960_outbound.0' ends teleporting on edge '93953_rev', time=2715.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.4'; waited too long (wrong lane), lane='260430_0', time=2733.00.
+Warning: Vehicle 'flow_68X_outbound.4' ends teleporting on edge '97403', time=2733.00.
+Warning: Teleporting vehicle 'flow_68X_inbound.2'; waited too long (wrong lane), lane='106831_rev_0', time=2749.00.
+Warning: Vehicle 'flow_68X_inbound.2' ends teleporting on edge '105817', time=2749.00.
+Warning: Teleporting vehicle 'flow_68X_inbound.0'; waited too long (wrong lane), lane='272309_0', time=2805.00.
+Warning: Vehicle 'flow_68X_inbound.0' ends teleporting on edge '115789', time=2805.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.3'; waited too long (wrong lane), lane='96300_0', time=2814.00.
+Warning: Vehicle 'flow_68X_outbound.3' ends teleporting on edge '142955', time=2814.00.
+Warning: Teleporting vehicle 'flow_960_outbound.4'; waited too long (wrong lane), lane='94236_rev_0', time=2858.00.
+Warning: Vehicle 'flow_960_outbound.4' ends teleporting on edge '94664_rev', time=2858.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.2'; waited too long (wrong lane), lane='97070_0', time=2894.00.
+Warning: Vehicle 'flow_68X_outbound.2' ends teleporting on edge '97407', time=2894.00.
+Warning: Teleporting vehicle 'flow_960_outbound.3'; waited too long (wrong lane), lane='94664_rev_0', time=2903.00.
+Warning: Vehicle 'flow_960_outbound.3' ends teleporting on edge '94266', time=2903.00.
+Warning: Teleporting vehicle 'flow_960_inbound.1'; waited too long (wrong lane), lane='115546_0', time=2963.00.
+Warning: Vehicle 'flow_960_inbound.1' ends teleporting on edge '4833', time=2963.00.
+Warning: No connection between edge '106831_rev' and edge '105817' found.
+Warning: Vehicle 'flow_68X_inbound.5' has no valid route from edge '106831_rev' to stop edge '105817'.
+Warning: No connection between edge '272309' and edge '115789' found.
+Warning: Vehicle 'flow_68X_inbound.5' has no valid route from edge '272309' to stop edge '115789'.
+Warning: No connection between edge '95598' and edge '95600' found.
+Warning: Vehicle 'flow_68X_inbound.5' has no valid route from edge '95598' to stop edge '95600'.
+Warning: No connection between edge '97153_rev' and edge '96253' found.
+Warning: Vehicle 'flow_68X_inbound.5' has no valid route from edge '97153_rev' to stop edge '96253'.
+Warning: No connection between edge '96253' and edge '96273_rev' found.
+Warning: Vehicle 'flow_68X_inbound.5' has no valid route from edge '96253' to stop edge '96273_rev'.
+Warning: No connection between edge '96478' and edge '94947_rev' found.
+Warning: Vehicle 'flow_68X_inbound.5' has no valid route from edge '96478' to stop edge '94947_rev'.
+Warning: No connection between edge '94947_rev' and edge '142955' found.
+Warning: Vehicle 'flow_68X_inbound.5' has no valid route from edge '94947_rev' to stop edge '142955'.
+Warning: No connection between edge '142955' and edge '96285' found.
+Warning: Vehicle 'flow_68X_inbound.5' has no valid route from edge '142955' to stop edge '96285'.
+Warning: No connection between edge '96285' and edge '260430' found.
+Warning: Vehicle 'flow_68X_inbound.5' has no valid route from edge '96285' to stop edge '260430'.
+Warning: No connection between edge '5291' and edge '2731' found.
+Warning: Vehicle 'flow_960_inbound.5' has no valid route from edge '5291' to stop edge '2731'.
+Warning: No connection between edge '115546' and edge '4833' found.
+Warning: Vehicle 'flow_960_inbound.5' has no valid route from edge '115546' to stop edge '4833'.
+Warning: No connection between edge '121514_rev' and edge '95208' found.
+Warning: Vehicle 'flow_960_inbound.5' has no valid route from edge '121514_rev' to stop edge '95208'.
+Warning: No connection between edge '95208' and edge '96999' found.
+Warning: Vehicle 'flow_960_inbound.5' has no valid route from edge '95208' to stop edge '96999'.
+Warning: No connection between edge '94457' and edge '97018' found.
+Warning: Vehicle 'flow_960_inbound.5' has no valid route from edge '94457' to stop edge '97018'.
+Warning: No connection between edge '97018' and edge '94642' found.
+Warning: Vehicle 'flow_960_inbound.5' has no valid route from edge '97018' to stop edge '94642'.
+Warning: No connection between edge '94642' and edge '94266' found.
+Warning: Vehicle 'flow_960_inbound.5' has no valid route from edge '94642' to stop edge '94266'.
+Warning: No connection between edge '94266' and edge '94664_rev' found.
+Warning: Vehicle 'flow_960_inbound.5' has no valid route from edge '94266' to stop edge '94664_rev'.
+Warning: No connection between edge '94664_rev' and edge '266384' found.
+Warning: Vehicle 'flow_960_inbound.5' has no valid route from edge '94664_rev' to stop edge '266384'.
+Warning: No connection between edge '260430' and edge '97403' found.
+Warning: Vehicle 'flow_68X_outbound.5' has no valid route from edge '260430' to stop edge '97403'.
+Warning: No connection between edge '97403' and edge '96300' found.
+Warning: Vehicle 'flow_68X_outbound.5' has no valid route from edge '97403' to stop edge '96300'.
+Warning: No connection between edge '96300' and edge '142955' found.
+Warning: Vehicle 'flow_68X_outbound.5' has no valid route from edge '96300' to stop edge '142955'.
+Warning: No connection between edge '142955' and edge '97070' found.
+Warning: Vehicle 'flow_68X_outbound.5' has no valid route from edge '142955' to stop edge '97070'.
+Warning: No connection between edge '97070' and edge '97407' found.
+Warning: Vehicle 'flow_68X_outbound.5' has no valid route from edge '97070' to stop edge '97407'.
+Warning: No connection between edge '95598' and edge '95592' found.
+Warning: Vehicle 'flow_68X_outbound.5' has no valid route from edge '95598' to stop edge '95592'.
+Warning: No connection between edge '8000_rev' and edge '106606' found.
+Warning: Vehicle 'flow_68X_outbound.5' has no valid route from edge '8000_rev' to stop edge '106606'.
+Warning: No connection between edge '106831_rev' and edge '105734' found.
+Warning: Vehicle 'flow_68X_outbound.5' has no valid route from edge '106831_rev' to stop edge '105734'.
+Warning: No connection between edge '105734' and edge '105735_rev' found.
+Warning: Vehicle 'flow_68X_outbound.5' has no valid route from edge '105734' to stop edge '105735_rev'.
+Warning: No connection between edge '94236_rev' and edge '94664_rev' found.
+Warning: Vehicle 'flow_960_outbound.5' has no valid route from edge '94236_rev' to stop edge '94664_rev'.
+Warning: No connection between edge '94664_rev' and edge '94266' found.
+Warning: Vehicle 'flow_960_outbound.5' has no valid route from edge '94664_rev' to stop edge '94266'.
+Warning: No connection between edge '94266' and edge '94642' found.
+Warning: Vehicle 'flow_960_outbound.5' has no valid route from edge '94266' to stop edge '94642'.
+Warning: No connection between edge '94457' and edge '94968_rev' found.
+Warning: Vehicle 'flow_960_outbound.5' has no valid route from edge '94457' to stop edge '94968_rev'.
+Warning: No connection between edge '96999' and edge '96344' found.
+Warning: Vehicle 'flow_960_outbound.5' has no valid route from edge '96999' to stop edge '96344'.
+Warning: No connection between edge '96344' and edge '93953_rev' found.
+Warning: Vehicle 'flow_960_outbound.5' has no valid route from edge '96344' to stop edge '93953_rev'.
+Warning: No connection between edge '96965' and edge '97116' found.
+Warning: Vehicle 'flow_960_outbound.5' has no valid route from edge '96965' to stop edge '97116'.
+Warning: No connection between edge '106944_rev' and edge '2468_rev' found.
+Warning: Vehicle 'flow_960_outbound.5' has no valid route from edge '106944_rev' to stop edge '2468_rev'.
+Warning: No connection between edge '3895' and edge '4287_rev' found.
+Warning: Vehicle 'flow_960_outbound.5' has no valid route from edge '3895' to stop edge '4287_rev'.
+Warning: Teleporting vehicle 'flow_68X_outbound.4'; waited too long (wrong lane), lane='97403_0', time=3071.00.
+Warning: Vehicle 'flow_68X_outbound.4' ends teleporting on edge '96300', time=3071.00.
+Warning: Teleporting vehicle 'flow_960_outbound.2'; waited too long (wrong lane), lane='94457_0', time=3105.00.
+Warning: Teleporting vehicle 'flow_960_outbound.1'; waited too long (wrong lane), lane='96999_0', time=3105.00.
+Warning: Vehicle 'flow_960_outbound.1' ends teleporting on edge '96344', time=3105.00.
+Warning: Vehicle 'flow_960_outbound.2' ends teleporting on edge '94968_rev', time=3105.00.
+Warning: Teleporting vehicle 'flow_960_outbound.0'; waited too long (wrong lane), lane='96965_0', time=3112.00.
+Warning: Vehicle 'flow_960_outbound.0' ends teleporting on edge '97116', time=3112.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.3'; waited too long (wrong lane), lane='142955_0', time=3138.00.
+Warning: Vehicle 'flow_68X_outbound.3' ends teleporting on edge '97070', time=3138.00.
+Warning: Teleporting vehicle 'flow_68X_inbound.0'; waited too long (jam), lane=':5928_2_0', time=3162.00.
+Warning: Vehicle 'flow_68X_inbound.0' ends teleporting on edge '7696_rev', time=3162.00.
+Warning: Teleporting vehicle 'flow_68X_inbound.3'; waited too long (wrong lane), lane='106831_rev_0', time=3199.00.
+Warning: Vehicle 'flow_68X_inbound.3' ends teleporting on edge '105817', time=3199.00.
+Warning: Teleporting vehicle 'flow_960_outbound.4'; waited too long (wrong lane), lane='94664_rev_0', time=3210.00.
+Warning: Vehicle 'flow_960_outbound.4' ends teleporting on edge '94266', time=3210.00.
+Warning: Teleporting vehicle 'flow_960_outbound.3'; waited too long (wrong lane), lane='94266_0', time=3237.00.
+Warning: Vehicle 'flow_960_outbound.3' ends teleporting on edge '94642', time=3237.00.
+Warning: Teleporting vehicle 'flow_960_inbound.2'; waited too long (wrong lane), lane='115546_0', time=3323.00.
+Warning: Vehicle 'flow_960_inbound.2' ends teleporting on edge '4833', time=3323.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.5'; waited too long (wrong lane), lane='260430_0', time=3333.00.
+Warning: Vehicle 'flow_68X_outbound.5' ends teleporting on edge '97403', time=3333.00.
+Warning: Teleporting vehicle 'flow_960_inbound.4'; waited too long (wrong lane), lane='5291_0', time=3344.00.
+Warning: Vehicle 'flow_960_inbound.4' ends teleporting on edge '2731', time=3344.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.0'; waited too long (wrong lane), lane='95598_0', time=3371.00.
+Warning: Vehicle 'flow_68X_outbound.0' ends teleporting on edge '95592', time=3371.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.4'; waited too long (wrong lane), lane='96300_0', time=3416.00.
+Warning: Vehicle 'flow_68X_outbound.4' ends teleporting on edge '142955', time=3416.00.
+Warning: Teleporting vehicle 'flow_960_outbound.1'; waited too long (wrong lane), lane='96344_0', time=3432.00.
+Warning: Vehicle 'flow_960_outbound.1' ends teleporting on edge '93953_rev', time=3432.00.
+Warning: Teleporting vehicle 'flow_68X_inbound.1'; waited too long (wrong lane), lane='272309_0', time=3437.00.
+Warning: Vehicle 'flow_68X_inbound.1' ends teleporting on edge '115789', time=3437.00.
+Warning: Teleporting vehicle 'flow_68X_outbound.3'; waited too long (wrong lane), lane='97070_0', time=3481.00.
+Warning: Vehicle 'flow_68X_outbound.3' ends teleporting on edge '97407', time=3481.00.
+Warning: Teleporting vehicle 'flow_960_outbound.4'; waited too long (wrong lane), lane='94266_0', time=3542.00.
+Warning: Vehicle 'flow_960_outbound.4' ends teleporting on edge '94642', time=3542.00.
+Warning: Teleporting vehicle 'flow_960_outbound.5'; waited too long (wrong lane), lane='94236_rev_0', time=3562.00.
+Warning: Vehicle 'flow_960_outbound.5' ends teleporting on edge '94664_rev', time=3562.00.
+Simulation ended at time: 3600.00
+Reason: The final simulation step has been reached.
+Performance: 
+ Duration: 13.74s
+ Real time factor: 262.009
+ UPS: 3668.122271
+Vehicles: 
+ Inserted: 24
+ Running: 24
+ Waiting: 0
+ Teleports: 67 (Jam: 3, Yield: 1, Wrong Lane: 63)
+Statistics (avg of 0):
+ RouteLength: 0.00
+ Speed: 0.00
+ Duration: 0.00
+ WaitingTime: 0.00
+ TimeLoss: 0.00
+ DepartDelay: 0.00
+
+DijkstraRouter answered 672 queries and explored 4361.21 edges on average.
+DijkstraRouter spent 3.21s answering queries (4.77ms on average).

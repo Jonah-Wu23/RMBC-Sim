@@ -4,11 +4,12 @@ import os
 import numpy as np
 from scipy.stats import ks_2samp
 from datetime import datetime
+import matplotlib.pyplot as plt
 
-def compare_week1():
+def compare_week2():
     # File Paths
     real_link_file = r"data/processed/enriched_link_stats.csv"
-    sim_stopinfo = r"sumo/output/stopinfo.xml"
+    sim_stopinfo = r"sumo/output/stopinfo_irn.xml"  # UPDATED for Week 2
     route_dist_file = r"data/processed/kmb_route_stop_dist.csv"
     
     if not os.path.exists(sim_stopinfo):
@@ -25,7 +26,7 @@ def compare_week1():
         print("Warning: No real data for 68X inbound.")
     
     # 2. Load Sim Data
-    print("Loading simulation data...")
+    print(f"Loading simulation data from {sim_stopinfo}...")
     tree = ET.parse(sim_stopinfo)
     root = tree.getroot()
     
@@ -58,6 +59,10 @@ def compare_week1():
             })
     df_sim = pd.DataFrame(sim_links)
     
+    if df_sim.empty:
+        print("Error: No link data extracted from simulation.")
+        return
+
     # 3. Join with Distance to get Speed
     print("Loading distances...")
     df_dist = pd.read_csv(route_dist_file)
@@ -71,24 +76,11 @@ def compare_week1():
             dist_map[(last_stop, this_stop)] = row['link_dist_m']
         last_stop = this_stop
         
-    def get_speed(row):
-        dist = dist_map.get((row['from_stop'], row['to_stop'])) # Note: real data uses stop_id, sim uses busStop ID
-        if dist and row['travel_time_s'] > 0:
-            return (dist / 1000.0) / (row['travel_time_s'] / 3600.0)
-        return None
-
-    # We need to map real stop_id to sim busStop ID if they differ, but here they should be identical.
-    # Let's check a few real ones
-    
-    # Enrich sim with speed
-    # In sim scripts, we might HAVE normalized stop IDs.
-    # Let's assume they match for now.
-    
-    df_sim['speed_kmh'] = df_sim.apply(lambda r: (dist_map.get((r['from_stop'], r['to_stop']), 0) / 1000.0) / (r['travel_time_s'] / 3600.0) if dist_map.get((r['from_stop'], r['to_stop']), 0) > 0 else None, axis=1)
+    df_sim['speed_kmh'] = df_sim.apply(lambda r: (dist_map.get((r['from_stop'], r['to_stop']), 0) / 1000.0) / (r['travel_time_s'] / 3600.0) if dist_map.get((r['from_stop'], r['to_stop']), 0) > 0 and r['travel_time_s'] > 0 else None, axis=1)
     df_sim = df_sim.dropna(subset=['speed_kmh'])
 
     # 4. Compare Distributions (L2)
-    print("\n--- L2 Link Speed Comparison (68X Inbound) ---")
+    print("\n--- L2 Link Speed Comparison (68X Inbound) - Week 2 (IRN) ---")
     
     # Overall distribution
     real_speeds = df_real_68x['speed_kmh'].values
@@ -114,7 +106,6 @@ def compare_week1():
     print("\n--- L1 Comparison: Link Travel Time & Cumulative Arrival ---")
     
     # 5.1 Real Link Stats Aggregation
-    # In enriched_link_stats.csv, we have from_seq, to_seq.
     real_link_agg = df_real_68x.groupby(['from_seq', 'to_seq'])['travel_time_s'].mean().reset_index()
     real_link_agg.rename(columns={'travel_time_s': 'real_avg_time_s'}, inplace=True)
     
@@ -123,10 +114,8 @@ def compare_week1():
     sim_link_agg.rename(columns={'travel_time_s': 'sim_avg_time_s'}, inplace=True)
     
     # Merge for Comparison Table
-    # First, let's get stop-to-seq mapping from df_dist
     df_68x_dist = df_dist[(df_dist['route'] == '68X') & (df_dist['bound'] == 'inbound')].sort_values('seq')
     seq_map = df_68x_dist.set_index('stop_id')['seq'].to_dict()
-    inv_seq_map = df_68x_dist.set_index('seq')['stop_id'].to_dict()
     
     # Enrich sim_link_agg with sequences
     sim_link_agg['from_seq'] = sim_link_agg['from_stop'].map(seq_map)
@@ -142,16 +131,6 @@ def compare_week1():
     print(l1_table[['from_seq', 'to_seq', 'real_avg_time_s', 'sim_avg_time_s', 'diff_percent']].sort_values('diff_percent', ascending=False).head(10))
 
     # 5.3 Cumulative Trajectory Calculation
-    # For a fair comparison, we align first stop to 0.
-    
-    # Real Cumulative
-    real_route_agg = df_68x_dist.copy()
-    # In df_dist, link_dist_m is distance from PREV stop. cumulative_dist_m is already there (from row 1)
-    
-    # Create cumulative arrival times
-    # real_arrival_0 = 0
-    # real_arrival_i = sum(real_link_time_j for j from 1 to i)
-    
     real_link_avg = real_link_agg.sort_values('from_seq')
     real_cum_times = [0.0]
     total_t = 0
@@ -159,17 +138,11 @@ def compare_week1():
         total_t += row['real_avg_time_s']
         real_cum_times.append(total_t)
     
-    # Sim Cumulative
-    sim_link_avg = sim_link_agg.sort_values('from_seq')
-    sim_cum_times = [0.0]
-    total_t_sim = 0
-    # We might have missing links in sim, let's align by sequence
-    all_seqs = sorted(df_68x_dist['seq'].tolist())
-    
     # Re-calculate to ensure alignment
     real_times_map = {row['to_seq']: row['real_avg_time_s'] for _, row in real_link_agg.iterrows()}
     sim_times_map = {row['to_seq']: row['sim_avg_time_s'] for _, row in sim_link_agg.iterrows()}
     
+    all_seqs = sorted(df_68x_dist['seq'].tolist())
     real_cum = [0.0]
     sim_cum = [0.0]
     dists = [0.0]
@@ -185,17 +158,16 @@ def compare_week1():
         sim_cum.append(sim_cum[-1] + sim_times_map.get(seq, 0))
 
     # 6. Plotting
-    import matplotlib.pyplot as plt
     plt.figure(figsize=(10, 6))
     plt.plot(dists, real_cum, 'b-o', label='Real (Average)')
-    plt.plot(dists, sim_cum, 'r-s', label='Sim (Baseline)')
+    plt.plot(dists, sim_cum, 'g-s', label='Sim (Week 2 IRN)')
     plt.xlabel('Distance (m)')
     plt.ylabel('Cumulative Time (s)')
-    plt.title('Bus Route Trajectory (Distance-Time) - 68X Inbound')
+    plt.title('Bus Route Trajectory (Distance-Time) - 68X Inbound (Week 2)')
     plt.legend()
     plt.grid(True)
     
-    plot_path = "sumo/output/l1_trajectory_comparison.png"
+    plot_path = "sumo/output/week2_trajectory_comparison.png"
     plt.savefig(plot_path)
     print(f"\nTrajectory plot saved to: {plot_path}")
     
@@ -208,4 +180,4 @@ def compare_week1():
     print(f"Error: {total_sim - total_real:.1f}s ({(total_sim - total_real)/total_real*100:.1f}%)")
 
 if __name__ == "__main__":
-    compare_week1()
+    compare_week2()

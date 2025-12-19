@@ -1,0 +1,43 @@
+<configuration>
+    <input>
+        <node-files value="../../data/processed/hk_irn.nod.xml"/>
+        <edge-files value="../../data/processed/hk_irn.edg.xml"/>
+        <connection-files value="../../data/processed/hk_irn.con.xml"/>
+    </input>
+    
+    <output>
+        <output-file value="../net/hk_irn.net.xml"/>
+    </output>
+    
+    <processing>
+        <!-- Best Practices for Permissive Connection Loading -->
+        <no-turnarounds value="true"/>
+        <geometry.remove value="true"/>
+        <junctions.join value="true"/>
+        <junctions.join-dist value="5.0"/> <!-- conservative join -->
+        <guess-ramps value="true"/>
+        <crossings.guess value="true"/>
+        
+        <check-lane-foes.roundabout value="false"/>
+        
+        <!-- Important: Ignore errors for connections that are geometrically impossible 
+             (since we generated all permutations) -->
+        <ignore-errors.connections value="true"/>
+        
+        <offset.disable-normalization value="true"/>
+        <proj.plain-geo value="true"/>
+
+        <!-- TLS Guessing -->
+        <tls.guess value="true"/>
+        <tls.join value="true"/>
+    </processing>
+    
+    <building_defaults>
+        <default.speed value="13.89"/> 
+    </building_defaults>
+
+    <report>
+        <verbose value="true"/>
+        <log value="netconvert.log"/>
+    </report>
+</configuration>

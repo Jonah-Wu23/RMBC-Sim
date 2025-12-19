@@ -1,0 +1,108 @@
+<additional>
+    <busStop id="06566A7FE3C6466A" name="CHEUNG LAI STREET CHEUNG SHA WAN (SS245)" lane="115789_1" startPos="0.00" endPos="20.00" friendlyPos="true"/>
+    <busStop id="09A156B1A802D093" name="LAI CHI KOK STATION (SS467)" lane="8685_0" startPos="88.09" endPos="108.09" friendlyPos="true"/>
+    <busStop id="0BFC5F7FC4A2D431" name="HUNG SHUI KIU STATION (YL350)" lane="97070_0" startPos="268.48" endPos="280.91" friendlyPos="true"/>
+    <busStop id="0E2B8E1D544C6889" name="YUEN LONG POLICE STATION (YL256)" lane="95600_1" startPos="37.74" endPos="57.74" friendlyPos="true"/>
+    <busStop id="0FDE3A87457539BC" name="MONGKOK POLICE STATION (MK505)" lane="106031_1" startPos="116.74" endPos="136.74" friendlyPos="true"/>
+    <busStop id="11ED493F674F4888" name="BUTE STREET, PIONEER CENTRE (MK179)" lane="106985_rev_0" startPos="55.22" endPos="75.22" friendlyPos="true"/>
+    <busStop id="13E0A0449C73F4DE" name="QUEEN STREET (CW785)" lane="4833_0" startPos="108.41" endPos="128.41" friendlyPos="true"/>
+    <busStop id="14157BA5C06B0B6B" name="YOHO MIX (YL243)" lane="95989_1" startPos="47.89" endPos="67.89" friendlyPos="true"/>
+    <busStop id="145515B1D2C60CAF" name="HOI FU COURT, PARK AVENUE (MK120)" lane="105734_0" startPos="43.33" endPos="63.33" friendlyPos="true"/>
+    <busStop id="147D513A708AA741" name="FUI SHA WAI (YL353)" lane="96273_rev_0" startPos="473.42" endPos="493.42" friendlyPos="true"/>
+    <busStop id="18C138014DF5B0C8" name="MAPLE STREET SHAM SHUI PO (SS496)" lane="106268_0" startPos="25.33" endPos="36.06" friendlyPos="true"/>
+    <busStop id="19B569A51034271F" name="SHEK PAI STATION (TM584)" lane="97018_0" startPos="244.29" endPos="264.29" friendlyPos="true"/>
+    <busStop id="1AD9C759A42F9003" name="CHINA LIGHT BUILDING (TM470)" lane="94457_0" startPos="81.43" endPos="101.43" friendlyPos="true"/>
+    <busStop id="1D8A902219897402" name="WING KUT STREET (CW767)" lane="1305_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="1DEFCF90AB170FD7" name="TUNG LOK STREET YUEN LONG (YL371)" lane="95598_0" startPos="93.26" endPos="113.26" friendlyPos="true"/>
+    <busStop id="1F6BFDF34BABCE6A" name="TIN YUE HOUSE TIN KING ESTATE (TM540)" lane="94642_1" startPos="122.28" endPos="142.28" friendlyPos="true"/>
+    <busStop id="25BC743BF6EB726E" name="TUEN MUN TOWN PLAZA (TM122)" lane="94045_rev_0" startPos="74.19" endPos="94.19" friendlyPos="true"/>
+    <busStop id="25D811895B82ABCA" name="MACAU FERRY (CW111)" lane="2468_rev_0" startPos="0.00" endPos="10.67" friendlyPos="true"/>
+    <busStop id="274BF3A877FB8E6C" name="KIN SANG BUS TERMINUS (TM931)" lane="266384_0" startPos="8.26" endPos="23.52" friendlyPos="true"/>
+    <busStop id="2B3A6C000BB085CD" name="TUEN MUN ROAD BBI (B3) (TM105)" lane="95356_0" startPos="246.31" endPos="266.31" friendlyPos="true"/>
+    <busStop id="30B08A7B2B2B623F" name="SAI YEUNG CHOI STREET SOUTH, MONG KOK STATION" lane="107450_0" startPos="9.71" endPos="29.71" friendlyPos="true"/>
+    <busStop id="315BE0CA231DCD4F" name="PO TIN BBI - PO TIN (TM190)" lane="94664_rev_0" startPos="269.37" endPos="289.37" friendlyPos="true"/>
+    <busStop id="376C4835851621D4" name="TUEN MUN ROAD BBI (A15) (TM750)" lane="97116_0" startPos="2953.88" endPos="2973.88" friendlyPos="true"/>
+    <busStop id="3ECEF3B735084236" name="TAI LAM TUNNEL BBI (A5) (YL791)" lane="261287_rev_1" startPos="140.89" endPos="160.89" friendlyPos="true"/>
+    <busStop id="447C1D79A10C83E2" name="TAI LAM TUNNEL BBI (A2) (YL794)" lane="261287_rev_1" startPos="54.19" endPos="74.19" friendlyPos="true"/>
+    <busStop id="47A2AA98F8E20AE2" name="LUARD ROAD (WC674)" lane="5291_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="48FBCEF0B05599F8" name="HI LEE PATH YUEN LONG (YL367)" lane="95425_1" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="4AFCFC726ADBD5F7" name="YEE KOK COURT (SS221)" lane="106580_0" startPos="236.71" endPos="256.71" friendlyPos="true"/>
+    <busStop id="507D90B4B976DBD6" name="TIN LOK HOUSE TIN KING ESTATE (TM536)" lane="94266_1" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="50E78EB09845863E" name="MEI FOO BBI (SS463)" lane="8663_rev_0" startPos="0.00" endPos="13.31" friendlyPos="true"/>
+    <busStop id="542CC0EC83BAEA01" name="SAN WAI COURT (TM380)" lane="94642_1" startPos="66.65" endPos="86.65" friendlyPos="true"/>
+    <busStop id="594A765BE3A43C73" name="PO TIN BBI - GOODRICH GARDEN (TM580)" lane="94664_rev_0" startPos="114.66" endPos="134.66" friendlyPos="true"/>
+    <busStop id="5F616585205DDDF9" name="TAI TAO TSUEN (YL352)" lane="97407_0" startPos="73.07" endPos="93.07" friendlyPos="true"/>
+    <busStop id="60A4F4A41CD61FAC" name="SAN HEI TSUEN (YL265)" lane="96273_rev_0" startPos="751.20" endPos="771.20" friendlyPos="true"/>
+    <busStop id="62742CFBA2BE9854" name="KWAI CHUNG INTERCHANGE (KW100)" lane="9934_2" startPos="713.84" endPos="733.84" friendlyPos="true"/>
+    <busStop id="629D4E7DD9EF1AC6" name="TAI HING SPORTS CENTRE (TM554)" lane="96999_0" startPos="31.61" endPos="51.61" friendlyPos="true"/>
+    <busStop id="6A435795576D92E8" name="VILLA BY THE PARK (YL356)" lane="95649_0" startPos="338.87" endPos="358.87" friendlyPos="true"/>
+    <busStop id="6AE148CA74FC4D53" name="TAI HING STREET (TM572)" lane="94457_0" startPos="131.42" endPos="151.42" friendlyPos="true"/>
+    <busStop id="6D66CBA494DECB08" name="HUNG SHUI KIU (HUNG FUK ESTATE) BUS TERMINUS" lane="260430_0" startPos="37.45" endPos="57.45" friendlyPos="true"/>
+    <busStop id="6F9CEABEE36E8682" name="PACIFIC PLACE (A3) (CW741)" lane="2731_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="709C8604AFB90F27" name="HARBOUR BUILDING (CW135)" lane="513_0" startPos="51.19" endPos="61.20" friendlyPos="true"/>
+    <busStop id="70FEB409760C77EE" name="YUEN LONG PARK (YL261)" lane="95649_0" startPos="305.68" endPos="325.68" friendlyPos="true"/>
+    <busStop id="723EF8D7809D3ADB" name="YOHO MALL II (YL392)" lane="96214_rev_0" startPos="6.67" endPos="16.68" friendlyPos="true"/>
+    <busStop id="72F743E4D464E498" name="WESTERN HARBOUR TUNNEL BBI (YT313)" lane="106944_rev_0" startPos="618.20" endPos="630.39" friendlyPos="true"/>
+    <busStop id="74C51A8A3D783F40" name="TAI TONG ROAD YUEN LONG (YL253)" lane="95598_0" startPos="146.31" endPos="166.31" friendlyPos="true"/>
+    <busStop id="7ADC6D521E6BECE6" name="MONGKOK MARKET COMPLEX, YAU TSIM MONG DHC (MK626)" lane="106949_rev_0" startPos="7.81" endPos="17.82" friendlyPos="true"/>
+    <busStop id="7DD772B7D55C54B2" name="MEI FOO BBI (SS321)" lane="8044_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="8121695666A4D9CE" name="TUEN YAN STREET TUEN MUN (TM718)" lane="93953_rev_1" startPos="27.48" endPos="47.48" friendlyPos="true"/>
+    <busStop id="812E72C257C94B73" name="PEI HO STREET SHAM SHUI PO (SS491)" lane="107083_0" startPos="139.92" endPos="159.92" friendlyPos="true"/>
+    <busStop id="8379C4B1265C27F7" name="JARDINE HOUSE (CW112)" lane="2480_0" startPos="25.94" endPos="45.94" friendlyPos="true"/>
+    <busStop id="83B717529F9794BC" name="LI YUEN STREET EAST (CW763)" lane="165041_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="840532B7C95DF870" name="SIU PONG COURT (TM382)" lane="94266_1" startPos="14.45" endPos="34.45" friendlyPos="true"/>
+    <busStop id="87BCEC3D8C6951B2" name="HUNG SHUI KIU TIN SAM ROAD (YL120)" lane="96285_1" startPos="38.43" endPos="58.43" friendlyPos="true"/>
+    <busStop id="8F6C8CEB9F17D97D" name="FUI SHA WAI (YL266)" lane="96273_rev_0" startPos="488.61" endPos="508.61" friendlyPos="true"/>
+    <busStop id="8FA8E142E834CB7C" name="HUNG SHUI KIU STATION (YL270)" lane="96478_0" startPos="27.50" endPos="47.50" friendlyPos="true"/>
+    <busStop id="92A8D40E66E76F6B" name="TAI HING SPORTS CENTRE (TM476)" lane="96999_0" startPos="109.62" endPos="129.62" friendlyPos="true"/>
+    <busStop id="95731C2B3563CF5E" name="YEN CHOW STREET SHAM SHUI PO (SS213)" lane="107083_0" startPos="266.01" endPos="286.01" friendlyPos="true"/>
+    <busStop id="A010FE2C473103A8" name="SHUI PIN TSUEN (YL259)" lane="95649_0" startPos="45.35" endPos="65.35" friendlyPos="true"/>
+    <busStop id="A1A1B10F5CE291AC" name="LONG BIN (YL263)" lane="97153_rev_0" startPos="309.18" endPos="329.18" friendlyPos="true"/>
+    <busStop id="A2C36DF7152EE93F" name="PING SHAN (YL264)" lane="96253_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="A63B90588F747496" name="BANK OF CHINA TOWER (CW745)" lane="4939_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="A7F35DC09E1A1528" name="BEECH STREET (MK140)" lane="106831_rev_1" startPos="170.47" endPos="190.47" friendlyPos="true"/>
+    <busStop id="A81B13297DB1C481" name="MAN WA LANE (CW769)" lane="115546_0" startPos="0.00" endPos="20.00" friendlyPos="true"/>
+    <busStop id="A8482B15AD6E89A3" name="PING SHAN (YL355)" lane="97153_rev_0" startPos="56.18" endPos="76.18" friendlyPos="true"/>
+    <busStop id="AB0F79ED382081D0" name="YOHO MALL I (YL404)" lane="275813_rev_0" startPos="0.00" endPos="20.00" friendlyPos="true"/>
+    <busStop id="ACB5FEA2BF9FC5AD" name="TUEN MUN ROAD BBI (A4) (TM755)" lane="97116_0" startPos="3025.54" endPos="3045.54" friendlyPos="true"/>
+    <busStop id="AD1B202B678A3B56" name="ARSENAL STREET (WC210)" lane="4202_rev_1" startPos="56.17" endPos="76.17" friendlyPos="true"/>
+    <busStop id="AD97EA183A25102C" name="WESTERN HARBOUR TUNNEL BBI (YT603)" lane="261296_0" startPos="40.46" endPos="60.46" friendlyPos="true"/>
+    <busStop id="ADC51A7EEEE43D6F" name="EXHIBITION CENTRE STATION BUS TERMINUS (WC941)" lane="4287_rev_0" startPos="98.31" endPos="118.31" friendlyPos="true"/>
+    <busStop id="B09E18636F184247" name="TAI TAO TSUEN (YL267)" lane="96273_rev_0" startPos="50.30" endPos="70.30" friendlyPos="true"/>
+    <busStop id="B113E1371D5AC497" name="UPTOWN (YL268)" lane="96522_1" startPos="104.01" endPos="114.11" friendlyPos="true"/>
+    <busStop id="B30799FB3732222B" name="FLEMING ROAD (WC214)" lane="3895_0" startPos="43.96" endPos="63.96" friendlyPos="true"/>
+    <busStop id="B3B160F8F8017035" name="GREENLAND GARDEN (TM570)" lane="94968_rev_0" startPos="61.59" endPos="81.59" friendlyPos="true"/>
+    <busStop id="B76B249D3D253008" name="FOO KWAI STREET (MK200)" lane="105653_rev_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="B7C0A83790F94D99" name="HING WAH STREET CHEUNG SHA WAN (SS231)" lane="272309_0" startPos="237.99" endPos="249.76" friendlyPos="true"/>
+    <busStop id="B88640E0CA83F12C" name="TONG FONG TSUEN STATION (YL354)" lane="96273_rev_0" startPos="659.09" endPos="679.09" friendlyPos="true"/>
+    <busStop id="BA765A2BCCE21F5C" name="TONG MI ROAD MONG KOK (MK304)" lane="106073_0" startPos="74.21" endPos="94.21" friendlyPos="true"/>
+    <busStop id="BB4F24A4C6A9B222" name="TIN SUM (YL625)" lane="96300_0" startPos="97.61" endPos="117.61" friendlyPos="true"/>
+    <busStop id="BC301D7E7F063331" name="SAN HUI MARKET (TM132)" lane="121514_rev_1" startPos="257.93" endPos="277.93" friendlyPos="true"/>
+    <busStop id="BD34A7B702373B12" name="CHEUNG WAH STREET (SS473)" lane="8000_rev_1" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="BE1A19A3705F5B70" name="WONG CHUK STREET SHAM SHUI PO (SS202)" lane="105335_rev_0" startPos="41.68" endPos="61.68" friendlyPos="true"/>
+    <busStop id="BE510511B0A7344E" name="TAI NAN STREET (SS340)" lane="105786_rev_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="C06334CA2AF7814B" name="KIU KIANG STREET SHAM SHUI PO (SS482)" lane="106580_0" startPos="91.42" endPos="111.42" friendlyPos="true"/>
+    <busStop id="C192BEF2264E0CC6" name="SHEK PAI STATION (TM188)" lane="97018_0" startPos="256.37" endPos="276.37" friendlyPos="true"/>
+    <busStop id="C2787E27F82716BF" name="WALDORF GARDEN (TM721)" lane="96965_0" startPos="385.89" endPos="405.89" friendlyPos="true"/>
+    <busStop id="C3D2F84C0F0FF415" name="FLEMING ROAD (WC670)" lane="5291_0" startPos="248.27" endPos="268.27" friendlyPos="true"/>
+    <busStop id="C804CCACB2781EEE" name="LIPPO CENTRE (E1) (CW160)" lane="2448_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="CBE54DB551C24A02" name="HUNG KIU (TM133)" lane="95208_0" startPos="5.00" endPos="25.00" friendlyPos="true"/>
+    <busStop id="D242B538BA760551" name="MONG KOK ROAD (MK330)" lane="105817_1" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="D86A74227012EAD3" name="BAUHINIA GARDEN (YL272)" lane="94947_rev_0" startPos="214.83" endPos="234.83" friendlyPos="true"/>
+    <busStop id="DD56DC2336C878C1" name="HUNG KIU (TM714)" lane="96344_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="DD9DF46F3BA040EE" name="CHEUNG SHA WAN PLAYGROUND (SS225)" lane="107087_0" startPos="283.00" endPos="303.00" friendlyPos="true"/>
+    <busStop id="DFE346B2C7332BC0" name="TUEN MUN ROAD BBI (B6) (TM102)" lane="95356_0" startPos="314.91" endPos="334.91" friendlyPos="true"/>
+    <busStop id="E02E10C9135624F9" name="MING KEI COLLEGE (MK632)" lane="106831_rev_0" startPos="391.25" endPos="411.25" friendlyPos="true"/>
+    <busStop id="E30C2815DA280036" name="UN CHAU ESTATE (SS477)" lane="106606_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="E481F7170B1F6FC3" name="TAI LAM TUNNEL BBI (B1) (YL236)" lane="93499_1" startPos="51.91" endPos="71.91" friendlyPos="true"/>
+    <busStop id="E55FA660A59AB64A" name="TAI LAM TUNNEL BBI (B5) (YL232)" lane="93721_rev_0" startPos="63.27" endPos="83.27" friendlyPos="true"/>
+    <busStop id="EB64718829DFC071" name="TOI SHAN PRIMARY SCHOOL (TM472)" lane="94968_rev_0" startPos="34.11" endPos="54.11" friendlyPos="true"/>
+    <busStop id="EC19750840FFEDDC" name="MONG KOK (PARK AVENUE) BUS TERMINUS (MK912)" lane="105735_rev_0" startPos="53.20" endPos="73.20" friendlyPos="true"/>
+    <busStop id="ECE3F3BE270C27E2" name="BLOSSOM GARDEN (TM478)" lane="94236_rev_0" startPos="103.01" endPos="123.01" friendlyPos="true"/>
+    <busStop id="EF43A73D4C0CC508" name="HUNG SHUI KIU TIN SAM ROAD (YL590)" lane="97403_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="F36F422FDC6B9D3F" name="KWAI CHUNG INTERCHANGE (KW465)" lane="8732_0" startPos="0.00" endPos="16.41" friendlyPos="true"/>
+    <busStop id="F61DB78CF72DB387" name="RURAL COMMITTEE (YL626)" lane="142955_0" startPos="0.00" endPos="10.00" friendlyPos="true"/>
+    <busStop id="F63C4B8B958E9830" name="YAU SAN STREET YUEN LONG (YL247)" lane="95503_rev_0" startPos="53.21" endPos="73.21" friendlyPos="true"/>
+    <busStop id="FEE97828AB584E76" name="KUK TING STREET YUEN LONG (YL377)" lane="95592_0" startPos="80.68" endPos="100.68" friendlyPos="true"/>
+    <busStop id="FFF1B4F48E111EAD" name="RURAL COMMITTEE (YL100)" lane="142955_0" startPos="0.00" endPos="14.37" friendlyPos="true"/>
+</additional>

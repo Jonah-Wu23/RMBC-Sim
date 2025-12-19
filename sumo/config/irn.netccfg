@@ -1,0 +1,28 @@
+<configuration>
+    <input>
+        <shapefile-prefix value="../../data/processed/hk_irn_shp/hk_irn_edges"/>
+        <shapefile.street-id value="ROUTE_ID"/>
+        <shapefile.speed value="speed_ms"/>
+        <shapefile.laneNumber value="lanes"/>
+        <shapefile.name value="STREET_ENA"/>
+    </input>
+    
+    <output>
+        <output-file value="../net/hk_irn.net.xml"/>
+    </output>
+    
+    <processing>
+        <junctions.join value="true"/>
+        <junctions.corner-detail value="5"/>
+        <tls.guess value="true"/>
+        <tls.join value="true"/>
+        <ramps.guess value="true"/>
+        <roundabouts.guess value="true"/>
+        <offset.disable-normalization value="true"/>
+    </processing>
+    
+    <report>
+        <verbose value="true"/>
+        <log value="netconvert.log"/>
+    </report>
+</configuration>

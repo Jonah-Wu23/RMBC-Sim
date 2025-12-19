@@ -1,0 +1,630 @@
+Parsing nodes from 'sumo/config/../../data/processed/hk_irn.nod.xml' ... done.
+Parsing edges from 'sumo/config/../../data/processed/hk_irn.edg.xml' ... 
+Warning: Ignoring self-looped edge '4436' at junction '875'
+Warning: Ignoring self-looped edge '4436_rev' at junction '875'
+Warning: Ignoring self-looped edge '60906' at junction '1057'
+Warning: Ignoring self-looped edge '60906_rev' at junction '1057'
+Warning: Ignoring self-looped edge '1361' at junction '1914'
+done.
+Parsing connections from 'sumo/config/../../data/processed/hk_irn.con.xml' ... 
+Warning: The connection-source edge '62679' is not known.
+Warning: The connection-source edge '62679' is not known.
+Warning: The connection-source edge '62679_rev' is not known.
+Warning: The connection-source edge '62679_rev' is not known.
+Warning: The connection-destination edge '62679' is not known.
+Warning: The connection-destination edge '62679_rev' is not known.
+Warning: The connection-destination edge '62679' is not known.
+Warning: The connection-destination edge '62679_rev' is not known.
+Warning: The connection-source edge '104937' is not known.
+Warning: The connection-source edge '104937' is not known.
+Warning: The connection-source edge '104937_rev' is not known.
+Warning: The connection-source edge '104937_rev' is not known.
+Warning: The connection-source edge '58258' is not known.
+Warning: The connection-source edge '58258' is not known.
+Warning: The connection-source edge '58258_rev' is not known.
+Warning: The connection-source edge '58258_rev' is not known.
+Warning: The connection-source edge '7776' is not known.
+Warning: The connection-source edge '7776_rev' is not known.
+Warning: The connection-destination edge '103422' is not known.
+Warning: The connection-destination edge '103422_rev' is not known.
+Warning: The connection-source edge '95083' is not known.
+Warning: The connection-source edge '95083' is not known.
+Warning: The connection-source edge '95083_rev' is not known.
+Warning: The connection-source edge '95083_rev' is not known.
+Warning: The connection-destination edge '2744' is not known.
+Warning: The connection-destination edge '2744_rev' is not known.
+Warning: The connection-source edge '3050' is not known.
+Warning: The connection-source edge '3050' is not known.
+Warning: The connection-source edge '3050_rev' is not known.
+Warning: The connection-source edge '3050_rev' is not known.
+Warning: The connection-source edge '104204' is not known.
+Warning: The connection-source edge '104204' is not known.
+Warning: The connection-source edge '104204_rev' is not known.
+Warning: The connection-source edge '104204_rev' is not known.
+Warning: The connection-source edge '9801' is not known.
+Warning: The connection-source edge '9801' is not known.
+Warning: The connection-source edge '9801_rev' is not known.
+Warning: The connection-source edge '9801_rev' is not known.
+Warning: The connection-source edge '59648' is not known.
+Warning: The connection-source edge '59648' is not known.
+Warning: The connection-source edge '59648_rev' is not known.
+Warning: The connection-source edge '59648_rev' is not known.
+Warning: The connection-source edge '59339' is not known.
+Warning: The connection-source edge '59339' is not known.
+Warning: The connection-source edge '59339_rev' is not known.
+Warning: The connection-source edge '59339_rev' is not known.
+Warning: The connection-source edge '101419' is not known.
+Warning: The connection-source edge '101419' is not known.
+Warning: The connection-source edge '101419_rev' is not known.
+Warning: The connection-source edge '101419_rev' is not known.
+Warning: The connection-source edge '9589' is not known.
+Warning: The connection-source edge '9589' is not known.
+Warning: The connection-source edge '9589_rev' is not known.
+Warning: The connection-source edge '9589_rev' is not known.
+Warning: The connection-source edge '101680' is not known.
+Warning: The connection-source edge '101680' is not known.
+Warning: The connection-source edge '101680_rev' is not known.
+Warning: The connection-source edge '101680_rev' is not known.
+Warning: The connection-destination edge '9872' is not known.
+Warning: The connection-destination edge '9872_rev' is not known.
+Warning: The connection-destination edge '9872' is not known.
+Warning: The connection-destination edge '9872_rev' is not known.
+Warning: The connection-source edge '62278' is not known.
+Warning: The connection-source edge '62278' is not known.
+Warning: The connection-source edge '62278_rev' is not known.
+Warning: The connection-source edge '62278_rev' is not known.
+Warning: The connection-source edge '107429' is not known.
+Warning: The connection-source edge '107429' is not known.
+Warning: The connection-source edge '107429_rev' is not known.
+Warning: The connection-source edge '107429_rev' is not known.
+Warning: The connection-source edge '164871' is not known.
+Warning: The connection-source edge '164871' is not known.
+Warning: The connection-source edge '164871_rev' is not known.
+Warning: The connection-source edge '164871_rev' is not known.
+Warning: The connection-destination edge '2953' is not known.
+Warning: The connection-destination edge '2953_rev' is not known.
+Warning: The connection-source edge '106230' is not known.
+Warning: The connection-source edge '106230' is not known.
+Warning: The connection-source edge '106230_rev' is not known.
+Warning: The connection-source edge '106230_rev' is not known.
+Warning: The connection-source edge '105536' is not known.
+Warning: The connection-source edge '105536' is not known.
+Warning: The connection-source edge '105536_rev' is not known.
+Warning: The connection-source edge '105536_rev' is not known.
+Warning: The connection-source edge '8254' is not known.
+Warning: The connection-source edge '8254' is not known.
+Warning: The connection-source edge '8254_rev' is not known.
+Warning: The connection-source edge '8254_rev' is not known.
+Warning: The connection-destination edge '164871' is not known.
+Warning: The connection-destination edge '164871_rev' is not known.
+Warning: The connection-destination edge '164871' is not known.
+Warning: The connection-destination edge '164871_rev' is not known.
+Warning: The connection-source edge '95192' is not known.
+Warning: The connection-source edge '95192' is not known.
+Warning: The connection-source edge '95192_rev' is not known.
+Warning: The connection-source edge '95192_rev' is not known.
+Warning: The connection-source edge '95069' is not known.
+Warning: The connection-source edge '95069' is not known.
+Warning: The connection-source edge '95069_rev' is not known.
+Warning: The connection-source edge '95069_rev' is not known.
+Warning: The connection-destination edge '106230' is not known.
+Warning: The connection-destination edge '106230_rev' is not known.
+Warning: The connection-destination edge '106230' is not known.
+Warning: The connection-destination edge '106230_rev' is not known.
+Warning: The connection-source edge '61593' is not known.
+Warning: The connection-source edge '61593' is not known.
+Warning: The connection-source edge '61593_rev' is not known.
+Warning: The connection-source edge '61593_rev' is not known.
+Warning: The connection-destination edge '58113' is not known.
+Warning: The connection-destination edge '58113_rev' is not known.
+Warning: The connection-destination edge '58113' is not known.
+Warning: The connection-destination edge '58113_rev' is not known.
+Warning: The connection-source edge '60331' is not known.
+Warning: The connection-source edge '60331' is not known.
+Warning: The connection-source edge '60331_rev' is not known.
+Warning: The connection-source edge '60331_rev' is not known.
+Warning: The connection-source edge '95906' is not known.
+Warning: The connection-source edge '95906' is not known.
+Warning: The connection-source edge '95906_rev' is not known.
+Warning: The connection-source edge '95906_rev' is not known.
+Warning: The connection-source edge '107797' is not known.
+Warning: The connection-source edge '107797' is not known.
+Warning: The connection-source edge '107797_rev' is not known.
+Warning: The connection-source edge '107797_rev' is not known.
+Warning: The connection-destination edge '609' is not known.
+Warning: The connection-destination edge '609_rev' is not known.
+Warning: The connection-source edge '103411' is not known.
+Warning: The connection-source edge '103411' is not known.
+Warning: The connection-source edge '103411_rev' is not known.
+Warning: The connection-source edge '103411_rev' is not known.
+Warning: The connection-source edge '107039' is not known.
+Warning: The connection-source edge '107039' is not known.
+Warning: The connection-source edge '107039_rev' is not known.
+Warning: The connection-source edge '107039_rev' is not known.
+Warning: The connection-source edge '100937' is not known.
+Warning: The connection-source edge '100937_rev' is not known.
+Warning: The connection-source edge '57142' is not known.
+Warning: The connection-source edge '57142' is not known.
+Warning: The connection-source edge '57142_rev' is not known.
+Warning: The connection-source edge '57142_rev' is not known.
+Warning: The connection-source edge '57980' is not known.
+Warning: The connection-source edge '57980' is not known.
+Warning: The connection-source edge '57980_rev' is not known.
+Warning: The connection-source edge '57980_rev' is not known.
+Warning: The connection-source edge '58985' is not known.
+Warning: The connection-source edge '58985' is not known.
+Warning: The connection-source edge '58985_rev' is not known.
+Warning: The connection-source edge '58985_rev' is not known.
+Warning: The connection-source edge '101679' is not known.
+Warning: The connection-source edge '101679' is not known.
+Warning: The connection-source edge '101679_rev' is not known.
+Warning: The connection-source edge '101679_rev' is not known.
+Warning: The connection-source edge '60082' is not known.
+Warning: The connection-source edge '60082' is not known.
+Warning: The connection-source edge '60082_rev' is not known.
+Warning: The connection-source edge '60082_rev' is not known.
+Warning: The connection-source edge '8763' is not known.
+Warning: The connection-source edge '8763_rev' is not known.
+Warning: The connection-source edge '96353' is not known.
+Warning: The connection-source edge '96353' is not known.
+Warning: The connection-source edge '96353_rev' is not known.
+Warning: The connection-source edge '96353_rev' is not known.
+Warning: The connection-source edge '105017' is not known.
+Warning: The connection-source edge '105017' is not known.
+Warning: The connection-source edge '105017_rev' is not known.
+Warning: The connection-source edge '105017_rev' is not known.
+Warning: The connection-source edge '95119' is not known.
+Warning: The connection-source edge '95119_rev' is not known.
+Warning: The connection-source edge '57813' is not known.
+Warning: The connection-source edge '57813' is not known.
+Warning: The connection-source edge '57813_rev' is not known.
+Warning: The connection-source edge '57813_rev' is not known.
+Warning: The connection-source edge '100206' is not known.
+Warning: The connection-source edge '100206' is not known.
+Warning: The connection-source edge '100206_rev' is not known.
+Warning: The connection-source edge '100206_rev' is not known.
+Warning: The connection-source edge '163988' is not known.
+Warning: The connection-source edge '163988' is not known.
+Warning: The connection-source edge '163988_rev' is not known.
+Warning: The connection-source edge '163988_rev' is not known.
+Warning: The connection-destination edge '7776' is not known.
+Warning: The connection-destination edge '7776_rev' is not known.
+Warning: The connection-destination edge '7776' is not known.
+Warning: The connection-destination edge '7776_rev' is not known.
+Warning: The connection-source edge '58585' is not known.
+Warning: The connection-source edge '58585' is not known.
+Warning: The connection-source edge '58585_rev' is not known.
+Warning: The connection-source edge '58585_rev' is not known.
+Warning: The connection-destination edge '58867' is not known.
+Warning: The connection-destination edge '58867_rev' is not known.
+Warning: The connection-destination edge '58867' is not known.
+Warning: The connection-destination edge '58867_rev' is not known.
+Warning: The connection-source edge '164729' is not known.
+Warning: The connection-source edge '164729' is not known.
+Warning: The connection-source edge '164729_rev' is not known.
+Warning: The connection-source edge '164729_rev' is not known.
+Warning: The connection-source edge '165280' is not known.
+Warning: The connection-source edge '165280' is not known.
+Warning: The connection-source edge '165280_rev' is not known.
+Warning: The connection-source edge '165280_rev' is not known.
+Warning: The connection-source edge '57370' is not known.
+Warning: The connection-source edge '57370' is not known.
+Warning: The connection-source edge '57370_rev' is not known.
+Warning: The connection-source edge '57370_rev' is not known.
+Warning: The connection-source edge '61322' is not known.
+Warning: The connection-source edge '61322' is not known.
+Warning: The connection-source edge '61322_rev' is not known.
+Warning: The connection-source edge '61322_rev' is not known.
+Warning: The connection-source edge '107807' is not known.
+Warning: The connection-source edge '107807' is not known.
+Warning: The connection-source edge '107807_rev' is not known.
+Warning: The connection-source edge '107807_rev' is not known.
+Warning: The connection-source edge '58600' is not known.
+Warning: The connection-source edge '58600' is not known.
+Warning: The connection-source edge '58600_rev' is not known.
+Warning: The connection-source edge '58600_rev' is not known.
+Warning: The connection-source edge '61762' is not known.
+Warning: The connection-source edge '61762' is not known.
+Warning: The connection-source edge '61762_rev' is not known.
+Warning: The connection-source edge '61762_rev' is not known.
+Warning: The connection-source edge '101676' is not known.
+Warning: The connection-source edge '101676' is not known.
+Warning: The connection-source edge '101676_rev' is not known.
+Warning: The connection-source edge '101676_rev' is not known.
+Warning: The connection-source edge '60082' is not known.
+Warning: The connection-source edge '60082' is not known.
+Warning: The connection-source edge '60082_rev' is not known.
+Warning: The connection-source edge '60082_rev' is not known.
+Warning: The connection-source edge '107532' is not known.
+Warning: The connection-source edge '107532' is not known.
+Warning: The connection-source edge '107532_rev' is not known.
+Warning: The connection-source edge '107532_rev' is not known.
+Warning: The connection-source edge '62679' is not known.
+Warning: The connection-source edge '62679' is not known.
+Warning: The connection-source edge '62679_rev' is not known.
+Warning: The connection-source edge '62679_rev' is not known.
+Warning: The connection-source edge '101682' is not known.
+Warning: The connection-source edge '101682' is not known.
+Warning: The connection-source edge '101682_rev' is not known.
+Warning: The connection-source edge '101682_rev' is not known.
+Warning: The connection-source edge '8944' is not known.
+Warning: The connection-source edge '8944' is not known.
+Warning: The connection-source edge '8944_rev' is not known.
+Warning: The connection-source edge '8944_rev' is not known.
+Warning: The connection-source edge '60622' is not known.
+Warning: The connection-source edge '60622' is not known.
+Warning: The connection-source edge '60622_rev' is not known.
+Warning: The connection-source edge '60622_rev' is not known.
+Warning: The connection-source edge '101254' is not known.
+Warning: The connection-source edge '101254' is not known.
+Warning: The connection-source edge '101254_rev' is not known.
+Warning: The connection-source edge '101254_rev' is not known.
+Warning: The connection-source edge '60889' is not known.
+Warning: The connection-source edge '60889_rev' is not known.
+Warning: The connection-destination edge '62621' is not known.
+Warning: The connection-destination edge '62621_rev' is not known.
+Warning: The connection-destination edge '61925' is not known.
+Warning: The connection-destination edge '61925_rev' is not known.
+Warning: The connection-source edge '102231' is not known.
+Warning: The connection-source edge '102231' is not known.
+Warning: The connection-source edge '102231_rev' is not known.
+Warning: The connection-source edge '102231_rev' is not known.
+Warning: The connection-source edge '57475' is not known.
+Warning: The connection-source edge '57475' is not known.
+Warning: The connection-source edge '57475_rev' is not known.
+Warning: The connection-source edge '57475_rev' is not known.
+Warning: The connection-destination edge '59217' is not known.
+Warning: The connection-destination edge '59217_rev' is not known.
+Warning: The connection-destination edge '59217' is not known.
+Warning: The connection-destination edge '59217_rev' is not known.
+Warning: The connection-source edge '59339' is not known.
+Warning: The connection-source edge '59339_rev' is not known.
+Warning: The connection-source edge '165313' is not known.
+Warning: The connection-source edge '165313' is not known.
+Warning: The connection-source edge '165313_rev' is not known.
+Warning: The connection-source edge '165313_rev' is not known.
+Warning: The connection-destination edge '95398' is not known.
+Warning: The connection-destination edge '95398_rev' is not known.
+Warning: The connection-destination edge '61903' is not known.
+Warning: The connection-destination edge '61903_rev' is not known.
+Warning: The connection-source edge '61903' is not known.
+Warning: The connection-source edge '61903' is not known.
+Warning: The connection-source edge '61903_rev' is not known.
+Warning: The connection-source edge '61903_rev' is not known.
+Warning: The connection-destination edge '260527' is not known.
+Warning: The connection-destination edge '260527_rev' is not known.
+Warning: The connection-destination edge '260527' is not known.
+Warning: The connection-destination edge '260527_rev' is not known.
+Warning: The connection-source edge '62621' is not known.
+Warning: The connection-source edge '62621' is not known.
+Warning: The connection-source edge '62621_rev' is not known.
+Warning: The connection-source edge '62621_rev' is not known.
+Warning: The connection-source edge '101688' is not known.
+Warning: The connection-source edge '101688' is not known.
+Warning: The connection-source edge '101688_rev' is not known.
+Warning: The connection-source edge '101688_rev' is not known.
+Warning: The connection-source edge '106013' is not known.
+Warning: The connection-source edge '106013' is not known.
+Warning: The connection-source edge '106013_rev' is not known.
+Warning: The connection-source edge '106013_rev' is not known.
+Warning: The connection-destination edge '5012' is not known.
+Warning: The connection-destination edge '5012_rev' is not known.
+Warning: The connection-destination edge '5012' is not known.
+Warning: The connection-destination edge '5012_rev' is not known.
+Warning: The connection-destination edge '60889' is not known.
+Warning: The connection-destination edge '60889_rev' is not known.
+Warning: The connection-source edge '95957' is not known.
+Warning: The connection-source edge '95957' is not known.
+Warning: The connection-source edge '95957_rev' is not known.
+Warning: The connection-source edge '95957_rev' is not known.
+Warning: The connection-source edge '101330' is not known.
+Warning: The connection-source edge '101330' is not known.
+Warning: The connection-source edge '101330_rev' is not known.
+Warning: The connection-source edge '101330_rev' is not known.
+Warning: The connection-source edge '102695' is not known.
+Warning: The connection-source edge '102695' is not known.
+Warning: The connection-source edge '102695_rev' is not known.
+Warning: The connection-source edge '102695_rev' is not known.
+Warning: The connection-source edge '4641' is not known.
+Warning: The connection-source edge '4641' is not known.
+Warning: The connection-source edge '4641_rev' is not known.
+Warning: The connection-source edge '4641_rev' is not known.
+Warning: The connection-source edge '57546' is not known.
+Warning: The connection-source edge '57546' is not known.
+Warning: The connection-source edge '57546_rev' is not known.
+Warning: The connection-source edge '57546_rev' is not known.
+Warning: The connection-source edge '59313' is not known.
+Warning: The connection-source edge '59313' is not known.
+Warning: The connection-source edge '59313_rev' is not known.
+Warning: The connection-source edge '59313_rev' is not known.
+Warning: The connection-source edge '57572' is not known.
+Warning: The connection-source edge '57572' is not known.
+Warning: The connection-source edge '57572_rev' is not known.
+Warning: The connection-source edge '57572_rev' is not known.
+Warning: The connection-source edge '103435' is not known.
+Warning: The connection-source edge '103435' is not known.
+Warning: The connection-source edge '103435_rev' is not known.
+Warning: The connection-source edge '103435_rev' is not known.
+Warning: The connection-source edge '130160' is not known.
+Warning: The connection-source edge '130160' is not known.
+Warning: The connection-source edge '130160_rev' is not known.
+Warning: The connection-source edge '130160_rev' is not known.
+Warning: The connection-source edge '95081' is not known.
+Warning: The connection-source edge '95081' is not known.
+Warning: The connection-source edge '95081_rev' is not known.
+Warning: The connection-source edge '95081_rev' is not known.
+Warning: The connection-source edge '164889' is not known.
+Warning: The connection-source edge '164889_rev' is not known.
+Warning: The connection-source edge '59001' is not known.
+Warning: The connection-source edge '59001' is not known.
+Warning: The connection-source edge '59001_rev' is not known.
+Warning: The connection-source edge '59001_rev' is not known.
+Warning: The connection-source edge '656' is not known.
+Warning: The connection-source edge '656' is not known.
+Warning: The connection-source edge '656_rev' is not known.
+Warning: The connection-source edge '656_rev' is not known.
+Warning: The connection-destination edge '95957' is not known.
+Warning: The connection-destination edge '95957_rev' is not known.
+Warning: The connection-destination edge '95957' is not known.
+Warning: The connection-destination edge '95957_rev' is not known.
+Warning: The connection-source edge '60082' is not known.
+Warning: The connection-source edge '60082_rev' is not known.
+Warning: The connection-source edge '7576' is not known.
+Warning: The connection-source edge '7576' is not known.
+Warning: The connection-source edge '7576_rev' is not known.
+Warning: The connection-source edge '7576_rev' is not known.
+Warning: The connection-source edge '95157' is not known.
+Warning: The connection-source edge '95157' is not known.
+Warning: The connection-source edge '95157_rev' is not known.
+Warning: The connection-source edge '95157_rev' is not known.
+Warning: The connection-source edge '59001' is not known.
+Warning: The connection-source edge '59001' is not known.
+Warning: The connection-source edge '59001_rev' is not known.
+Warning: The connection-source edge '59001_rev' is not known.
+Warning: The connection-destination edge '59001' is not known.
+Warning: The connection-destination edge '59001_rev' is not known.
+Warning: The connection-destination edge '59001' is not known.
+Warning: The connection-destination edge '59001_rev' is not known.
+Warning: The connection-source edge '9432' is not known.
+Warning: The connection-source edge '9432' is not known.
+Warning: The connection-source edge '9432_rev' is not known.
+Warning: The connection-source edge '9432_rev' is not known.
+Warning: The connection-source edge '5778' is not known.
+Warning: The connection-source edge '5778' is not known.
+Warning: The connection-source edge '5778_rev' is not known.
+Warning: The connection-source edge '5778_rev' is not known.
+Warning: The connection-destination edge '9432' is not known.
+Warning: The connection-destination edge '9432_rev' is not known.
+Warning: The connection-destination edge '9432' is not known.
+Warning: The connection-destination edge '9432_rev' is not known.
+Warning: The connection-destination edge '130160' is not known.
+Warning: The connection-destination edge '130160_rev' is not known.
+Warning: The connection-destination edge '130160' is not known.
+Warning: The connection-destination edge '130160_rev' is not known.
+Warning: The connection-destination edge '57546' is not known.
+Warning: The connection-destination edge '57546_rev' is not known.
+Warning: The connection-destination edge '57546' is not known.
+Warning: The connection-destination edge '57546_rev' is not known.
+Warning: The connection-destination edge '58449' is not known.
+Warning: The connection-destination edge '58449_rev' is not known.
+Warning: The connection-source edge '59750' is not known.
+Warning: The connection-source edge '59750' is not known.
+Warning: The connection-source edge '59750_rev' is not known.
+Warning: The connection-source edge '59750_rev' is not known.
+Warning: The connection-source edge '260548' is not known.
+Warning: The connection-source edge '260548' is not known.
+Warning: The connection-source edge '260548_rev' is not known.
+Warning: The connection-source edge '260548_rev' is not known.
+Warning: The connection-destination edge '95119' is not known.
+Warning: The connection-destination edge '95119_rev' is not known.
+Warning: The connection-destination edge '107807' is not known.
+Warning: The connection-destination edge '107807_rev' is not known.
+Warning: The connection-source edge '5012' is not known.
+Warning: The connection-source edge '5012' is not known.
+Warning: The connection-source edge '5012_rev' is not known.
+Warning: The connection-source edge '5012_rev' is not known.
+Warning: The connection-source edge '57890' is not known.
+Warning: The connection-source edge '57890' is not known.
+Warning: The connection-source edge '57890_rev' is not known.
+Warning: The connection-source edge '57890_rev' is not known.
+Warning: The connection-source edge '9621' is not known.
+Warning: The connection-source edge '9621' is not known.
+Warning: The connection-source edge '9621_rev' is not known.
+Warning: The connection-source edge '9621_rev' is not known.
+Warning: The connection-source edge '268304' is not known.
+Warning: The connection-source edge '268304_rev' is not known.
+Warning: The connection-source edge '62785' is not known.
+Warning: The connection-source edge '62785' is not known.
+Warning: The connection-source edge '62785_rev' is not known.
+Warning: The connection-source edge '62785_rev' is not known.
+Warning: The connection-source edge '138795' is not known.
+Warning: The connection-source edge '138795' is not known.
+Warning: The connection-source edge '138795_rev' is not known.
+Warning: The connection-source edge '138795_rev' is not known.
+Warning: The connection-source edge '94773' is not known.
+Warning: The connection-source edge '94773' is not known.
+Warning: The connection-source edge '94773_rev' is not known.
+Warning: The connection-source edge '94773_rev' is not known.
+Warning: The connection-destination edge '134000' is not known.
+Warning: The connection-destination edge '134000_rev' is not known.
+Warning: The connection-destination edge '134000' is not known.
+Warning: The connection-destination edge '134000_rev' is not known.
+Warning: The connection-source edge '96294' is not known.
+Warning: The connection-source edge '96294' is not known.
+Warning: The connection-source edge '96294_rev' is not known.
+Warning: The connection-source edge '96294_rev' is not known.
+Warning: The connection-source edge '260377' is not known.
+Warning: The connection-source edge '260377' is not known.
+Warning: The connection-source edge '260377_rev' is not known.
+Warning: The connection-source edge '260377_rev' is not known.
+Warning: The connection-source edge '57879' is not known.
+Warning: The connection-source edge '57879' is not known.
+Warning: The connection-source edge '57879_rev' is not known.
+Warning: The connection-source edge '57879_rev' is not known.
+Warning: The connection-source edge '58867' is not known.
+Warning: The connection-source edge '58867' is not known.
+Warning: The connection-source edge '58867_rev' is not known.
+Warning: The connection-source edge '58867_rev' is not known.
+Warning: The connection-source edge '281703' is not known.
+Warning: The connection-source edge '281703_rev' is not known.
+Warning: The connection-destination edge '281703' is not known.
+Warning: The connection-destination edge '281703_rev' is not known.
+Warning: The connection-destination edge '284744' is not known.
+Warning: The connection-destination edge '284744_rev' is not known.
+Warning: The connection-source edge '284146' is not known.
+Warning: The connection-source edge '284146' is not known.
+Warning: The connection-source edge '284146_rev' is not known.
+Warning: The connection-source edge '284146_rev' is not known.
+Warning: The connection-source edge '284744' is not known.
+Warning: The connection-source edge '284744_rev' is not known.
+done.
+ Import done:
+   27177 nodes loaded.
+   59980 edges loaded.
+Removing self-loops ... done (3ms).
+Joining junction clusters ... 
+Warning: Not joining junctions 10,9 (6 incoming edges).
+Warning: Reducing junction cluster 10003,10311,10317,13623,3499,3500,3501,3502 (8 incoming edges).
+Warning: Not joining junctions 10011,6422 (parallel incoming 100833,102061).
+Warning: Not joining junctions 10014,10364 (parallel incoming 100836_rev,100856).
+Warning: Not joining junctions 25399,25400 (parallel outgoing 101550_rev,101553).
+Warning: Reducing junction cluster 10016,10017,13134,14907,21116,21117,21118 (8 incoming edges).
+Warning: Not joining junctions 10558,2984 (parallel incoming 95878_rev,96169).
+Warning: Reducing junction cluster 10068,10082,10083 (parallel incoming 102572,103516).
+Warning: Reducing junction cluster 10144,19116,7106 (parallel incoming 104177_rev,104312_rev).
+Warning: Reducing junction cluster 10184,11356,14143,14144,14150,18170,18760,19297,19298,26697,2858,2859 (7 incoming edges).
+done (362ms).
+ Joined 1071 junction cluster(s).
+Removing empty nodes and geometry nodes ... done (109ms).
+   2957 nodes removed.
+Computing turning directions ... 
+Warning: Ambiguity in turnarounds computation at junction '10004'.
+Warning: Ambiguity in turnarounds computation at junction '10078'.
+Warning: Ambiguity in turnarounds computation at junction '10134'.
+Warning: Ambiguity in turnarounds computation at junction '1019'.
+Warning: Ambiguity in turnarounds computation at junction '1021'.
+done (129ms).
+Assigning nodes to traffic lights ... done (45ms).
+Guessing and setting on-/off-ramps ... done (61ms).
+Warning: Found sharp turn with radius 7.74 at the start of edge '100076'.
+Warning: Found sharp turn with radius 8.66 at the end of edge '100076'.
+Warning: Found sharp turn with radius 8.66 at the start of edge '100076_rev'.
+Warning: Found sharp turn with radius 7.74 at the end of edge '100076_rev'.
+Warning: Found sharp turn with radius 8.97 at the start of edge '100133_rev'.
+Warning: Found angle of 104.85 degrees at edge '100560', segment 15.
+Warning: Found angle of 110.72 degrees at edge '101693', segment 18.
+Warning: Found angle of 129.20 degrees at edge '105994', segment 5.
+Warning: Found angle of 169.40 degrees at edge '165204', segment 26.
+Warning: Found angle of 162.73 degrees at edge '165204', segment 27.
+Sorting nodes' edges ... done (51ms).
+Computing node shapes ... 
+Warning: Shape for junction '1000' has distance 25.13 to its given position.
+Warning: Shape for junction '12338' has distance 30.70 to its given position.
+Warning: Shape for junction '12453' has distance 25.55 to its given position.
+Warning: Shape for junction '1400' has distance 75.89 to its given position.
+Warning: Shape for junction '15523' has distance 25.03 to its given position.
+done (2230ms).
+Computing edge shapes ... done (513ms).
+Computing node types ... done (21ms).
+Guessed 0 pedestrian crossings.
+Computing priorities ... done (82ms).
+Computing approached edges ... done (82ms).
+Guessing and setting roundabouts ... 
+ Guessed 1 roundabout(s).
+done (19ms).
+Computing approaching lanes ... done (340ms).
+Dividing of lanes on approached lanes ... done (224ms).
+Processing turnarounds ... done (0ms).
+Rechecking of lane endings ... 
+Warning: Edge '100' is not connected to outgoing edges at junction 'cluster_2497_495'.
+Warning: Edge '100011' is not connected to outgoing edges at junction '6949'.
+Warning: Edge '100011_rev' is not connected to outgoing edges at junction '6948'.
+Warning: Lane '100012_0' is not connected from any incoming edge at junction '6949'.
+Warning: Edge '100050' is not connected to outgoing edges at junction '4935'.
+Warning: Edge '100050_rev' is not connected to outgoing edges at junction '4541'.
+Warning: Lane '100058_rev_0' is not connected from any incoming edge at junction '4541'.
+Warning: Lane '100058_rev_1' is not connected from any incoming edge at junction '4541'.
+Warning: Lane '100076_0' is not connected from any incoming edge at junction '4545'.
+Warning: Lane '100076_1' is not connected from any incoming edge at junction '4545'.
+done (403ms).
+Joining traffic light nodes ... done (71ms).
+Computing traffic light control information ... 
+Warning: Unreachable edge '104614_rev' within tlLogic 'joinedS_10611_10613'
+Warning: Unreachable edge '93048' within tlLogic 'joinedS_10670_4756_4794_4902_#2more'
+Warning: Unreachable edge '125727' within tlLogic 'joinedS_10677_14964_16979_16986_#2more'
+Warning: Unreachable edge '93424_rev' within tlLogic 'joinedS_10703_14299'
+Warning: Unreachable edge '93887' within tlLogic 'joinedS_11498_11534_7948_7949_#2more'
+done (71ms).
+Computing node logics ... done (399ms).
+Computing traffic light logics ... 
+Warning: The traffic light '10518' does not control any links; it will not be build.
+Warning: Could not build program '0' for traffic light '10518'
+Warning: The traffic light '10580' does not control any links; it will not be build.
+Warning: Could not build program '0' for traffic light '10580'
+Warning: The traffic light '10672' does not control any links; it will not be build.
+Warning: Could not build program '0' for traffic light '10672'
+Warning: The traffic light '10773' does not control any links; it will not be build.
+Warning: Could not build program '0' for traffic light '10773'
+Warning: The traffic light '11126' does not control any links; it will not be build.
+Warning: Could not build program '0' for traffic light '11126'
+Warning: The traffic light 'joinedS_10001_11366_11669' cannot be adapted to a cycle time of 90.00.
+Warning: The traffic light 'joinedS_10001_11366_11669' has a high cycle time of 272.00.
+Warning: The traffic light 'joinedS_10010_10011_13771_6420_#1more' cannot be adapted to a cycle time of 90.00.
+Warning: The traffic light 'joinedS_10010_10011_13771_6420_#1more' has a high cycle time of 272.00.
+Warning: The traffic light 'joinedS_10026_10558_20408_25794_#3more' cannot be adapted to a cycle time of 90.00.
+Warning: The traffic light 'joinedS_10026_10558_20408_25794_#3more' has a high cycle time of 442.00.
+Warning: The traffic light 'joinedS_10121_11310_11311_11829_#3more' cannot be adapted to a cycle time of 90.00.
+Warning: The traffic light 'joinedS_10121_11310_11311_11829_#3more' has a high cycle time of 396.00.
+Warning: The traffic light 'joinedS_10176_11045_13400_14612_#9more' cannot be adapted to a cycle time of 90.00.
+Warning: The traffic light 'joinedS_10176_11045_13400_14612_#9more' has a high cycle time of 510.00.
+done (2260ms).
+ 4176 traffic light(s) computed.
+Building inner edges ... 
+Warning: Speed of straight connection '101027_0->101028_0' reduced by 7.97 due to turning radius of 6.36 (length=13.62, angle=155.25).
+Warning: Speed of straight connection '101027_0->101028_1' reduced by 9.47 due to turning radius of 3.55 (length=6.73, angle=155.25).
+Warning: Speed of straight connection '102522_rev_0->102500_rev_0' reduced by 5.63 due to turning radius of 12.39 (length=2.17, angle=25.72).
+Warning: Speed of straight connection '102618_rev_1->102611_rev_1' reduced by 5.22 due to turning radius of 13.67 (length=2.03, angle=24.05).
+Warning: Speed of straight connection '102713_1->102612_1' reduced by 7.18 due to turning radius of 8.19 (length=3.31, angle=40.69).
+Warning: Intersecting left turns at junction '10171' from lane '108026_1' and lane '107818_1' (increase junction radius to avoid this).
+Warning: Intersecting left turns at junction '1021' from lane '4303_1' and lane '3807_1' (increase junction radius to avoid this).
+Warning: Intersecting left turns at junction '10476' from lane '165140_rev_0' and lane '165134_1' (increase junction radius to avoid this).
+Warning: Intersecting left turns at junction '10517' from lane '101333_1' and lane '101331_1' (increase junction radius to avoid this).
+Warning: Intersecting left turns at junction '10698' from lane '101685_rev_1' and lane '100749_1' (increase junction radius to avoid this).
+Warning: Connection '817_rev_0->5701_0' is only 0.09m short.
+Warning: Connection '143620_1->143616_1' is only 0.03m short.
+Warning: Connection '4913_1->2777_1' is only 0.09m short.
+Warning: Connection '106816_rev_0->265786_0' is only 0.10m short.
+Warning: Connection '5334_0->3080_rev_0' is only 0.05m short.
+Warning: Splitting vector close to end (pos: 12.13, length: 12.16)
+done (1508ms).
+-----------------------------------------------------
+Summary:
+ Node type statistics:
+  Unregulated junctions       : 0
+  Dead-end junctions          : 4610
+  Priority junctions          : 11643
+  Right-before-left junctions : 109
+  Traffic light junctions      : 6439
+ Network boundaries:
+  Original boundary  : 802603.01,807314.49,856330.29,846534.26
+  Applied offset     : 0.00,0.00
+  Converted boundary : 802603.01,807314.49,856319.64,846534.26
+-----------------------------------------------------
+Writing network ... done (6879ms).
+Warning: 918 total messages of type: Ambiguity in turnarounds computation at junction '%'.
+Warning: 10 total messages of type: Connection '%_%->%_%' is only %m short.
+Warning: 55 total messages of type: Could not build program '%' for traffic light '%'
+Warning: 3527 total messages of type: Edge '%' is not connected to outgoing edges at junction '%'.
+Warning: 62 total messages of type: Found angle of % degrees at edge '%', segment %.
+Warning: 1829 total messages of type: Found sharp turn with radius % at the % of edge '%'.
+Warning: 652 total messages of type: Ignoring self-looped edge '%' at junction '%'
+Warning: 717 total messages of type: Intersecting left turns at junction '%' from lane '%' and lane '%' (increase junction radius to avoid this).
+Warning: 2015 total messages of type: Lane '%' is not connected from any incoming edge at junction '%'.
+Warning: 1807 total messages of type: Not joining junctions % (%).
+Warning: 401 total messages of type: Reducing junction cluster % (%).
+Warning: 21 total messages of type: Shape for junction '%' has distance % to its given position.
+Warning: 2448 total messages of type: Speed of % connection '%' reduced by % due to turning radius of % (length=%, angle=%).
+Warning: 305 total messages of type: The traffic light '%' cannot be adapted to a cycle time of %.
+Warning: 55 total messages of type: The traffic light '%' does not control any links; it will not be build.
+Warning: 323 total messages of type: The traffic light '%' has a high cycle time of %.
+Warning: 29 total messages of type: Unreachable edge '%' within tlLogic '%'

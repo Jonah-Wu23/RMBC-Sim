@@ -1,0 +1,28 @@
+<configuration>
+    <input>
+        <net-file value="../net/hk_irn.net.xml"/>
+        <route-files value="../routes/baseline_irn.rou.xml"/>
+        <additional-files value="../additional/bus_stops_irn.add.xml"/>
+    </input>
+    
+    <time>
+        <begin value="0"/>
+        <end value="3600"/>
+    </time>
+    
+    <output>
+        <stop-output value="../output/stopinfo_irn.xml"/>
+        <tripinfo-output value="../output/tripinfo_irn.xml"/>
+    </output>
+    
+    <processing>
+        <ignore-route-errors value="true"/> 
+        <!-- Allow auto-repair of routes if possible. -->
+    </processing>
+
+    <report>
+        <log value="simulation_irn.log"/>
+        <duration-log.statistics value="true"/>
+        <no-step-log value="true"/>
+    </report>
+</configuration>

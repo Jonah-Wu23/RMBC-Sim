@@ -8,7 +8,7 @@
 ---
 
 ## 全周期里程碑（Week 1–6）
-- [ ] Week 1：基础环境搭建（SUMO 场景 + TraCI + 高德真值提取/清洗）
+- [x] Week 1：基础环境搭建（SUMO 场景 + TraCI + 香港真值提取/清洗）
 - [ ] Week 2：L1 微观层校准最小闭环（目标/参数/评估指标 + BO 框架跑通）
 - [ ] Week 3：L1 微观层校准完善（双代理 Kriging+RBF、采集函数、鲁棒性指标）
 - [ ] Week 4：L2 宏观层融合（EnKF/同化模块 + 路段速度分布匹配）
@@ -121,11 +121,38 @@
 ---
 
 ## Week 2（L1 最小闭环 & 路网精修）
-- [ ] **高精度路网重建**：利用 `RdNet_IRNP.gdb` (IRN) 替换/升级现有 OSM 路网，解决站点缺失与拓扑连通问题。
-- [ ] 确定 L1 参数范围：`tau`, `sigma`, `minGap`, `t_board`
-- [ ] 定义采样策略与初始样本（LHS/随机）
-- [ ] 跑通 BO 框架：EI 采集 + 黑箱评估（SUMO 批跑 + 指标计算）
-- [ ] 形成最小可用结果：站点层 RMSE 明显下降（记录对比表）
+### 1）高精度路网重建与修复（Network Repair）
+- [x] **路网转换**：利用 `RdNet_IRNP.gdb` (IRN) 替换 OSM 路网，解决站点缺失。
+- [x] **连通性修复（Critical）**：
+  - [x] 分析 Baseline 仿真日志，提取断裂边（"No connection" warnings）。
+  - [x] 优化 `convert_irn_to_sumo_xml.py` 的 TURN 表解析，或手动编写 `fixed_connections.con.xml`。
+  - [x] 验证 Route 68X/960 的端到端连通性（Teleport 归零）。
+
+### 2）L1 微观参数定义与空间构建
+- [ ] **参数筛选 ($\theta_{L1}$)**：
+  - [ ] `t_board` (上车时间): 影响停站时长，核心校准对象。
+  - [ ] `tau` (驾驶员反应时间): Krauss 跟驰模型。
+  - [ ] `sigma` (驾驶不完美度): 模拟随机减速。
+  - [ ] `minGap` (最小跟车距离): 影响停车排队密度。
+- [ ] **参数范围表**：根据文献与经验设定上下限（如 $t_{board} \in [0.5, 5.0]s$）。
+- [ ] **采样策略**：实现拉丁超立方采样 (LHS) 生成初始样本集 (e.g., N=20)。
+
+### 3）多层次校准框架搭建 (L1 Loop)
+- [ ] **代理模型 (Surrogates)**：
+  - [ ] 实现 Kriging (Gaussian Process) 回归模型。
+  - [ ] 实现 RBF (Radial Basis Function) 插值模型。
+  - [ ] 实现双代理融合接口（加权/Stacking）。
+- [ ] **采集函数 (Acquisition)**：实现 Expected Improvement (EI) 策略。
+- [ ] **目标函数 ($J_1$)**：
+  - [ ] 定义 RMSE (站点到/离站时刻)。
+  - [ ] 定义分布损失 (KS-Statistic / Wasserstein) 用于鲁棒性评估。
+
+### 4）L1 最小闭环运行 (Minimum Viable Calibration)
+- [ ] **自动化流程脚本**：
+  - [ ] Loop: `Gen Params` -> `Run SUMO` -> `Parse Output` -> `Update Surrogate` -> `Next Param`.
+- [ ] **基线运行**：使用默认/经验参数运行 B1 基线。
+- [ ] **首轮校准**：运行 20-50 次迭代，观察 $J_1$ 收敛曲线。
+- [ ] **结果验证**：对比校准后与真实数据的到离站时刻误差。
 
 ## Week 3（L1 完善：双代理 + 鲁棒性）
 - [ ] 双代理：Kriging（GP）+ RBF 的融合策略（加权/stacking，先固定一种）

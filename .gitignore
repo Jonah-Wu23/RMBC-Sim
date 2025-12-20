@@ -1,6 +1,9 @@
 # Ignore all data files
 data/
 sumo/net/hk_irn.net.xml
+sumo/routes
+sumo/output
+sumo/net
 
 # 忽略虚拟环境文件夹
 .venv/

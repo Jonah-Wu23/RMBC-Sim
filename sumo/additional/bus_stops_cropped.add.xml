@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<additional>
+    <busStop id="06566A7FE3C6466A" name="CHEUNG LAI STREET CHEUNG SHA WAN (SS245)" lane="9023_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="09A156B1A802D093" name="LAI CHI KOK STATION (SS467)" lane="8685_0" startPos="88.09" endPos="108.09" lines="68X" friendlyPos="true" />
+    <busStop id="0FDE3A87457539BC" name="MONGKOK POLICE STATION (MK505)" lane="106031_1" startPos="116.74" endPos="136.74" lines="68X" friendlyPos="true" />
+    <busStop id="11ED493F674F4888" name="BUTE STREET, PIONEER CENTRE (MK179)" lane="106985_rev_0" startPos="55.22" endPos="75.22" lines="68X" friendlyPos="true" />
+    <busStop id="13E0A0449C73F4DE" name="QUEEN STREET (CW785)" lane="4833_0" startPos="77.09" endPos="97.09" lines="960" friendlyPos="true" />
+    <busStop id="145515B1D2C60CAF" name="HOI FU COURT, PARK AVENUE (MK120)" lane="105734_0" startPos="43.33" endPos="63.33" lines="68X" friendlyPos="true" />
+    <busStop id="18C138014DF5B0C8" name="MAPLE STREET SHAM SHUI PO (SS496)" lane="106268_0" startPos="15.96" endPos="35.96" lines="68X" friendlyPos="true" />
+    <busStop id="1D8A902219897402" name="WING KUT STREET (CW767)" lane="1305_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="25D811895B82ABCA" name="MACAU FERRY (CW111)" lane="2468_rev_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="30B08A7B2B2B623F" name="SAI YEUNG CHOI STREET SOUTH, MONG KOK STATION" lane="107450_0" startPos="9.71" endPos="29.71" lines="68X" friendlyPos="true" />
+    <busStop id="4AFCFC726ADBD5F7" name="YEE KOK COURT (SS221)" lane="106580_0" startPos="236.71" endPos="256.71" lines="68X" friendlyPos="true" />
+    <busStop id="50E78EB09845863E" name="MEI FOO BBI (SS463)" lane="8663_rev_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="6F9CEABEE36E8682" name="PACIFIC PLACE (A3) (CW741)" lane="2731_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="709C8604AFB90F27" name="HARBOUR BUILDING (CW135)" lane="513_0" startPos="41.10" endPos="61.10" lines="960" friendlyPos="true" />
+    <busStop id="72F743E4D464E498" name="WESTERN HARBOUR TUNNEL BBI (YT313)" lane="106944_rev_0" startPos="609.71" endPos="629.71" lines="960" friendlyPos="true" />
+    <busStop id="7ADC6D521E6BECE6" name="MONGKOK MARKET COMPLEX, YAU TSIM MONG DHC (MK626)" lane="106972_rev_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="7DD772B7D55C54B2" name="MEI FOO BBI (SS321)" lane="8044_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="812E72C257C94B73" name="PEI HO STREET SHAM SHUI PO (SS491)" lane="107083_0" startPos="139.92" endPos="159.92" lines="68X" friendlyPos="true" />
+    <busStop id="8379C4B1265C27F7" name="JARDINE HOUSE (CW112)" lane="2480_0" startPos="25.94" endPos="45.94" lines="960" friendlyPos="true" />
+    <busStop id="83B717529F9794BC" name="LI YUEN STREET EAST (CW763)" lane="165041_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="95731C2B3563CF5E" name="YEN CHOW STREET SHAM SHUI PO (SS213)" lane="107083_0" startPos="266.01" endPos="286.01" lines="68X" friendlyPos="true" />
+    <busStop id="A63B90588F747496" name="BANK OF CHINA TOWER (CW745)" lane="4939_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="A7F35DC09E1A1528" name="BEECH STREET (MK140)" lane="106831_rev_1" startPos="170.47" endPos="190.47" lines="68X" friendlyPos="true" />
+    <busStop id="A81B13297DB1C481" name="MAN WA LANE (CW769)" lane="115545_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="AD1B202B678A3B56" name="ARSENAL STREET (WC210)" lane="4202_rev_1" startPos="56.17" endPos="76.17" lines="960" friendlyPos="true" />
+    <busStop id="AD97EA183A25102C" name="WESTERN HARBOUR TUNNEL BBI (YT603)" lane="261296_0" startPos="40.46" endPos="60.46" lines="960" friendlyPos="true" />
+    <busStop id="ADC51A7EEEE43D6F" name="EXHIBITION CENTRE STATION BUS TERMINUS (WC941)" lane="4287_rev_0" startPos="98.31" endPos="118.31" lines="960" friendlyPos="true" />
+    <busStop id="B30799FB3732222B" name="FLEMING ROAD (WC214)" lane="3895_0" startPos="43.96" endPos="63.96" lines="960" friendlyPos="true" />
+    <busStop id="B76B249D3D253008" name="FOO KWAI STREET (MK200)" lane="105653_rev_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="B7C0A83790F94D99" name="HING WAH STREET CHEUNG SHA WAN (SS231)" lane="272309_0" startPos="229.66" endPos="249.66" lines="68X" friendlyPos="true" />
+    <busStop id="BA765A2BCCE21F5C" name="TONG MI ROAD MONG KOK (MK304)" lane="106073_0" startPos="74.21" endPos="94.21" lines="68X" friendlyPos="true" />
+    <busStop id="BD34A7B702373B12" name="CHEUNG WAH STREET (SS473)" lane="8000_rev_1" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="BE1A19A3705F5B70" name="WONG CHUK STREET SHAM SHUI PO (SS202)" lane="105335_rev_0" startPos="41.68" endPos="61.68" lines="68X" friendlyPos="true" />
+    <busStop id="BE510511B0A7344E" name="TAI NAN STREET (SS340)" lane="105786_rev_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="C06334CA2AF7814B" name="KIU KIANG STREET SHAM SHUI PO (SS482)" lane="106580_0" startPos="91.42" endPos="111.42" lines="68X" friendlyPos="true" />
+    <busStop id="C3D2F84C0F0FF415" name="FLEMING ROAD (WC670)" lane="5291_0" startPos="248.27" endPos="268.27" lines="960" friendlyPos="true" />
+    <busStop id="C804CCACB2781EEE" name="LIPPO CENTRE (E1) (CW160)" lane="2448_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="D242B538BA760551" name="MONG KOK ROAD (MK330)" lane="105817_1" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="DD9DF46F3BA040EE" name="CHEUNG SHA WAN PLAYGROUND (SS225)" lane="107087_0" startPos="283.00" endPos="303.00" lines="68X" friendlyPos="true" />
+    <busStop id="E02E10C9135624F9" name="MING KEI COLLEGE (MK632)" lane="106831_rev_0" startPos="391.25" endPos="411.25" lines="68X" friendlyPos="true" />
+    <busStop id="E30C2815DA280036" name="UN CHAU ESTATE (SS477)" lane="106606_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="EC19750840FFEDDC" name="MONG KOK (PARK AVENUE) BUS TERMINUS (MK912)" lane="105735_rev_0" startPos="53.20" endPos="73.20" lines="68X" friendlyPos="true" />
+    </additional>

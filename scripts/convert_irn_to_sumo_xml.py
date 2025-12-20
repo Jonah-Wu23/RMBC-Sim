@@ -13,10 +13,42 @@ from xml.dom import minidom
 INPUT_GEOJSON = os.path.abspath(os.path.join("data", "processed", "hk_irn_edges.geojson"))
 OUTPUT_NODES = os.path.abspath(os.path.join("data", "processed", "hk_irn.nod.xml"))
 OUTPUT_EDGES = os.path.abspath(os.path.join("data", "processed", "hk_irn.edg.xml"))
+STOP_FILE = os.path.abspath(os.path.join("data", "processed", "kmb_route_stop_dist.csv"))
+
+def get_bbox_from_stops(buffer_deg=0.01):
+    if not os.path.exists(STOP_FILE):
+        print(f"Stop file {STOP_FILE} not found. Skipping BBox filtering.")
+        return None
+    
+    df = pd.read_csv(STOP_FILE)
+    min_lat = df['lat'].min()
+    max_lat = df['lat'].max()
+    min_lon = df['long'].min()
+    max_lon = df['long'].max()
+    
+    # Add buffer
+    bbox = (min_lon - buffer_deg, min_lat - buffer_deg, max_lon + buffer_deg, max_lat + buffer_deg)
+    print(f"Calculated BBox from stops (with {buffer_deg} buffer): {bbox}")
+    return bbox
 
 def convert_to_sumo_xml():
     print(f"Reading {INPUT_GEOJSON}...")
     gdf = gpd.read_file(INPUT_GEOJSON)
+    
+    # Apply BBox Filtering
+    bbox = get_bbox_from_stops(buffer_deg=0.015) # ~1.5km buffer
+    if bbox:
+        # gdf.cx[xmin:xmax, ymin:ymax]
+        print(f"Filtering edges within BBox: {bbox}")
+        initial_len = len(gdf)
+        # Ensure we are working with WGS84 for filtering if the bbox is WGS84
+        # Assuming GeoJSON is WGS84 (EPSG:4326)
+        if gdf.crs.to_string() != "EPSG:4326":
+             print(f"Warning: GeoJSON CRS is {gdf.crs}. Converting to EPSG:4326 for filtering.")
+             gdf = gdf.to_crs("EPSG:4326")
+             
+        gdf = gdf.cx[bbox[0]:bbox[2], bbox[1]:bbox[3]]
+        print(f"Filtered from {initial_len} to {len(gdf)} edges.")
     
     # Ensure WGS84 or UTM. 
     # SUMO XMLs usually expect UTM (x,y in meters) unless proj parameters are passed.

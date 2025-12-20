@@ -18,6 +18,7 @@ Usage (examples):
 from __future__ import annotations
 
 import argparse
+import datetime
 import json
 import time
 from pathlib import Path
@@ -165,6 +166,15 @@ def main():
     ap.add_argument("--interval", type=int, default=60, help="轮询间隔（秒），默认 60")
     ap.add_argument("--duration", type=int, default=0, help="轮询总时长（秒），0 表示只抓取一次")
     args = ap.parse_args()
+
+    target_time = datetime.datetime(2025, 12, 19, 17, 0, 0)
+    print(f"[{datetime.datetime.now()}] Timer started. Waiting until {target_time} (UTC+8)...")
+    while True:
+        now = datetime.datetime.now()
+        if now >= target_time:
+            print(f"[{now}] Target time reached! Starting collection.")
+            break
+        time.sleep(1)
 
     routes = [r.strip() for r in args.routes.split(",") if r.strip()]
 

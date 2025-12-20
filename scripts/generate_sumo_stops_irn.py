@@ -15,7 +15,7 @@ import pyproj
 
 NET_FILE = os.path.abspath(os.path.join("sumo", "net", "hk_irn.net.xml"))
 STOP_FILE = os.path.abspath(os.path.join("data", "processed", "kmb_route_stop_dist.csv"))
-OUTPUT_FILE = os.path.abspath(os.path.join("sumo", "additional", "bus_stops_irn.add.xml"))
+OUTPUT_FILE = os.path.abspath(os.path.join("sumo", "additional", "bus_stops.add.xml"))
 
 def generate_stops():
     print(f"Loading network: {NET_FILE}")
@@ -31,8 +31,9 @@ def generate_stops():
     print(f"Loading stops: {STOP_FILE}")
     df_stops = pd.read_csv(STOP_FILE)
     
-    # Filter for target routes if needed (e.g. 68X, 960)
-    target_routes = ['68X', '960'] 
+    # Aggregate routes per stop
+    # df_stops has 'route' and 'stop_id'
+    stop_routes = df_stops.groupby('stop_id')['route'].apply(lambda x: " ".join(sorted(set(x.astype(str))))).to_dict()
     
     unique_stops = df_stops.groupby(['stop_id', 'stop_name_en']).first().reset_index()
     print(f"Processing {len(unique_stops)} unique stops...")
@@ -84,9 +85,11 @@ def generate_stops():
              if start_pos > 10: start_pos = end_pos - 20
              else: end_pos = start_pos + 20
              
+        lines_str = stop_routes.get(stop_id, "")
+             
         # Format XML
         stop_elem = (f'    <busStop id="{stop_id}" name="{name}" lane="{best_lane.getID()}" '
-                     f'startPos="{start_pos:.2f}" endPos="{end_pos:.2f}" friendlyPos="true"/>')
+                     f'startPos="{start_pos:.2f}" endPos="{end_pos:.2f}" lines="{lines_str}" friendlyPos="true"/>')
         stops_xml.append(stop_elem)
         mapped_count += 1
         

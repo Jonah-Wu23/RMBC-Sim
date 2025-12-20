@@ -4,42 +4,81 @@ import os
 import numpy as np
 from scipy.stats import ks_2samp
 from datetime import datetime
+import argparse
 
 def compare_week1():
+    parser = argparse.ArgumentParser(description="Compare real vs sim bus data.")
+    parser.add_argument("--real", default="data/processed/link_times.csv", help="Real link times CSV")
+    parser.add_argument("--sim", default="sumo/output/stopinfo.xml", help="Simulation stopinfo XML")
+    parser.add_argument("--dist", default="data/processed/kmb_route_stop_dist.csv", help="Route distance CSV")
+    parser.add_argument("--route", default="68X", help="Route ID to analyze (e.g., 68X, 960)")
+    parser.add_argument("--plot", default=None, help="Output plot path (optional)")
+    
+    args = parser.parse_args()
+
     # File Paths
-    real_link_file = r"data/processed/enriched_link_stats.csv"
-    sim_stopinfo = r"sumo/output/stopinfo.xml"
-    route_dist_file = r"data/processed/kmb_route_stop_dist.csv"
+    real_link_file = args.real
+    sim_stopinfo = args.sim
+    route_dist_file = args.dist
+    target_route = args.route
+    
+    if args.plot:
+        plot_path = args.plot
+    else:
+        plot_path = f"sumo/output/l1_trajectory_comparison_{target_route}.png"
     
     if not os.path.exists(sim_stopinfo):
         print(f"Error: {sim_stopinfo} not found. Run simulation first.")
         return
 
     # 1. Load Real Data
-    print("Loading real link data...")
-    df_real = pd.read_csv(real_link_file)
-    # Filter for Route 68X Inbound (our primary test case for now)
-    df_real_68x = df_real[(df_real['route'] == '68X') & (df_real['bound'] == 'inbound')]
+    print(f"Loading real link data from {real_link_file}...")
+    try:
+        df_real = pd.read_csv(real_link_file)
+    except FileNotFoundError:
+        print(f"File not found: {real_link_file}")
+        return
+
+    # Filter for Target Route Inbound
+    print(f"Analyzing Route: {target_route} Inbound")
+    # Note: 'bound' is 'inbound'/'outbound'.
+    df_real_target = df_real[(df_real['route'] == target_route) & (df_real['bound'] == 'inbound')]
     
-    if df_real_68x.empty:
-        print("Warning: No real data for 68X inbound.")
+    if df_real_target.empty:
+        print(f"Warning: No real data for {target_route} inbound.")
     
     # 2. Load Sim Data
     print("Loading simulation data...")
-    tree = ET.parse(sim_stopinfo)
-    root = tree.getroot()
+    try:
+        tree = ET.parse(sim_stopinfo)
+        root = tree.getroot()
+    except Exception as e:
+        print(f"Error parsing XML: {e}")
+        return
     
     sim_records = []
     # group by vehicle to get link times
     veh_stops = {}
+    
+    count_veh = 0
     for stop in root.findall('stopinfo'):
         veh = stop.get('id')
-        if veh not in veh_stops: veh_stops[veh] = []
+        # Basic filtering: Check if route ID is part of vehicle ID 
+        # (e.g. 'flow_68X_inbound' contains '68X')
+        if target_route not in veh:
+            continue
+            
+        if veh not in veh_stops: 
+            veh_stops[veh] = []
+            count_veh += 1
+            
         veh_stops[veh].append({
             'stop_id': stop.get('busStop'),
             'arrival': float(stop.get('started')),
             'departure': float(stop.get('ended'))
         })
+        
+    print(f"Found {count_veh} vehicles matching '{target_route}' in simulation.")
     
     # Calculate link travel times in sim
     sim_links = []
@@ -60,38 +99,40 @@ def compare_week1():
     
     # 3. Join with Distance to get Speed
     print("Loading distances...")
-    df_dist = pd.read_csv(route_dist_file)
+    try:
+        df_dist = pd.read_csv(route_dist_file)
+    except FileNotFoundError:
+        print(f"File not found: {route_dist_file}")
+        return
+
     # Create mapping from (from_stop_id, to_stop_id) to link_dist_m
-    # In df_dist, each row has stop_id and link_dist_m (distance FROM previous stop to this stop)
     dist_map = {}
     last_stop = None
-    for _, row in df_dist[(df_dist['route'] == '68X') & (df_dist['bound'] == 'inbound')].iterrows():
+    # Filter distance file for target route
+    df_target_dist = df_dist[(df_dist['route'] == target_route) & (df_dist['bound'] == 'inbound')].sort_values('seq')
+    
+    if df_target_dist.empty:
+        print(f"Error: No distance data found for {target_route} inbound.")
+        return
+
+    for _, row in df_target_dist.iterrows():
         this_stop = row['stop_id']
         if last_stop:
             dist_map[(last_stop, this_stop)] = row['link_dist_m']
         last_stop = this_stop
         
-    def get_speed(row):
-        dist = dist_map.get((row['from_stop'], row['to_stop'])) # Note: real data uses stop_id, sim uses busStop ID
-        if dist and row['travel_time_s'] > 0:
-            return (dist / 1000.0) / (row['travel_time_s'] / 3600.0)
-        return None
+    if df_sim.empty:
+        print("No simulation link data found (parsed 0 links).")
+        return
 
-    # We need to map real stop_id to sim busStop ID if they differ, but here they should be identical.
-    # Let's check a few real ones
-    
-    # Enrich sim with speed
-    # In sim scripts, we might HAVE normalized stop IDs.
-    # Let's assume they match for now.
-    
     df_sim['speed_kmh'] = df_sim.apply(lambda r: (dist_map.get((r['from_stop'], r['to_stop']), 0) / 1000.0) / (r['travel_time_s'] / 3600.0) if dist_map.get((r['from_stop'], r['to_stop']), 0) > 0 else None, axis=1)
     df_sim = df_sim.dropna(subset=['speed_kmh'])
 
     # 4. Compare Distributions (L2)
-    print("\n--- L2 Link Speed Comparison (68X Inbound) ---")
+    print(f"\n--- L2 Link Speed Comparison ({target_route} Inbound) ---")
     
     # Overall distribution
-    real_speeds = df_real_68x['speed_kmh'].values
+    real_speeds = df_real_target['speed_kmh'].values
     sim_speeds = df_sim['speed_kmh'].values
     
     if len(real_speeds) > 0 and len(sim_speeds) > 0:
@@ -114,8 +155,7 @@ def compare_week1():
     print("\n--- L1 Comparison: Link Travel Time & Cumulative Arrival ---")
     
     # 5.1 Real Link Stats Aggregation
-    # In enriched_link_stats.csv, we have from_seq, to_seq.
-    real_link_agg = df_real_68x.groupby(['from_seq', 'to_seq'])['travel_time_s'].mean().reset_index()
+    real_link_agg = df_real_target.groupby(['from_seq', 'to_seq'])['travel_time_s'].mean().reset_index()
     real_link_agg.rename(columns={'travel_time_s': 'real_avg_time_s'}, inplace=True)
     
     # 5.2 Sim Link Stats Aggregation
@@ -123,10 +163,7 @@ def compare_week1():
     sim_link_agg.rename(columns={'travel_time_s': 'sim_avg_time_s'}, inplace=True)
     
     # Merge for Comparison Table
-    # First, let's get stop-to-seq mapping from df_dist
-    df_68x_dist = df_dist[(df_dist['route'] == '68X') & (df_dist['bound'] == 'inbound')].sort_values('seq')
-    seq_map = df_68x_dist.set_index('stop_id')['seq'].to_dict()
-    inv_seq_map = df_68x_dist.set_index('seq')['stop_id'].to_dict()
+    seq_map = df_target_dist.set_index('stop_id')['seq'].to_dict()
     
     # Enrich sim_link_agg with sequences
     sim_link_agg['from_seq'] = sim_link_agg['from_stop'].map(seq_map)
@@ -142,70 +179,69 @@ def compare_week1():
     print(l1_table[['from_seq', 'to_seq', 'real_avg_time_s', 'sim_avg_time_s', 'diff_percent']].sort_values('diff_percent', ascending=False).head(10))
 
     # 5.3 Cumulative Trajectory Calculation
-    # For a fair comparison, we align first stop to 0.
     
-    # Real Cumulative
-    real_route_agg = df_68x_dist.copy()
-    # In df_dist, link_dist_m is distance from PREV stop. cumulative_dist_m is already there (from row 1)
-    
-    # Create cumulative arrival times
-    # real_arrival_0 = 0
-    # real_arrival_i = sum(real_link_time_j for j from 1 to i)
-    
-    real_link_avg = real_link_agg.sort_values('from_seq')
-    real_cum_times = [0.0]
-    total_t = 0
-    for _, row in real_link_avg.iterrows():
-        total_t += row['real_avg_time_s']
-        real_cum_times.append(total_t)
-    
-    # Sim Cumulative
-    sim_link_avg = sim_link_agg.sort_values('from_seq')
-    sim_cum_times = [0.0]
-    total_t_sim = 0
-    # We might have missing links in sim, let's align by sequence
-    all_seqs = sorted(df_68x_dist['seq'].tolist())
+    all_seqs = sorted(df_target_dist['seq'].tolist())
     
     # Re-calculate to ensure alignment
     real_times_map = {row['to_seq']: row['real_avg_time_s'] for _, row in real_link_agg.iterrows()}
     sim_times_map = {row['to_seq']: row['sim_avg_time_s'] for _, row in sim_link_agg.iterrows()}
     
     real_cum = [0.0]
+    real_dists = [0.0]
+    
     sim_cum = [0.0]
-    dists = [0.0]
+    sim_dists = [0.0]
+    
     current_dist = 0
+    
+    # Truncate Real curve to where Sim curve ends logic
+    max_sim_seq = max(sim_times_map.keys()) if sim_times_map else 0
     
     for i in range(1, len(all_seqs)):
         seq = all_seqs[i]
-        d = df_68x_dist[df_68x_dist['seq'] == seq]['link_dist_m'].values[0]
+        d = df_target_dist[df_target_dist['seq'] == seq]['link_dist_m'].values[0]
         current_dist += d
-        dists.append(current_dist)
         
-        real_cum.append(real_cum[-1] + real_times_map.get(seq, 0))
-        sim_cum.append(sim_cum[-1] + sim_times_map.get(seq, 0))
+        # Only append Real if within Sim range
+        if seq <= max_sim_seq:
+            if seq in real_times_map: 
+                 real_dists.append(current_dist)
+                 real_cum.append(real_cum[-1] + real_times_map[seq])
+            else:
+                 real_dists.append(current_dist)
+                 # Interpolate or fill missing real data 
+                 last_t = real_cum[-1] if real_cum else 0
+                 real_cum.append(last_t + real_times_map.get(seq, 0))
+
+        # SIM: Only append if we actually have data
+        if seq in sim_times_map:
+            sim_dists.append(current_dist)
+            sim_cum.append(sim_cum[-1] + sim_times_map[seq])
 
     # 6. Plotting
     import matplotlib.pyplot as plt
     plt.figure(figsize=(10, 6))
-    plt.plot(dists, real_cum, 'b-o', label='Real (Average)')
-    plt.plot(dists, sim_cum, 'r-s', label='Sim (Baseline)')
+    plt.plot(real_dists, real_cum, 'b-o', label='Real (Average)')
+    plt.plot(sim_dists, sim_cum, 'r-s', label='Sim (Baseline)')
     plt.xlabel('Distance (m)')
     plt.ylabel('Cumulative Time (s)')
-    plt.title('Bus Route Trajectory (Distance-Time) - 68X Inbound')
+    plt.title(f'Bus Route Trajectory (Distance-Time) - {target_route} Inbound')
     plt.legend()
     plt.grid(True)
     
-    plot_path = "sumo/output/l1_trajectory_comparison.png"
     plt.savefig(plot_path)
     print(f"\nTrajectory plot saved to: {plot_path}")
     
     # 7. Summary Report
-    total_real = real_cum[-1]
-    total_sim = sim_cum[-1]
-    print(f"\nFinal Arrival Window (End-to-End):")
-    print(f"Real: {total_real:.1f}s")
-    print(f"Sim:  {total_sim:.1f}s")
-    print(f"Error: {total_sim - total_real:.1f}s ({(total_sim - total_real)/total_real*100:.1f}%)")
+    if real_cum and sim_cum:
+        total_real = real_cum[-1]
+        total_sim = sim_cum[-1]
+        print(f"\nFinal Arrival Window (End-to-End, Truncated to Sim):")
+        print(f"Real: {total_real:.1f}s")
+        print(f"Sim:  {total_sim:.1f}s")
+        difference = total_sim - total_real
+        error_pct = (difference / total_real * 100) if total_real > 0 else 0
+        print(f"Error: {difference:.1f}s ({error_pct:.1f}%)")
 
 if __name__ == "__main__":
     compare_week1()

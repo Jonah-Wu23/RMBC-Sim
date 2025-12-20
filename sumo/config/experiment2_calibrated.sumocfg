@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="../net/hk_irn_v3.net.xml"/>
+        <route-files value="../routes/fixed_routes.rou.xml,../routes/background_clipped.rou.xml"/>
+        <additional-files value="../additional/bus_stops.add.xml"/>
+    </input>
+
+    <time>
+        <begin value="0"/>
+        <end value="3600"/>
+    </time>
+
+    <processing>
+        <ignore-route-errors value="true"/>
+        <time-to-teleport value="300"/>
+    </processing>
+
+    <report>
+        <verbose value="true"/>
+        <no-step-log value="true"/>
+    </report>
+    
+    <output>
+        <stop-output value="../output/stopinfo_exp2.xml"/>
+        <tripinfo-output value="../output/tripinfo_exp2.xml"/>
+    </output>
+
+</configuration>

@@ -1,65 +1,106 @@
+<?xml version='1.0' encoding='utf-8'?>
 <additional>
-    <busStop id="EC19750840FFEDDC" name="Unknown" lane="edge_inbound_0_0" startPos="0.004256045800792481" endPos="15.004256045800792" friendlyPos="true" lines="68X"/>
-    <busStop id="B76B249D3D253008" name="Unknown" lane="edge_inbound_0_0" startPos="335.9444744671353" endPos="350.9444744671353" friendlyPos="true" lines="68X"/>
-    <busStop id="A7F35DC09E1A1528" name="Unknown" lane="edge_inbound_1_0" startPos="116.04033781405498" endPos="131.04033781405496" friendlyPos="true" lines="68X"/>
-    <busStop id="D242B538BA760551" name="Unknown" lane="edge_inbound_2_0" startPos="413.0202484140478" endPos="428.0202484140478" friendlyPos="true" lines="68X"/>
-    <busStop id="11ED493F674F4888" name="Unknown" lane="edge_inbound_3_0" startPos="246.688726992135" endPos="261.688726992135" friendlyPos="true" lines="68X"/>
-    <busStop id="BA765A2BCCE21F5C" name="Unknown" lane="edge_inbound_4_0" startPos="459.5692778297934" endPos="474.5692778297934" friendlyPos="true" lines="68X"/>
-    <busStop id="BE510511B0A7344E" name="Unknown" lane="edge_inbound_5_0" startPos="333.4080654768276" endPos="348.4080654768276" friendlyPos="true" lines="68X"/>
-    <busStop id="BE1A19A3705F5B70" name="Unknown" lane="edge_inbound_6_0" startPos="204.79906500030808" endPos="219.79906500030808" friendlyPos="true" lines="68X"/>
-    <busStop id="95731C2B3563CF5E" name="Unknown" lane="edge_inbound_7_0" startPos="437.2894027986492" endPos="452.2894027986492" friendlyPos="true" lines="68X"/>
-    <busStop id="4AFCFC726ADBD5F7" name="Unknown" lane="edge_inbound_8_0" startPos="418.66095622929714" endPos="433.66095622929714" friendlyPos="true" lines="68X"/>
-    <busStop id="DD9DF46F3BA040EE" name="Unknown" lane="edge_inbound_10_0" startPos="0.0" endPos="15.0" friendlyPos="true" lines="68X"/>
-    <busStop id="B7C0A83790F94D99" name="Unknown" lane="edge_inbound_10_0" startPos="503.5619828445945" endPos="518.5619828445945" friendlyPos="true" lines="68X"/>
-    <busStop id="06566A7FE3C6466A" name="Unknown" lane="edge_inbound_11_0" startPos="489.0069939428272" endPos="504.0069939428272" friendlyPos="true" lines="68X"/>
-    <busStop id="7DD772B7D55C54B2" name="Unknown" lane="edge_inbound_12_0" startPos="641.9238015722738" endPos="656.9238015722738" friendlyPos="true" lines="68X"/>
-    <busStop id="62742CFBA2BE9854" name="Unknown" lane="edge_inbound_13_0" startPos="1107.6944214222626" endPos="1122.6944214222626" friendlyPos="true" lines="68X"/>
-    <busStop id="E55FA660A59AB64A" name="Unknown" lane="edge_inbound_14_0" startPos="11273.631840184644" endPos="11288.631840184644" friendlyPos="true" lines="68X"/>
-    <busStop id="E481F7170B1F6FC3" name="Unknown" lane="edge_inbound_14_0" startPos="11273.631840184644" endPos="11288.631840184644" friendlyPos="true" lines="68X"/>
-    <busStop id="14157BA5C06B0B6B" name="Unknown" lane="edge_inbound_16_0" startPos="3965.8725974997064" endPos="3980.8725974997064" friendlyPos="true" lines="68X"/>
-    <busStop id="F63C4B8B958E9830" name="Unknown" lane="edge_inbound_17_0" startPos="360.46808957243366" endPos="375.46808957243366" friendlyPos="true" lines="68X"/>
-    <busStop id="74C51A8A3D783F40" name="Unknown" lane="edge_inbound_18_0" startPos="323.319462528936" endPos="338.319462528936" friendlyPos="true" lines="68X"/>
-    <busStop id="0E2B8E1D544C6889" name="Unknown" lane="edge_inbound_19_0" startPos="398.4807471196066" endPos="413.4807471196066" friendlyPos="true" lines="68X"/>
-    <busStop id="A010FE2C473103A8" name="Unknown" lane="edge_inbound_20_0" startPos="268.7512434330118" endPos="283.7512434330118" friendlyPos="true" lines="68X"/>
-    <busStop id="70FEB409760C77EE" name="Unknown" lane="edge_inbound_21_0" startPos="257.9308608230531" endPos="272.9308608230531" friendlyPos="true" lines="68X"/>
-    <busStop id="A1A1B10F5CE291AC" name="Unknown" lane="edge_inbound_22_0" startPos="472.54937133369066" endPos="487.54937133369066" friendlyPos="true" lines="68X"/>
-    <busStop id="A2C36DF7152EE93F" name="Unknown" lane="edge_inbound_23_0" startPos="440.3290005841025" endPos="455.3290005841025" friendlyPos="true" lines="68X"/>
-    <busStop id="60A4F4A41CD61FAC" name="Unknown" lane="edge_inbound_24_0" startPos="332.01645294322435" endPos="347.01645294322435" friendlyPos="true" lines="68X"/>
-    <busStop id="8F6C8CEB9F17D97D" name="Unknown" lane="edge_inbound_25_0" startPos="262.67045713212707" endPos="277.67045713212707" friendlyPos="true" lines="68X"/>
-    <busStop id="B09E18636F184247" name="Unknown" lane="edge_inbound_26_0" startPos="438.34765848007197" endPos="453.34765848007197" friendlyPos="true" lines="68X"/>
-    <busStop id="B113E1371D5AC497" name="Unknown" lane="edge_inbound_27_0" startPos="216.89836294910137" endPos="231.89836294910137" friendlyPos="true" lines="68X"/>
-    <busStop id="8FA8E142E834CB7C" name="Unknown" lane="edge_inbound_28_0" startPos="323.1324805710513" endPos="338.1324805710513" friendlyPos="true" lines="68X"/>
-    <busStop id="D86A74227012EAD3" name="Unknown" lane="edge_inbound_29_0" startPos="443.31036816772024" endPos="458.31036816772024" friendlyPos="true" lines="68X"/>
-    <busStop id="FFF1B4F48E111EAD" name="Unknown" lane="edge_inbound_30_0" startPos="170.21666758869398" endPos="185.21666758869398" friendlyPos="true" lines="68X"/>
-    <busStop id="87BCEC3D8C6951B2" name="Unknown" lane="edge_inbound_31_0" startPos="395.1034459480196" endPos="410.1034459480196" friendlyPos="true" lines="68X"/>
-    <busStop id="6D66CBA494DECB08" name="Unknown" lane="edge_inbound_32_0" startPos="459.8918953406335" endPos="474.8918953406335" friendlyPos="true" lines="68X"/>
-    <busStop id="EF43A73D4C0CC508" name="Unknown" lane="edge_inbound_31_0" startPos="392.8461565315712" endPos="407.8461565315712" friendlyPos="true" lines="68X"/>
-    <busStop id="BB4F24A4C6A9B222" name="Unknown" lane="edge_outbound_1_0" startPos="242.3492498966303" endPos="257.34924989663034" friendlyPos="true" lines="68X"/>
-    <busStop id="F61DB78CF72DB387" name="Unknown" lane="edge_inbound_30_0" startPos="158.41386786650892" endPos="173.41386786650892" friendlyPos="true" lines="68X"/>
-    <busStop id="0BFC5F7FC4A2D431" name="Unknown" lane="edge_inbound_28_0" startPos="314.59199404827166" endPos="329.59199404827166" friendlyPos="true" lines="68X"/>
-    <busStop id="5F616585205DDDF9" name="Unknown" lane="edge_inbound_26_0" startPos="438.3530802047597" endPos="453.3530802047597" friendlyPos="true" lines="68X"/>
-    <busStop id="147D513A708AA741" name="Unknown" lane="edge_inbound_25_0" startPos="262.67045713212707" endPos="277.67045713212707" friendlyPos="true" lines="68X"/>
-    <busStop id="B88640E0CA83F12C" name="Unknown" lane="edge_inbound_24_0" startPos="332.01645294322435" endPos="347.01645294322435" friendlyPos="true" lines="68X"/>
-    <busStop id="A8482B15AD6E89A3" name="Unknown" lane="edge_inbound_23_0" startPos="251.29750239124732" endPos="266.29750239124735" friendlyPos="true" lines="68X"/>
-    <busStop id="6A435795576D92E8" name="Unknown" lane="edge_inbound_21_0" startPos="257.93274259000145" endPos="272.93274259000145" friendlyPos="true" lines="68X"/>
-    <busStop id="48FBCEF0B05599F8" name="Unknown" lane="edge_inbound_19_0" startPos="228.87336229342262" endPos="243.87336229342262" friendlyPos="true" lines="68X"/>
-    <busStop id="1DEFCF90AB170FD7" name="Unknown" lane="edge_inbound_18_0" startPos="270.7895831995935" endPos="285.7895831995935" friendlyPos="true" lines="68X"/>
-    <busStop id="FEE97828AB584E76" name="Unknown" lane="edge_inbound_17_0" startPos="354.49258399852977" endPos="369.49258399852977" friendlyPos="true" lines="68X"/>
-    <busStop id="723EF8D7809D3ADB" name="Unknown" lane="edge_outbound_12_0" startPos="478.0206598045744" endPos="493.0206598045744" friendlyPos="true" lines="68X"/>
-    <busStop id="AB0F79ED382081D0" name="Unknown" lane="edge_outbound_13_0" startPos="214.67678134814693" endPos="229.67678134814693" friendlyPos="true" lines="68X"/>
-    <busStop id="3ECEF3B735084236" name="Unknown" lane="edge_inbound_14_0" startPos="11251.752542915665" endPos="11266.752542915665" friendlyPos="true" lines="68X"/>
-    <busStop id="447C1D79A10C83E2" name="Unknown" lane="edge_inbound_14_0" startPos="11182.599757959626" endPos="11197.599757959626" friendlyPos="true" lines="68X"/>
-    <busStop id="F36F422FDC6B9D3F" name="Unknown" lane="edge_inbound_13_0" startPos="962.6614543911584" endPos="977.6614543911584" friendlyPos="true" lines="68X"/>
-    <busStop id="50E78EB09845863E" name="Unknown" lane="edge_inbound_12_0" startPos="624.6617303623606" endPos="639.6617303623606" friendlyPos="true" lines="68X"/>
-    <busStop id="09A156B1A802D093" name="Unknown" lane="edge_inbound_11_0" startPos="346.5539855360247" endPos="361.5539855360247" friendlyPos="true" lines="68X"/>
-    <busStop id="BD34A7B702373B12" name="Unknown" lane="edge_inbound_10_0" startPos="502.1520479231896" endPos="517.1520479231897" friendlyPos="true" lines="68X"/>
-    <busStop id="E30C2815DA280036" name="Unknown" lane="edge_inbound_10_0" startPos="26.771117580919583" endPos="41.77111758091958" friendlyPos="true" lines="68X"/>
-    <busStop id="C06334CA2AF7814B" name="Unknown" lane="edge_inbound_8_0" startPos="273.73699855219377" endPos="288.73699855219377" friendlyPos="true" lines="68X"/>
-    <busStop id="812E72C257C94B73" name="Unknown" lane="edge_inbound_7_0" startPos="311.46524874185604" endPos="326.46524874185604" friendlyPos="true" lines="68X"/>
-    <busStop id="18C138014DF5B0C8" name="Unknown" lane="edge_outbound_23_0" startPos="503.54730314043167" endPos="518.5473031404317" friendlyPos="true" lines="68X"/>
-    <busStop id="0FDE3A87457539BC" name="Unknown" lane="edge_outbound_24_0" startPos="395.41931427283566" endPos="410.41931427283566" friendlyPos="true" lines="68X"/>
-    <busStop id="30B08A7B2B2B623F" name="Unknown" lane="edge_outbound_25_0" startPos="527.0189553517032" endPos="542.0189553517032" friendlyPos="true" lines="68X"/>
-    <busStop id="7ADC6D521E6BECE6" name="Unknown" lane="edge_outbound_26_0" startPos="324.56436283886455" endPos="339.56436283886455" friendlyPos="true" lines="68X"/>
-    <busStop id="E02E10C9135624F9" name="Unknown" lane="edge_outbound_27_0" startPos="271.6577581705011" endPos="286.6577581705011" friendlyPos="true" lines="68X"/>
-    <busStop id="145515B1D2C60CAF" name="Unknown" lane="edge_inbound_0_0" startPos="13.26319314905662" endPos="28.26319314905662" friendlyPos="true" lines="68X"/>
+    <busStop id="06566A7FE3C6466A" name="CHEUNG LAI STREET CHEUNG SHA WAN (SS245)" lane="9023_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="09A156B1A802D093" name="LAI CHI KOK STATION (SS467)" lane="8685_0" startPos="88.09" endPos="108.09" lines="68X" friendlyPos="true" />
+    <busStop id="0BFC5F7FC4A2D431" name="HUNG SHUI KIU STATION (YL350)" lane="97070_0" startPos="247.00" endPos="267.00" lines="68X" friendlyPos="true" />
+    <busStop id="0E2B8E1D544C6889" name="YUEN LONG POLICE STATION (YL256)" lane="95600_1" startPos="37.74" endPos="57.74" lines="68X" friendlyPos="true" />
+    <busStop id="0FDE3A87457539BC" name="MONGKOK POLICE STATION (MK505)" lane="106031_1" startPos="116.74" endPos="136.74" lines="68X" friendlyPos="true" />
+    <busStop id="11ED493F674F4888" name="BUTE STREET, PIONEER CENTRE (MK179)" lane="106985_rev_0" startPos="55.22" endPos="75.22" lines="68X" friendlyPos="true" />
+    <busStop id="13E0A0449C73F4DE" name="QUEEN STREET (CW785)" lane="4833_0" startPos="77.09" endPos="97.09" lines="960" friendlyPos="true" />
+    <busStop id="14157BA5C06B0B6B" name="YOHO MIX (YL243)" lane="95989_1" startPos="47.89" endPos="67.89" lines="68X" friendlyPos="true" />
+    <busStop id="145515B1D2C60CAF" name="HOI FU COURT, PARK AVENUE (MK120)" lane="105734_0" startPos="43.33" endPos="63.33" lines="68X" friendlyPos="true" />
+    <busStop id="147D513A708AA741" name="FUI SHA WAI (YL353)" lane="272583_rev_0" startPos="0" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="18C138014DF5B0C8" name="MAPLE STREET SHAM SHUI PO (SS496)" lane="106268_0" startPos="15.96" endPos="35.96" lines="68X" friendlyPos="true" />
+    <busStop id="19B569A51034271F" name="SHEK PAI STATION (TM584)" lane="97018_0" startPos="244.29" endPos="264.29" lines="960" friendlyPos="true" />
+    <busStop id="1AD9C759A42F9003" name="CHINA LIGHT BUILDING (TM470)" lane="94457_0" startPos="81.43" endPos="101.43" lines="960" friendlyPos="true" />
+    <busStop id="1D8A902219897402" name="WING KUT STREET (CW767)" lane="1305_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="1DEFCF90AB170FD7" name="TUNG LOK STREET YUEN LONG (YL371)" lane="95598_0" startPos="93.26" endPos="113.26" lines="68X" friendlyPos="true" />
+    <busStop id="1F6BFDF34BABCE6A" name="TIN YUE HOUSE TIN KING ESTATE (TM540)" lane="94642_1" startPos="122.28" endPos="142.28" lines="960" friendlyPos="true" />
+    <busStop id="25BC743BF6EB726E" name="TUEN MUN TOWN PLAZA (TM122)" lane="94045_rev_0" startPos="74.19" endPos="94.19" lines="960" friendlyPos="true" />
+    <busStop id="25D811895B82ABCA" name="MACAU FERRY (CW111)" lane="2468_rev_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="274BF3A877FB8E6C" name="KIN SANG BUS TERMINUS (TM931)" lane="bridge_960_GAP_10_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="30B08A7B2B2B623F" name="SAI YEUNG CHOI STREET SOUTH, MONG KOK STATION" lane="107450_0" startPos="9.71" endPos="29.71" lines="68X" friendlyPos="true" />
+    <busStop id="315BE0CA231DCD4F" name="PO TIN BBI - PO TIN (TM190)" lane="94664_rev_0" startPos="269.37" endPos="289.37" lines="960" friendlyPos="true" />
+    <busStop id="376C4835851621D4" name="TUEN MUN ROAD BBI (A15) (TM750)" lane="97116_0" startPos="2953.88" endPos="2973.88" lines="960" friendlyPos="true" />
+    <busStop id="3ECEF3B735084236" name="TAI LAM TUNNEL BBI (A5) (YL791)" lane="261287_rev_1" startPos="140.89" endPos="160.89" lines="68X" friendlyPos="true" />
+    <busStop id="48FBCEF0B05599F8" name="HI LEE PATH YUEN LONG (YL367)" lane="95425_1" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="4AFCFC726ADBD5F7" name="YEE KOK COURT (SS221)" lane="106580_0" startPos="236.71" endPos="256.71" lines="68X" friendlyPos="true" />
+    <busStop id="507D90B4B976DBD6" name="TIN LOK HOUSE TIN KING ESTATE (TM536)" lane="94266_1" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="50E78EB09845863E" name="MEI FOO BBI (SS463)" lane="8663_rev_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="542CC0EC83BAEA01" name="SAN WAI COURT (TM380)" lane="94642_1" startPos="66.65" endPos="86.65" lines="960" friendlyPos="true" />
+    <busStop id="594A765BE3A43C73" name="PO TIN BBI - GOODRICH GARDEN (TM580)" lane="94664_rev_0" startPos="114.66" endPos="134.66" lines="960" friendlyPos="true" />
+    <busStop id="5F616585205DDDF9" name="TAI TAO TSUEN (YL352)" lane="97407_0" startPos="73.07" endPos="93.07" lines="68X" friendlyPos="true" />
+    <busStop id="60A4F4A41CD61FAC" name="SAN HEI TSUEN (YL265)" lane="95550_0" startPos="0" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="62742CFBA2BE9854" name="KWAI CHUNG INTERCHANGE (KW100)" lane="9934_2" startPos="713.84" endPos="733.84" lines="68X" friendlyPos="true" />
+    <busStop id="629D4E7DD9EF1AC6" name="TAI HING SPORTS CENTRE (TM554)" lane="96999_0" startPos="31.61" endPos="51.61" lines="960" friendlyPos="true" />
+    <busStop id="6A435795576D92E8" name="VILLA BY THE PARK (YL356)" lane="95649_0" startPos="338.87" endPos="358.87" lines="68X" friendlyPos="true" />
+    <busStop id="6AE148CA74FC4D53" name="TAI HING STREET (TM572)" lane="94457_0" startPos="88.00" endPos="108.00" lines="960" friendlyPos="true" />
+    <busStop id="6D66CBA494DECB08" name="HUNG SHUI KIU (HUNG FUK ESTATE) BUS TERMINUS" lane="260430_0" startPos="35.46" endPos="55.46" lines="68X" friendlyPos="true" />
+    <busStop id="6F9CEABEE36E8682" name="PACIFIC PLACE (A3) (CW741)" lane="2731_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="709C8604AFB90F27" name="HARBOUR BUILDING (CW135)" lane="513_0" startPos="41.10" endPos="61.10" lines="960" friendlyPos="true" />
+    <busStop id="70FEB409760C77EE" name="YUEN LONG PARK (YL261)" lane="95649_0" startPos="305.68" endPos="325.68" lines="68X" friendlyPos="true" />
+    <busStop id="723EF8D7809D3ADB" name="YOHO MALL II (YL392)" lane=":14935_5_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="72F743E4D464E498" name="WESTERN HARBOUR TUNNEL BBI (YT313)" lane="106944_rev_0" startPos="609.71" endPos="629.71" lines="960" friendlyPos="true" />
+    <busStop id="74C51A8A3D783F40" name="TAI TONG ROAD YUEN LONG (YL253)" lane="95598_0" startPos="146.31" endPos="166.31" lines="68X" friendlyPos="true" />
+    <busStop id="7ADC6D521E6BECE6" name="MONGKOK MARKET COMPLEX, YAU TSIM MONG DHC (MK626)" lane="106972_rev_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="7DD772B7D55C54B2" name="MEI FOO BBI (SS321)" lane="8044_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="8121695666A4D9CE" name="TUEN YAN STREET TUEN MUN (TM718)" lane="93953_rev_1" startPos="27.48" endPos="47.48" lines="960" friendlyPos="true" />
+    <busStop id="812E72C257C94B73" name="PEI HO STREET SHAM SHUI PO (SS491)" lane="107083_0" startPos="139.92" endPos="159.92" lines="68X" friendlyPos="true" />
+    <busStop id="8379C4B1265C27F7" name="JARDINE HOUSE (CW112)" lane="2480_0" startPos="25.94" endPos="45.94" lines="960" friendlyPos="true" />
+    <busStop id="83B717529F9794BC" name="LI YUEN STREET EAST (CW763)" lane="165041_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="840532B7C95DF870" name="SIU PONG COURT (TM382)" lane="94266_1" startPos="14.45" endPos="34.45" lines="960" friendlyPos="true" />
+    <busStop id="87BCEC3D8C6951B2" name="HUNG SHUI KIU TIN SAM ROAD (YL120)" lane="96285_1" startPos="38.43" endPos="58.43" lines="68X" friendlyPos="true" />
+    <busStop id="8F6C8CEB9F17D97D" name="FUI SHA WAI (YL266)" lane="96273_rev_0" startPos="0" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="8FA8E142E834CB7C" name="HUNG SHUI KIU STATION (YL270)" lane="96478_0" startPos="27.50" endPos="47.50" lines="68X" friendlyPos="true" />
+    <busStop id="92A8D40E66E76F6B" name="TAI HING SPORTS CENTRE (TM476)" lane="96999_0" startPos="109.62" endPos="129.62" lines="960" friendlyPos="true" />
+    <busStop id="95731C2B3563CF5E" name="YEN CHOW STREET SHAM SHUI PO (SS213)" lane="107083_0" startPos="266.01" endPos="286.01" lines="68X" friendlyPos="true" />
+    <busStop id="A010FE2C473103A8" name="SHUI PIN TSUEN (YL259)" lane="95649_0" startPos="45.35" endPos="65.35" lines="68X" friendlyPos="true" />
+    <busStop id="A1A1B10F5CE291AC" name="LONG BIN (YL263)" lane="97153_rev_0" startPos="309.18" endPos="329.18" lines="68X" friendlyPos="true" />
+    <busStop id="A2C36DF7152EE93F" name="PING SHAN (YL264)" lane="bridge_68X_GAP_2_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="A63B90588F747496" name="BANK OF CHINA TOWER (CW745)" lane="4939_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="A7F35DC09E1A1528" name="BEECH STREET (MK140)" lane="106831_rev_1" startPos="170.47" endPos="190.47" lines="68X" friendlyPos="true" />
+    <busStop id="A81B13297DB1C481" name="MAN WA LANE (CW769)" lane="115545_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="A8482B15AD6E89A3" name="PING SHAN (YL355)" lane="97153_rev_0" startPos="56.18" endPos="76.18" lines="68X" friendlyPos="true" />
+    <busStop id="AB0F79ED382081D0" name="YOHO MALL I (YL404)" lane=":14935_5_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="ACB5FEA2BF9FC5AD" name="TUEN MUN ROAD BBI (A4) (TM755)" lane="97116_0" startPos="3025.54" endPos="3045.54" lines="960" friendlyPos="true" />
+    <busStop id="AD1B202B678A3B56" name="ARSENAL STREET (WC210)" lane="4202_rev_1" startPos="56.17" endPos="76.17" lines="960" friendlyPos="true" />
+    <busStop id="AD97EA183A25102C" name="WESTERN HARBOUR TUNNEL BBI (YT603)" lane="261296_0" startPos="40.46" endPos="60.46" lines="960" friendlyPos="true" />
+    <busStop id="ADC51A7EEEE43D6F" name="EXHIBITION CENTRE STATION BUS TERMINUS (WC941)" lane="4287_rev_0" startPos="98.31" endPos="118.31" lines="960" friendlyPos="true" />
+    <busStop id="B09E18636F184247" name="TAI TAO TSUEN (YL267)" lane="96273_rev_0" startPos="0" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="B113E1371D5AC497" name="UPTOWN (YL268)" lane="96522_1" startPos="88.00" endPos="108.00" lines="68X" friendlyPos="true" />
+    <busStop id="B30799FB3732222B" name="FLEMING ROAD (WC214)" lane="3895_0" startPos="43.96" endPos="63.96" lines="960" friendlyPos="true" />
+    <busStop id="B3B160F8F8017035" name="GREENLAND GARDEN (TM570)" lane="94968_rev_0" startPos="61.59" endPos="81.59" lines="960" friendlyPos="true" />
+    <busStop id="B76B249D3D253008" name="FOO KWAI STREET (MK200)" lane="105653_rev_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="B7C0A83790F94D99" name="HING WAH STREET CHEUNG SHA WAN (SS231)" lane="272309_0" startPos="229.66" endPos="249.66" lines="68X" friendlyPos="true" />
+    <busStop id="B88640E0CA83F12C" name="TONG FONG TSUEN STATION (YL354)" lane="272584_0" startPos="0" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="BA765A2BCCE21F5C" name="TONG MI ROAD MONG KOK (MK304)" lane="106073_0" startPos="74.21" endPos="94.21" lines="68X" friendlyPos="true" />
+    <busStop id="BB4F24A4C6A9B222" name="TIN SUM (YL625)" lane="96300_0" startPos="97.61" endPos="117.61" lines="68X" friendlyPos="true" />
+    <busStop id="BC301D7E7F063331" name="SAN HUI MARKET (TM132)" lane="121514_rev_1" startPos="257.93" endPos="277.93" lines="960" friendlyPos="true" />
+    <busStop id="BD34A7B702373B12" name="CHEUNG WAH STREET (SS473)" lane="8000_rev_1" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="BE1A19A3705F5B70" name="WONG CHUK STREET SHAM SHUI PO (SS202)" lane="105335_rev_0" startPos="41.68" endPos="61.68" lines="68X" friendlyPos="true" />
+    <busStop id="BE510511B0A7344E" name="TAI NAN STREET (SS340)" lane="105786_rev_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="C06334CA2AF7814B" name="KIU KIANG STREET SHAM SHUI PO (SS482)" lane="106580_0" startPos="91.42" endPos="111.42" lines="68X" friendlyPos="true" />
+    <busStop id="C192BEF2264E0CC6" name="SHEK PAI STATION (TM188)" lane="97018_0" startPos="256.37" endPos="276.37" lines="960" friendlyPos="true" />
+    <busStop id="C2787E27F82716BF" name="WALDORF GARDEN (TM721)" lane="96965_0" startPos="385.89" endPos="405.89" lines="960" friendlyPos="true" />
+    <busStop id="C3D2F84C0F0FF415" name="FLEMING ROAD (WC670)" lane="5291_0" startPos="248.27" endPos="268.27" lines="960" friendlyPos="true" />
+    <busStop id="C804CCACB2781EEE" name="LIPPO CENTRE (E1) (CW160)" lane="2448_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="CBE54DB551C24A02" name="HUNG KIU (TM133)" lane="bridge_960_GAP_6_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="D242B538BA760551" name="MONG KOK ROAD (MK330)" lane="105817_1" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="D86A74227012EAD3" name="BAUHINIA GARDEN (YL272)" lane="94947_rev_0" startPos="214.83" endPos="234.83" lines="68X" friendlyPos="true" />
+    <busStop id="DD56DC2336C878C1" name="HUNG KIU (TM714)" lane="96344_0" startPos="0.00" endPos="20.00" lines="960" friendlyPos="true" />
+    <busStop id="DD9DF46F3BA040EE" name="CHEUNG SHA WAN PLAYGROUND (SS225)" lane="107087_0" startPos="283.00" endPos="303.00" lines="68X" friendlyPos="true" />
+    <busStop id="DFE346B2C7332BC0" name="TUEN MUN ROAD BBI (B6) (TM102)" lane="95356_0" startPos="314.91" endPos="334.91" lines="960" friendlyPos="true" />
+    <busStop id="E02E10C9135624F9" name="MING KEI COLLEGE (MK632)" lane="106831_rev_0" startPos="391.25" endPos="411.25" lines="68X" friendlyPos="true" />
+    <busStop id="E30C2815DA280036" name="UN CHAU ESTATE (SS477)" lane="106606_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="E481F7170B1F6FC3" name="TAI LAM TUNNEL BBI (B1) (YL236)" lane="93499_1" startPos="51.91" endPos="71.91" lines="68X" friendlyPos="true" />
+    <busStop id="E55FA660A59AB64A" name="TAI LAM TUNNEL BBI (B5) (YL232)" lane="93721_rev_0" startPos="63.27" endPos="83.27" lines="68X" friendlyPos="true" />
+    <busStop id="EB64718829DFC071" name="TOI SHAN PRIMARY SCHOOL (TM472)" lane="94968_rev_0" startPos="34.11" endPos="54.11" lines="960" friendlyPos="true" />
+    <busStop id="EC19750840FFEDDC" name="MONG KOK (PARK AVENUE) BUS TERMINUS (MK912)" lane="105735_rev_0" startPos="53.20" endPos="73.20" lines="68X" friendlyPos="true" />
+    <busStop id="ECE3F3BE270C27E2" name="BLOSSOM GARDEN (TM478)" lane="94236_rev_0" startPos="103.01" endPos="123.01" lines="960" friendlyPos="true" />
+    <busStop id="EF43A73D4C0CC508" name="HUNG SHUI KIU TIN SAM ROAD (YL590)" lane="97403_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="F36F422FDC6B9D3F" name="KWAI CHUNG INTERCHANGE (KW465)" lane="8732_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="F61DB78CF72DB387" name="RURAL COMMITTEE (YL626)" lane=":4394_1_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
+    <busStop id="F63C4B8B958E9830" name="YAU SAN STREET YUEN LONG (YL247)" lane="95503_rev_0" startPos="53.21" endPos="73.21" lines="68X" friendlyPos="true" />
+    <busStop id="FEE97828AB584E76" name="KUK TING STREET YUEN LONG (YL377)" lane="95592_0" startPos="80.68" endPos="100.68" lines="68X" friendlyPos="true" />
+    <busStop id="FFF1B4F48E111EAD" name="RURAL COMMITTEE (YL100)" lane=":4394_1_0" startPos="0.00" endPos="20.00" lines="68X" friendlyPos="true" />
 </additional>

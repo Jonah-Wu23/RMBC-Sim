@@ -9,7 +9,7 @@
 
 ## 全周期里程碑（Week 1–6）
 - [x] Week 1：基础环境搭建（SUMO 场景 + TraCI + 香港真值提取/清洗）
-- [ ] Week 2：L1 微观层校准最小闭环（参数采样 + 单代理 BO + 基础时刻对齐指标）
+- [x] Week 2：L1 微观层校准最小闭环（参数采样 + 单代理 BO + 基础时刻对齐指标）
 - [ ] Week 3：L1 微观层校准完善（双代理 Kriging+RBF 融合 + 鲁棒分布指标 + 验证/消融）
 - [ ] Week 4：L2 宏观层融合（EnKF/同化模块 + 路段速度分布匹配）
 - [ ] Week 5：对比实验与鲁棒性评估（K-S 检验、不同拥堵情景、敏感性分析）
@@ -140,35 +140,114 @@
   - [x] **采样策略**：实现拉丁超立方采样 (LHS) 生成初始样本集 (e.g., N=15-20)。
 
 ### 3）L1 校准闭环构建 (MVC Loop)
-- [ ] **单一代理模型 (Surrogate)**：先实现 Kriging (Gaussian Process) 模型，跑通全流程。
-- [ ] **采集函数 (Acquisition)**：实现 Expected Improvement (EI) 策略。
-- [ ] **基础目标函数 ($J_1$)**：定义 RMSE (站点到/离站时刻)。
-- [ ] **自动化流程脚本**：
-  - [ ] 实现 `Gen Params` -> `Run SUMO` -> `Parse Output` -> `Update Surrogate` -> `Next Param` 的自动迭代。
+- [x] **单一代理模型 (Surrogate)**：先实现 Kriging (Gaussian Process) 模型，跑通全流程。
+- [x] **采集函数 (Acquisition)**：实现 Expected Improvement (EI) 策略。
+- [x] **基础目标函数 ($J_1$)**：定义 RMSE (站点到/离站时刻)。
+- [x] **自动化流程脚本**：
+  - [x] 实现 `Gen Params` -> `Run SUMO` -> `Parse Output` -> `Update Surrogate` -> `Next Param` 的自动迭代。
 
 ### 4）基线与首轮校准运行
-- [ ] **基线运行 (B1)**：使用默认参数运行，记录各项指标作为对照。
-- [ ] **MVC 迭代**：运行 20-30 次迭代，验证 BO 搜索是否能有效降低 $J_1$。
-- [ ] **结果可视化**：绘制收敛曲线（Iteration vs. $J_1$）及初步轨迹对比图。
+- [x] **基线运行 (B1)**：使用默认参数运行，记录各项指标作为对照。
+- [x] **MVC 迭代**：运行 20-30 次迭代，验证 BO 搜索是否能有效降低 $J_1$。
+- [x] **结果可视化**：绘制收敛曲线（Iteration vs. $J_1$）及初步轨迹对比图。
 
 ## Week 3（L1 完善：双代理与鲁棒性）
 ### 1）多代理模型融合 (Dual Surrogates)
-- [ ] **模型增强**：实现 RBF (Radial Basis Function) 插值模型。
-- [ ] **融合接口**：实现双代理融合（加权或 Stacking 策略），提升全局与局部拟合精度。
+- [x] **模型增强**：实现 RBF (Radial Basis Function) 插值模型（高斯核，epsilon 自动计算）。
+- [x] **融合接口**：实现双代理融合（反比方差加权策略），提升全局与局部拟合精度。
 
 ### 2）鲁棒性目标函数升级
-- [ ] **分布损失**：在 $J_1$ 中引入 K-S 统计量或 Wasserstein 距离，对齐停站/站间时间分布。
-- [ ] **综合目标**：实现 $J = \text{mean}(E) + \lambda \cdot \text{std}(E)$ 或分位数损失（P90）以增强参数跨时段的鲁棒性。
+- [x] **分布损失**：在 $J_1$ 中引入 K-S 统计量和 Wasserstein 距离，对齐停站/站间时间分布。
+- [x] **综合目标**：实现 $J = \text{mean}(E) + \lambda \cdot \text{std}(E)$ 和分位数损失（P90）以增强参数跨时段的鲁棒性。
 
-### 3）多场景验证与消融实验
-- [ ] **跨时段/跨日测试**：在训练集（如 D1）校准后，在测试集（如 D2）验证表现。
-- [ ] **消融实验**：对比“单代理 vs 双代理”、“均值目标 vs 鲁棒目标”的效果提升。
-- [ ] **结果验证**：生成 CDF 对比图（停留时间/站间时间）及误差统计表。
+### 3）B3 Baseline 运行与验证
+- [ ] **B3 运行**：使用双代理 (Kriging+RBF) + 单层 $J_1$ 在当前数据集上运行校准。
+- [ ] **结果对比**：与 B1（默认参数）、B2（单代理 Kriging）对比收敛曲线和最终 RMSE。
 
-## Week 4（L2 同化：宏观拥堵融合）
-- [ ] 固定 L1 最优/后验，定义 L2 参数：`a`, `b`, `capacityFactor`
-- [ ] EnKF 状态/观测定义：路段速度观测、观测算子（map matching）
-- [ ] 形成 L1+L2 协同校准闭环（交替/嵌套策略明确）
+### 4）跨日验证（待 Week 4 完成后执行）
+> **依赖**：需完整双层流程（双代理 + 双层 $J_1+J_2$）构建完成后进行。
+
+- [ ] **新数据收集**：周一 (12/22) 17:00–18:00 收集新测试数据集 D2。
+- [ ] **跨日测试**：分别在 D1 (12/17) 和 D2 (12/22) 上优化，对比泛化能力。
+
+## Week 4（L2 同化：宏观拥堵融合 - IES 进阶版）
+
+**目标**：利用迭代式系综平滑（Iterative Ensemble Smoother, IES）算法，校准宏观路网参数，使背景交通流产生的拥堵形态与真实世界一致。
+
+### Step 1: 物理冻结与状态向量定义 (Freeze & Define)
+- [ ] [cite_start]**1.1 锁定 L1 微观参数 (The "Certified" Bus)** [cite: 17, 25, 46]
+    - [ ] 读取 Week 3 产出的 `config/calibration/best_l1_parameters.json`。
+    - [ ] **强制约束**：在生成新的 `*.rou.xml` 或 `*.add.xml` 时，公交车的 `t_board`, `tau`, `accel`, `decel` 必须硬编码为上述文件中的最优值。
+    - [ ] **严禁**将这些 L1 参数加入 L2 的优化变量中，确保微观物理一致性。
+
+- [ ] [cite_start]**1.2 定义 L2 状态向量 ($X$) 与先验分布** [cite: 33, 34, 35]
+    - [ ] 确定待校准宏观参数及其初始高斯分布 $X \sim \mathcal{N}(\mu, P)$：
+        - **`capacityFactor` (Global)**: $\mu=1.0, \sigma=0.15$ (范围 $[0.5, 1.2]$)。控制全网流量瓶颈。
+        - **`minGap` (Background)**: $\mu=2.5, \sigma=0.5$ (范围 $[1.0, 4.0]$)。控制拥堵时的排队密度。
+        - **`impatience` (Background)**: $\mu=0.5, \sigma=0.2$ (范围 $[0.0, 1.0]$)。控制拥堵时的变道积极性。
+    - [ ] 编写 `config/calibration/l2_priors.json` 存储这些均值和方差。
+
+### Step 2: 观测向量构建 (Observation Construction)
+- [ ] [cite_start]**2.1 建立“高置信度”观测向量 ($Y_{obs}$)** [cite: 23, 24, 36]
+    - [ ] 输入：`enriched_link_stats.csv` (17:00-18:00 真值)。
+    - [ ] **筛选逻辑**：
+        1.  仅选取 **Main Corridor** (68X/960 沿线) 的路段。
+        2.  剔除样本量 $N < 10$ 的噪声路段。
+        3.  剔除长度 $< 50m$ 的短路段（仿真误差大）。
+    - [ ] **输出**：生成一个标准的观测向量文件 `data/calibration/l2_observation_vector.csv`，包含 $M$ 个路段的平均速度值（例如 $M=50$ 个关键路段）。
+
+- [ ] [cite_start]**2.2 构建观测算子 ($H(x)$)** [cite: 36, 47]
+    - [ ] 升级 `parse_loop_output.py`：使其能读取 SUMO 的 `edgedata.out.xml`。
+    - [ ] 实现映射逻辑：按 `l2_observation_vector.csv` 中的路段 ID 顺序，提取对应的仿真速度，组成同维度的仿真向量 $Y_{sim}$。
+
+### Step 3: 迭代式系综平滑循环 (The IES Loop)
+> **核心脚本**: `scripts/calibration/run_ies_loop.py`
+> **逻辑**: 批量仿真 $\rightarrow$ 计算协方差 $\rightarrow$ 更新参数分布 $\rightarrow$ 下一轮批量。
+
+- [ ] **3.1 初始化 (Initialization)**
+    - [ ] 设定系综规模 $N = 20$ (即每轮并行跑 20 个仿真)。
+    - [ ] 设定最大迭代轮数 $K = 5$ (IES 收敛较快，3-5 轮通常足够)。
+
+- [ ] [cite_start]**3.2 系综生成 (Ensemble Generation - The "Predict" Step)** [cite: 36, 41]
+    - [ ] 利用当前参数分布 $\mathcal{N}(\mu_k, P_k)$，使用 `numpy.random.multivariate_normal` 采样生成 $N$ 组参数向量 $\{X_1, X_2, ..., X_N\}$。
+    - [ ] 将这 $N$ 组参数分别写入 $N$ 个独立的配置文件（如 `run_0.sumocfg`, `run_1.sumocfg`...），对应修改 `capacityFactor` 等宏观变量。
+
+- [ ] [cite_start]**3.3 并行批量仿真 (Batch Simulation)** [cite: 18, 50]
+    - [ ] 利用 `multiprocessing` 或 `subprocess` 并行启动 $N$ 个 SUMO 实例。
+    - [ ] 每个实例运行完整的 1 小时（3600s），以获取稳定的宏观流体状态。
+    - [ ] **关键**：等待所有 $N$ 个进程全部结束 (Join)。
+
+- [ ] [cite_start]**3.4 状态收集与残差计算** [cite: 30, 36]
+    - [ ] 收集 $N$ 个结果向量 $Y_{sim, 1}...Y_{sim, N}$。
+    - [ ] 计算每个样本的残差：$E_i = Y_{obs} - Y_{sim, i}$。
+    - [ ] 计算整体 RMSE 和 K-S 距离作为本轮收敛判据。
+
+- [ ] [cite_start]**3.5 IES 更新步 (The Update Analysis)** [cite: 36, 47]
+    - [ ] **计算协方差矩阵**：
+        - $C_{xf}$：参数 $X$ 与模型预测 $Y_{sim}$ 之间的互协方差。
+        - $C_{ff}$：模型预测 $Y_{sim}$ 的自协方差。
+    - [ ] **计算卡尔曼增益 ($K$)**：
+        - $K = C_{xf} (C_{ff} + R)^{-1}$ （其中 $R$ 是观测噪声矩阵，可设为对角阵，值取观测方差）。
+    - [ ] **更新参数分布**：
+        - 利用公式更新参数均值：$\mu_{new} = \mu_{old} + K(Y_{obs} - \bar{Y}_{sim})$。
+        - (*进阶可选*) 收缩参数方差 $P$ 以聚焦搜索范围。
+    - [ ] **日志记录**：将本轮的 $\mu_{new}$ 和 RMSE 写入 `data/calibration/l2_ies_log.csv`。
+
+### Step 4: 结果验证与可视化 (Validation)
+- [ ] **4.1 最优解确认**
+    - [ ] 从最后一轮 IES 中选取误差最小的那一组参数作为最终 $\theta_{L2}$。
+    - [ ] 更新 `config/calibration/final_simulation_parameters.json` (合并 L1+L2)。
+
+- [ ] [cite_start]**4.2 时空图物理验证 (Physics Check)** [cite: 38]
+    - [ ] 运行 `plot_spacetime.py`。
+    - [ ] **Checklist**:
+        - [ ] 是否在真实拥堵位置（如美孚转盘、红隧入口）复现了“深色拥堵带”？
+        - [ ] 拥堵带的“消散时间”是否与现实接近？
+
+- [ ] [cite_start]**4.3 统计分布检验** [cite: 19, 38]
+    - [ ] 运行 `verify_distribution.py`。
+    - [ ] 绘制全路网速度的 CDF (累积分布函数) 对比图。
+    - [ ] 计算 K-S 统计量 ($D_{KS}$)，目标是 $D_{KS} < 0.15$ 或 p-value $> 0.05$ (无法拒绝同分布假设)。
 
 ## Week 5（评估：鲁棒性与泛化）
 - [ ] K-S 检验（95%）：速度分布同源性结论

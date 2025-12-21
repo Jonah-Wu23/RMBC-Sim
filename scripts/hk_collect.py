@@ -167,7 +167,7 @@ def main():
     ap.add_argument("--duration", type=int, default=0, help="轮询总时长（秒），0 表示只抓取一次")
     args = ap.parse_args()
 
-    target_time = datetime.datetime(2025, 12, 19, 17, 0, 0)
+    target_time = datetime.datetime(2025, 12, 21, 17, 0, 0)
     print(f"[{datetime.datetime.now()}] Timer started. Waiting until {target_time} (UTC+8)...")
     while True:
         now = datetime.datetime.now()

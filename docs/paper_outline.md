@@ -110,7 +110,7 @@ Bus simulation; parameter inversion; multi-level calibration; Bayesian optimizat
 ---
 
 ## 5. Experimental Setup
-
+双代理Kriging+RBF双层J1+J2
 ### 5.1 Study Area & Route Selection
 
 - 线路信息：长度、站点数、主要走廊、早晚高峰特征
@@ -125,9 +125,9 @@ Bus simulation; parameter inversion; multi-level calibration; Bayesian optimizat
 ### 5.3 Baselines（必须有，且至少 3 个）
 
 - B1：手工经验参数 / 默认参数
-- B2：单层校准（只 J1 或只 J2）
-- B3：PSO/GA（黑箱优化）
-- B4（可选）：单代理 BO（只有 Kriging 或只有 RBF）
+- B2：单代理Kriging单层J1
+- B3：双代理Kriging+RBF单层J1
+- B4：单代理Kriging双层J1+J2
 
 ### 5.4 Evaluation Protocol
 

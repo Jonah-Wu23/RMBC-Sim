@@ -15,7 +15,9 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(_
 sys.path.append(PROJECT_ROOT)
 
 from src.calibration.surrogate import KrigingSurrogate
-from src.calibration.objective import calculate_l1_rmse
+from src.calibration.rbf_surrogate import RBFSurrogate
+from src.calibration.dual_surrogate import DualSurrogate
+from src.calibration.objective import calculate_l1_rmse, calculate_l1_robust_objective
 
 def ensure_dir(file_path: str):
     """确保文件所在的目录存在"""
@@ -41,8 +43,10 @@ class L1CalibrationLoop:
         self.log_file = os.path.join(self.root, f'data/calibration/l1_calibration_log_{timestamp}.csv')
         ensure_dir(self.log_file)
         
-        # 初始化代理模型 (Kriging / Gaussian Process)
-        self.surrogate = KrigingSurrogate(random_state=self.config.get('sampling', {}).get('seed', 42))
+        # 初始化代理模型 (默认 Kriging，可通过参数切换)
+        # 注意：代理模型类型在 run() 方法中根据 surrogate_type 参数动态设置
+        self.surrogate = None  # 延迟初始化
+        self.random_state = self.config.get('sampling', {}).get('seed', 42)
         
         # SUMO 相关路径 (使用绝对路径提高鲁棒性)
         self.sumocfg = os.path.join(self.root, 'sumo/config/experiment2_cropped.sumocfg')
@@ -164,16 +168,41 @@ class L1CalibrationLoop:
             print(f"[ERROR] Objective calculation failed: {e}")
             return {'rmse': 1e6, 'rmse_68x': 1e6, 'rmse_960': 1e6, 'penalty': 1e6}
 
-    def run(self, max_iters: int = 10, n_init: int = 10, warm_start_log: Optional[str] = None):
+    def run(self, max_iters: int = 10, n_init: int = 10, warm_start_log: Optional[str] = None,
+            surrogate_type: str = 'kriging', objective_type: str = 'rmse',
+            lambda_std: float = 0.5, ks_weight: float = 50.0):
         """
         开始完整校准循环：LHS 探索 -> BO 优化
         
         Args:
             max_iters: 贝叶斯优化迭代次数
             n_init: 初始样本数量（仅在非热启动模式下使用）
-            warm_start_log: 热启动日志文件路径。如果提供，将跳过初始仿真阶段，
-                           直接使用历史数据训练代理模型
+            warm_start_log: 热启动日志文件路径
+            surrogate_type: 代理模型类型 ('kriging', 'rbf', 'dual')
+            objective_type: 目标函数类型 ('rmse', 'robust')
+            lambda_std: 鲁棒损失的 λ 参数
+            ks_weight: K-S 统计量权重
         """
+        # 初始化代理模型
+        if surrogate_type == 'dual':
+            self.surrogate = DualSurrogate(kriging_random_state=self.random_state)
+            print(f"[CONFIG] 使用双代理融合模型 (Kriging + RBF 反比方差加权)")
+        elif surrogate_type == 'rbf':
+            self.surrogate = RBFSurrogate(kernel='gaussian', smoothing=0.1)
+            print(f"[CONFIG] 使用 RBF 代理模型 (高斯核)")
+        else:
+            self.surrogate = KrigingSurrogate(random_state=self.random_state)
+            print(f"[CONFIG] 使用 Kriging 代理模型 (Matern 核)")
+        
+        # 记录目标函数类型
+        self.objective_type = objective_type
+        self.lambda_std = lambda_std
+        self.ks_weight = ks_weight
+        if objective_type == 'robust':
+            print(f"[CONFIG] 使用鲁棒目标函数 (λ={lambda_std}, K-S权重={ks_weight})")
+        else:
+            print(f"[CONFIG] 使用 RMSE 目标函数")
+        
         results = []
         
         if warm_start_log and os.path.exists(warm_start_log):
@@ -281,25 +310,46 @@ class L1CalibrationLoop:
         return self.log_file
 
 def main():
-    parser = argparse.ArgumentParser(description="L1 Micro-parameters Calibration Loop")
+    parser = argparse.ArgumentParser(description="L1 Micro-parameters Calibration Loop (Week 3 Enhanced)")
     parser.add_argument("--iters", type=int, default=10, help="Number of BO iterations")
     parser.add_argument("--init_samples", type=int, default=10, help="Number of initial LHS samples")
     parser.add_argument("--no_plot", action="store_true", help="Do not generate plot automatically")
     parser.add_argument("--warm_start", type=str, default=None, 
-                        help="Path to historical calibration log CSV for warm start. "
-                             "If provided, skips initial sampling and uses historical data to train surrogate model.")
+                        help="Path to historical calibration log CSV for warm start.")
+    
+    # Week 3 新增：代理模型选择
+    parser.add_argument("--surrogate", type=str, default="kriging",
+                        choices=["kriging", "rbf", "dual"],
+                        help="Surrogate model type: kriging (default), rbf, or dual (inverse-variance weighted fusion)")
+    
+    # Week 3 新增：目标函数类型
+    parser.add_argument("--objective", type=str, default="rmse",
+                        choices=["rmse", "robust"],
+                        help="Objective function type: rmse (default) or robust (mean + lambda*std + KS)")
+    parser.add_argument("--lambda_std", type=float, default=0.5,
+                        help="Lambda parameter for robust loss (default: 0.5)")
+    parser.add_argument("--ks_weight", type=float, default=50.0,
+                        help="Weight for K-S statistic in robust objective (default: 50.0)")
+    
     args = parser.parse_args()
     
     loop = L1CalibrationLoop("config/calibration/l1_parameter_config.json", PROJECT_ROOT)
     
     try:
-        log_path = loop.run(max_iters=args.iters, n_init=args.init_samples, warm_start_log=args.warm_start)
+        log_path = loop.run(
+            max_iters=args.iters, 
+            n_init=args.init_samples, 
+            warm_start_log=args.warm_start,
+            surrogate_type=args.surrogate,
+            objective_type=args.objective,
+            lambda_std=args.lambda_std,
+            ks_weight=args.ks_weight
+        )
         
         # 自动调用可视化脚本
         if not args.no_plot:
             print("\n[INFO] Generating publication-quality plots...")
             plot_script = os.path.join(PROJECT_ROOT, "scripts/calibration/plot_calibration_results.py")
-            # 调用 shell 命令以确保所有环境配置生效
             subprocess.run([sys.executable, plot_script, "--log", log_path, "--save-pdf"], check=False)
             
     except Exception as e:

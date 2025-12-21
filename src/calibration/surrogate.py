@@ -36,12 +36,12 @@ class KrigingSurrogate:
         mu, sigma = self.model.predict(X, return_std=True)
         return mu, sigma
 
-    def expected_improvement(self, X_candidates, best_y, xi=0.01):
+    def expected_improvement(self, X_candidates, best_y, xi=0.1):
         """
         计算期望改进量 (EI)
         X_candidates: 候选点集
         best_y: 当前已知的最小目标值 (RMSE)
-        xi: 探索因子
+        xi: 探索因子 (增大到 0.1 以鼓励更多探索，避免过早收敛)
         """
         mu, sigma = self.predict(X_candidates)
         

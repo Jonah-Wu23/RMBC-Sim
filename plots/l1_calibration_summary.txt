@@ -1,0 +1,42 @@
+
+================================================================================
+L1 CALIBRATION SUMMARY REPORT
+Generated: 2025-12-21
+================================================================================
+
+OPTIMIZATION SETTINGS:
+  - Total Iterations: 40
+  - Initial Samples (LHS): 15
+  - Bayesian Optimization: 25
+  - Warm Start Points: 0
+
+CONVERGENCE ANALYSIS:
+  - First 10 Avg Loss: 294.12
+  - Last 10 Avg Loss: 187.11
+  - Improvement: 36.4%
+
+CONSTRAINT EFFECTIVENESS:
+  - Constraint Threshold: 350 (960 RMSE)
+  - Violations: 14 / 40 (35.0%)
+  - Satisfaction Rate: 65.0%
+
+BEST RESULT (Iteration 24):
+  Parameters:
+    t_board  = 1.2719 s
+    t_fixed  = 12.1538 s
+    tau      = 1.0575 s
+    sigma    = 0.5537
+    minGap   = 1.4535 m
+    accel    = 1.4952 m/s^2
+    decel    = 3.8295 m/s^2
+  
+  Performance:
+    Combined Loss: 148.20
+    68X RMSE:      148.20 (Target)
+    960 RMSE:      329.64 (Within Constraint)
+
+QUALITY ASSESSMENT:
+  68X: EXCELLENT
+  960: WITHIN CONSTRAINT
+
+================================================================================

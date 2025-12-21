@@ -8,6 +8,7 @@ import subprocess
 import time
 from datetime import datetime
 from typing import Dict, List, Any, Optional
+from scipy.stats import qmc  # Quasi-Monte Carlo for Sobol sequence
 
 # 确保导入路径正确：脚本在 scripts/calibration/，项目根目录在向上三级
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -138,67 +139,105 @@ class L1CalibrationLoop:
             rmse_68x = calculate_l1_rmse(self.sim_output, self.real_links, self.route_dist, route='68X', bound='I')
             rmse_960 = calculate_l1_rmse(self.sim_output, self.real_links, self.route_dist, route='960', bound='I')
             
-            # 960 的容忍阈值 (Hard Constraint)
+            # 960 的容忍阈值 (Soft Constraint with Smooth Penalty)
             THRESHOLD_960 = 350.0 
             
-            loss = 0.0
+            # 方案A：使用平滑二次惩罚函数替代硬约束
+            # 这保持了损失曲面的连续性和可微性，有利于GP代理模型拟合
+            violation = max(0.0, rmse_960 - THRESHOLD_960)
             
-            if rmse_960 > THRESHOLD_960:
-                # 惩罚项：基础分 + 违约程度 * 惩罚系数
-                # 这样做能保持梯度，引导 BO 回到可行域，而不是简单的返回 1e6
-                penalty = (rmse_960 - THRESHOLD_960) * 10
-                loss = rmse_68x + 2000.0 + penalty
-            else:
-                # 可行域内：只优化 68X
-                loss = rmse_68x
+            # 二次惩罚：alpha * violation^2
+            # alpha=0.1 意味着超过阈值 100 秒时，额外惩罚 1000
+            ALPHA = 0.1
+            penalty = ALPHA * (violation ** 2)
+            
+            # 主目标 + 平滑惩罚项
+            loss = rmse_68x + penalty
             
             return {
                 'rmse': loss,     # 这是 BO 看到并试图最小化的值
                 'rmse_68x': rmse_68x,
-                'rmse_960': rmse_960
+                'rmse_960': rmse_960,
+                'penalty': penalty  # 记录惩罚项便于调试
             }
         except Exception as e:
             print(f"[ERROR] Objective calculation failed: {e}")
-            return {'rmse': 1e6, 'rmse_68x': 1e6, 'rmse_960': 1e6}
+            return {'rmse': 1e6, 'rmse_68x': 1e6, 'rmse_960': 1e6, 'penalty': 1e6}
 
-    def run(self, max_iters: int = 10, n_init: int = 10):
+    def run(self, max_iters: int = 10, n_init: int = 10, warm_start_log: Optional[str] = None):
         """
         开始完整校准循环：LHS 探索 -> BO 优化
+        
+        Args:
+            max_iters: 贝叶斯优化迭代次数
+            n_init: 初始样本数量（仅在非热启动模式下使用）
+            warm_start_log: 热启动日志文件路径。如果提供，将跳过初始仿真阶段，
+                           直接使用历史数据训练代理模型
         """
-        # 检查/生成初始样本
-        initial_csv = os.path.join(self.root, 'data/calibration/l1_initial_samples.csv')
-        if not os.path.exists(initial_csv):
-            print(f"[INFO] Initial samples file missing. Triggering RHS sampling (N={n_init})...")
-            gen_script = os.path.join(self.root, 'scripts/calibration/generate_l1_samples.py')
-            subprocess.run([sys.executable, gen_script, "--n_samples", str(n_init)], check=True)
-            
-        df_init = pd.read_csv(initial_csv).head(n_init)
         results = []
         
-        # --- 第一阶段：初始化评估 ---
-        print(f"\n[PHASE 1] Evaluating {n_init} Initial Samples...")
-        for i, row in df_init.iterrows():
-            params = row[self.param_names].to_dict()
-            self.update_route_xml(params)
+        if warm_start_log and os.path.exists(warm_start_log):
+            # --- 热启动模式：复用历史数据 ---
+            print(f"\n[WARM START] 加载历史校准日志: {warm_start_log}")
+            df_warm = pd.read_csv(warm_start_log)
             
-            print(f"  > Iter {i+1}/{n_init + max_iters} [Initial]: ", end="", flush=True)
-            sim_time = self.run_simulation()
-            obj_metrics = self.get_objective()
-            rmse = obj_metrics['rmse']
+            # 复制所有历史数据点到 results（保留原始 type 标记）
+            for _, row in df_warm.iterrows():
+                record = row.to_dict()
+                # 标记为热启动数据，便于后续区分
+                if 'type' in record:
+                    record['type'] = f"warm_{record['type']}"
+                else:
+                    record['type'] = 'warm_initial'
+                results.append(record)
             
-            # 记录详细结果
-            record = {**params, 'rmse': rmse, 'sim_time': sim_time, 'iter': i, 'type': 'initial'}
-            record.update(obj_metrics) # 添加 rmse_68x, rmse_960
-            results.append(record)
-            
-            print(f"RMSE={rmse:.4f} (68X={obj_metrics['rmse_68x']:.1f}, 960={obj_metrics['rmse_960']:.1f})")
-            
-            # 增量保存，防止中途断电
+            # 保存到新日志文件（热启动数据作为基础）
             pd.DataFrame(results).to_csv(self.log_file, index=False)
+            
+            n_warm = len(results)
+            print(f"[WARM START] 已加载 {n_warm} 个历史数据点，跳过初始仿真阶段")
+            print(f"[WARM START] 历史最优 RMSE: {df_warm['rmse'].min():.2f}")
+            
+            # BO 阶段的起始迭代编号
+            bo_start_iter = n_warm
+            
+        else:
+            # --- 标准模式：执行初始 LHS 采样 ---
+            initial_csv = os.path.join(self.root, 'data/calibration/l1_initial_samples.csv')
+            if not os.path.exists(initial_csv):
+                print(f"[INFO] Initial samples file missing. Triggering RHS sampling (N={n_init})...")
+                gen_script = os.path.join(self.root, 'scripts/calibration/generate_l1_samples.py')
+                subprocess.run([sys.executable, gen_script, "--n_samples", str(n_init)], check=True)
+                
+            df_init = pd.read_csv(initial_csv).head(n_init)
+            
+            # --- 第一阶段：初始化评估 ---
+            print(f"\n[PHASE 1] Evaluating {n_init} Initial Samples...")
+            for i, row in df_init.iterrows():
+                params = row[self.param_names].to_dict()
+                self.update_route_xml(params)
+                
+                print(f"  > Iter {i+1}/{n_init + max_iters} [Initial]: ", end="", flush=True)
+                sim_time = self.run_simulation()
+                obj_metrics = self.get_objective()
+                rmse = obj_metrics['rmse']
+                
+                # 记录详细结果
+                record = {**params, 'rmse': rmse, 'sim_time': sim_time, 'iter': i, 'type': 'initial'}
+                record.update(obj_metrics) # 添加 rmse_68x, rmse_960
+                results.append(record)
+                
+                print(f"RMSE={rmse:.4f} (68X={obj_metrics['rmse_68x']:.1f}, 960={obj_metrics['rmse_960']:.1f})")
+                
+                # 增量保存，防止中途断电
+                pd.DataFrame(results).to_csv(self.log_file, index=False)
+            
+            bo_start_iter = n_init
 
         # --- 第二阶段：贝叶斯优化 ---
+        total_iters = bo_start_iter + max_iters
         print(f"\n[PHASE 2] Starting Bayesian Optimization ({max_iters} iterations)...")
-        for i in range(n_init, n_init + max_iters):
+        for i in range(bo_start_iter, total_iters):
             # 获取最新数据训练代理模型
             df_curr = pd.read_csv(self.log_file)
             X = df_curr[self.param_names].values
@@ -206,16 +245,25 @@ class L1CalibrationLoop:
             
             self.surrogate.fit(X, y)
             
-            # 使用 Expected Improvement (EI) 寻找下一个候选点
-            n_candidates = 2000
-            candidates = np.random.uniform(self.bounds[:, 0], self.bounds[:, 1], size=(n_candidates, len(self.param_names)))
+            # 方案B：使用 Sobol 准蒙特卡洛序列 + 更多候选点
+            # Sobol 序列比纯随机采样有更好的空间填充性
+            n_candidates = 10000  # 从 2000 增加到 10000
+            n_dims = len(self.param_names)
+            
+            # 使用 Sobol 序列生成均匀分布的候选点
+            sampler = qmc.Sobol(d=n_dims, scramble=True, seed=42 + i)  # seed 随迭代变化增加多样性
+            samples_unit = sampler.random(n_candidates)  # [0, 1]^d
+            
+            # 缩放到实际参数边界
+            candidates = qmc.scale(samples_unit, self.bounds[:, 0], self.bounds[:, 1])
+            
             best_y_so_far = np.min(y)
             ei = self.surrogate.expected_improvement(candidates, best_y_so_far)
             
             next_params_arr = candidates[np.argmax(ei)]
             next_params = dict(zip(self.param_names, next_params_arr))
             
-            print(f"  > Iter {i+1}/{n_init + max_iters} [BO]: ", end="", flush=True)
+            print(f"  > Iter {i+1}/{total_iters} [BO]: ", end="", flush=True)
             self.update_route_xml(next_params)
             sim_time = self.run_simulation()
             obj_metrics = self.get_objective()
@@ -237,12 +285,15 @@ def main():
     parser.add_argument("--iters", type=int, default=10, help="Number of BO iterations")
     parser.add_argument("--init_samples", type=int, default=10, help="Number of initial LHS samples")
     parser.add_argument("--no_plot", action="store_true", help="Do not generate plot automatically")
+    parser.add_argument("--warm_start", type=str, default=None, 
+                        help="Path to historical calibration log CSV for warm start. "
+                             "If provided, skips initial sampling and uses historical data to train surrogate model.")
     args = parser.parse_args()
     
     loop = L1CalibrationLoop("config/calibration/l1_parameter_config.json", PROJECT_ROOT)
     
     try:
-        log_path = loop.run(max_iters=args.iters, n_init=args.init_samples)
+        log_path = loop.run(max_iters=args.iters, n_init=args.init_samples, warm_start_log=args.warm_start)
         
         # 自动调用可视化脚本
         if not args.no_plot:

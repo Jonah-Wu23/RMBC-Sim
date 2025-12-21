@@ -89,7 +89,7 @@ class L1CalibrationLoop:
         # 2. 更新停站 duration (物理一致性建模)
         # T_fixed: 固定开销 (开门/起步/安全确认)
         # N_base: 基准客流 (15人)
-        T_fixed = 5.0 
+        T_fixed = params_dict.get('t_fixed', 5.0) 
         N_base = 15.0
         t_board = params_dict.get('t_board', 2.0)
         
@@ -121,18 +121,45 @@ class L1CalibrationLoop:
         result = subprocess.run(cmd, check=True, cwd=self.root, capture_output=True, text=True)
         return time.time() - start_time
 
-    def get_objective(self) -> float:
-        """从仿真输出中计算 RMSE"""
+    def get_objective(self) -> Dict[str, float]:
+        """
+        从仿真输出中计算损失函数 (Loss Function)
+        策略: Constraint-Optimization
+        1. Anchor: 960 误差不能恶化太多 (Threshold: +15% error relative to reality)
+        2. Target: 全力优化 68X 的 RMSE
+        """
         if not os.path.exists(self.sim_output):
             print(f"[ERROR] Simulation output missing: {self.sim_output}")
-            return 1e6
+            return {'rmse': 1e6, 'rmse_68x': 1e6, 'rmse_960': 1e6}
             
         try:
-            # calculate_l1_rmse 返回站点级累积行程时间的 RMSE
-            return calculate_l1_rmse(self.sim_output, self.real_links, self.route_dist, route='68X', bound='I')
+            # 分别计算两条线路的 RMSE
+            # calculate_l1_rmse 返回的是绝对秒数误差 (Seconds)
+            rmse_68x = calculate_l1_rmse(self.sim_output, self.real_links, self.route_dist, route='68X', bound='I')
+            rmse_960 = calculate_l1_rmse(self.sim_output, self.real_links, self.route_dist, route='960', bound='I')
+            
+            # 960 的容忍阈值 (Hard Constraint)
+            THRESHOLD_960 = 350.0 
+            
+            loss = 0.0
+            
+            if rmse_960 > THRESHOLD_960:
+                # 惩罚项：基础分 + 违约程度 * 惩罚系数
+                # 这样做能保持梯度，引导 BO 回到可行域，而不是简单的返回 1e6
+                penalty = (rmse_960 - THRESHOLD_960) * 10
+                loss = rmse_68x + 2000.0 + penalty
+            else:
+                # 可行域内：只优化 68X
+                loss = rmse_68x
+            
+            return {
+                'rmse': loss,     # 这是 BO 看到并试图最小化的值
+                'rmse_68x': rmse_68x,
+                'rmse_960': rmse_960
+            }
         except Exception as e:
             print(f"[ERROR] Objective calculation failed: {e}")
-            return 1e6
+            return {'rmse': 1e6, 'rmse_68x': 1e6, 'rmse_960': 1e6}
 
     def run(self, max_iters: int = 10, n_init: int = 10):
         """
@@ -156,10 +183,15 @@ class L1CalibrationLoop:
             
             print(f"  > Iter {i+1}/{n_init + max_iters} [Initial]: ", end="", flush=True)
             sim_time = self.run_simulation()
-            rmse = self.get_objective()
+            obj_metrics = self.get_objective()
+            rmse = obj_metrics['rmse']
             
-            results.append({**params, 'rmse': rmse, 'sim_time': sim_time, 'iter': i, 'type': 'initial'})
-            print(f"RMSE={rmse:.4f} ({sim_time:.1f}s)")
+            # 记录详细结果
+            record = {**params, 'rmse': rmse, 'sim_time': sim_time, 'iter': i, 'type': 'initial'}
+            record.update(obj_metrics) # 添加 rmse_68x, rmse_960
+            results.append(record)
+            
+            print(f"RMSE={rmse:.4f} (68X={obj_metrics['rmse_68x']:.1f}, 960={obj_metrics['rmse_960']:.1f})")
             
             # 增量保存，防止中途断电
             pd.DataFrame(results).to_csv(self.log_file, index=False)
@@ -186,10 +218,14 @@ class L1CalibrationLoop:
             print(f"  > Iter {i+1}/{n_init + max_iters} [BO]: ", end="", flush=True)
             self.update_route_xml(next_params)
             sim_time = self.run_simulation()
-            rmse = self.get_objective()
+            obj_metrics = self.get_objective()
+            rmse = obj_metrics['rmse']
             
-            results.append({**next_params, 'rmse': rmse, 'sim_time': sim_time, 'iter': i, 'type': 'bo'})
-            print(f"RMSE={rmse:.4f} ({sim_time:.1f}s)")
+            record = {**next_params, 'rmse': rmse, 'sim_time': sim_time, 'iter': i, 'type': 'bo'}
+            record.update(obj_metrics)
+            results.append(record)
+            
+            print(f"RMSE={rmse:.4f} (68X={obj_metrics['rmse_68x']:.1f}, 960={obj_metrics['rmse_960']:.1f})")
             
             pd.DataFrame(results).to_csv(self.log_file, index=False)
 

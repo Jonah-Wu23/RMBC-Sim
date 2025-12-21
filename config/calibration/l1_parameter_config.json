@@ -8,6 +8,13 @@
             "description": "单乘客上车时间 (s) - 核心校准项，影响停站时长"
         },
         {
+            "name": "t_fixed",
+            "type": "float",
+            "min": 2.0,
+            "max": 15.0,
+            "description": "固定停站开销 (s) - 模拟开门关门及等待前车等隐性延误"
+        },
+        {
             "name": "tau",
             "type": "float",
             "min": 0.1,

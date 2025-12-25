@@ -19,7 +19,19 @@ def main():
     parser.add_argument('--route', default='68X')
     args = parser.parse_args()
 
-    sns.set_theme(style="whitegrid", context="talk")
+    # sns.set_theme(style="whitegrid", context="talk") # Disabled for IEEE style
+    
+    # IEEE Style Configuration (8pt fonts with small figure size)
+    plt.rcParams['font.family'] = 'serif'
+    plt.rcParams['font.serif'] = ['Times New Roman']
+    plt.rcParams['axes.unicode_minus'] = False
+    plt.rcParams['mathtext.fontset'] = 'stix'
+    plt.rcParams['font.size'] = 8
+    plt.rcParams['axes.labelsize'] = 8
+    plt.rcParams['axes.titlesize'] = 8
+    plt.rcParams['legend.fontsize'] = 7
+    plt.rcParams['xtick.labelsize'] = 7
+    plt.rcParams['ytick.labelsize'] = 7
     
     # 1. Load Real Data
     # We need arrival times at each stop to calc headway
@@ -90,12 +102,12 @@ def main():
         sim_headways.extend(hw.dropna().tolist())
 
     # 3. Combine
-    df_real = pd.DataFrame({'Headway [s]': real_headways, 'Source': 'Real World'})
-    df_sim = pd.DataFrame({'Headway [s]': sim_headways, 'Source': 'Simulation'})
+    df_real = pd.DataFrame({'Headway (s)': real_headways, 'Source': 'Real World'})
+    df_sim = pd.DataFrame({'Headway (s)': sim_headways, 'Source': 'Simulation'})
     
     # Filter outliers > 1800s (30 mins)
-    df_real = df_real[df_real['Headway [s]'] < 1800]
-    df_sim = df_sim[df_sim['Headway [s]'] < 1800]
+    df_real = df_real[df_real['Headway (s)'] < 1800]
+    df_sim = df_sim[df_sim['Headway (s)'] < 1800]
     
     full_df = pd.concat([df_real, df_sim])
     
@@ -103,22 +115,22 @@ def main():
         print("No headway data found.")
         return
 
-    # 4. Plot
-    plt.figure(figsize=(10, 6))
+    # 4. Plot - IEEE single column width
+    plt.figure(figsize=(3.5, 2.5))
     
     # Unified colors: Real=#1f77b4, Sim=#ff7f0e
     custom_palette = {'Real World': '#1f77b4', 'Simulation': '#ff7f0e'}
     
-    sns.histplot(data=full_df, x="Headway [s]", hue="Source", 
+    sns.histplot(data=full_df, x="Headway (s)", hue="Source", 
                  kde=True, element="step", stat="density", common_norm=False,
                  palette=custom_palette, alpha=0.4)
     
-    plt.title(f"Headway Distribution Comparison ({args.route})")
+    plt.xlabel("Headway (s)")
     plt.xlim(0, 1200) # Limit to 20 mins
     
     sns.despine()
     plt.tight_layout()
-    plt.savefig(args.out, dpi=400)
+    plt.savefig(args.out, dpi=300, bbox_inches='tight')
     print(f"Saved Headway Plot to {args.out}")
 
 if __name__ == "__main__":

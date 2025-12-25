@@ -26,8 +26,9 @@ def ensure_dir(file_path: str):
         os.makedirs(directory, exist_ok=True)
 
 class L1CalibrationLoop:
-    def __init__(self, config_path: str, project_root: str):
+    def __init__(self, config_path: str, project_root: str, label: str = "l1", seed: int = 42):
         self.root = project_root
+        self.label = label
         
         # 加载参数配置
         full_config_path = os.path.join(self.root, config_path)
@@ -38,15 +39,15 @@ class L1CalibrationLoop:
         self.param_names = [p['name'] for p in self.params_meta]
         self.bounds = np.array([[p['min'], p['max']] for p in self.params_meta])
         
-        # 结果记录：使用时间戳区分实验，防止覆盖
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.log_file = os.path.join(self.root, f'data/calibration/l1_calibration_log_{timestamp}.csv')
+        # 结果记录：使用 label 区分实验（无时间戳，便于覆盖重跑）
+        self.log_file = os.path.join(self.root, f'data/calibration/{label}_log.csv')
         ensure_dir(self.log_file)
         
         # 初始化代理模型 (默认 Kriging，可通过参数切换)
         # 注意：代理模型类型在 run() 方法中根据 surrogate_type 参数动态设置
         self.surrogate = None  # 延迟初始化
-        self.random_state = self.config.get('sampling', {}).get('seed', 42)
+        # 使用命令行传入的 seed，允许不同实验使用不同初始采样
+        self.random_state = seed
         
         # SUMO 相关路径 (使用绝对路径提高鲁棒性)
         self.sumocfg = os.path.join(self.root, 'sumo/config/experiment2_cropped.sumocfg')
@@ -231,14 +232,16 @@ class L1CalibrationLoop:
             bo_start_iter = n_warm
             
         else:
-            # --- 标准模式：执行初始 LHS 采样 ---
-            initial_csv = os.path.join(self.root, 'data/calibration/l1_initial_samples.csv')
-            if not os.path.exists(initial_csv):
-                print(f"[INFO] Initial samples file missing. Triggering RHS sampling (N={n_init})...")
-                gen_script = os.path.join(self.root, 'scripts/calibration/generate_l1_samples.py')
-                subprocess.run([sys.executable, gen_script, "--n_samples", str(n_init)], check=True)
-                
-            df_init = pd.read_csv(initial_csv).head(n_init)
+            # --- 标准模式：动态生成 LHS 采样 ---
+            # 使用 self.random_state (来自 --seed 参数) 控制随机性
+            # 不同 seed 将产生不同的初始样本，确保消融实验独立性
+            print(f"[PHASE 1] Generating {n_init} initial LHS samples (seed={self.random_state})...")
+            
+            n_dims = len(self.param_names)
+            sampler = qmc.LatinHypercube(d=n_dims, seed=self.random_state)
+            samples_unit = sampler.random(n_init)  # [0, 1]^d
+            samples = qmc.scale(samples_unit, self.bounds[:, 0], self.bounds[:, 1])
+            df_init = pd.DataFrame(samples, columns=self.param_names)
             
             # --- 第一阶段：初始化评估 ---
             print(f"\n[PHASE 1] Evaluating {n_init} Initial Samples...")
@@ -317,6 +320,12 @@ def main():
     parser.add_argument("--warm_start", type=str, default=None, 
                         help="Path to historical calibration log CSV for warm start.")
     
+    # 实验标识与随机种子控制
+    parser.add_argument("--label", type=str, default="l1",
+                        help="Experiment label for output files (e.g., B2, B3). Affects log and plot filenames.")
+    parser.add_argument("--seed", type=int, default=42,
+                        help="Random seed for initial LHS sampling (default: 42). Different seeds produce different initial samples.")
+    
     # Week 3 新增：代理模型选择
     parser.add_argument("--surrogate", type=str, default="kriging",
                         choices=["kriging", "rbf", "dual"],
@@ -333,7 +342,8 @@ def main():
     
     args = parser.parse_args()
     
-    loop = L1CalibrationLoop("config/calibration/l1_parameter_config.json", PROJECT_ROOT)
+    loop = L1CalibrationLoop("config/calibration/l1_parameter_config.json", PROJECT_ROOT, 
+                             label=args.label, seed=args.seed)
     
     try:
         log_path = loop.run(
@@ -346,11 +356,11 @@ def main():
             ks_weight=args.ks_weight
         )
         
-        # 自动调用可视化脚本
+        # 自动调用可视化脚本，传入 label 参数
         if not args.no_plot:
             print("\n[INFO] Generating publication-quality plots...")
             plot_script = os.path.join(PROJECT_ROOT, "scripts/calibration/plot_calibration_results.py")
-            subprocess.run([sys.executable, plot_script, "--log", log_path, "--save-pdf"], check=False)
+            subprocess.run([sys.executable, plot_script, "--log", log_path, "--label", args.label, "--save-pdf"], check=False)
             
     except Exception as e:
         print(f"\n[CRITICAL ERROR] Loop execution failed: {e}")

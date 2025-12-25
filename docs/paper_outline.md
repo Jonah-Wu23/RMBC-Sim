@@ -8,10 +8,10 @@ Bus simulation; parameter inversion; multi-level calibration; Bayesian optimizat
 
 ---
 
-## 0. Abstract（150–250 words）
+## 0. Abstract (150-250 words)
 
 - 背景：公交仿真虚实鸿沟、参数不确定性、传统校准不稳/成本高
-- 方法：L1 微观行为校准 + L2 宏观同化/约束；Kriging+RBF 双代理；BO（EI）选点；鲁棒性检验（K-S/分布指标）
+- 方法：L1 微观行为校准 + L2 宏观同化/约束；贝叶斯代理模型（Kriging）+ 不确定性量化；BO（EI）选点；鲁棒性检验（K-S/分布指标）
 - 数据：GPS/ETA（或站点到离站）、路段速度/检测器等（写你真实可用的）
 - 结果：误差下降（平均+分位），跨时段/跨日稳定；仿真次数/成本
 - 贡献点 3 条（见第 1 节）
@@ -31,11 +31,11 @@ Bus simulation; parameter inversion; multi-level calibration; Bayesian optimizat
 - 纯黑箱优化：成本高、易过拟合
 - 缺少“鲁棒性”评估：只报均值 RMSE 不够
 
-### 1.3 Contributions（建议写成 3 点）
+### 1.3 Contributions
 
-1. 提出 **多层次校准框架**：L1（线路/站点）+ L2（走廊/路段）闭环约束
-2. 提出 **双代理 + BO** 的高效反演流程（小样本、低仿真预算）
-3. 引入 **分布鲁棒评估**：跨时段/跨日 + K-S/分位误差指标，验证稳定性
+1. 提出 **多层次校准框架**：L1（线路/站点）+ L2（走廊/路段）闭环约束，解决公交停站与路网拥堵的耦合难题
+2. 引入 **贝叶斯代理模型 + 不确定性量化**：利用 Kriging 的高斯过程特性，同时获得预测均值（加速搜索）与预测方差（量化置信区间），克服传统 GA/PSO 无法提供置信信息的缺陷
+3. 建立 **分布鲁棒评估体系**：跨时段/跨日 + K-S/分位误差指标，验证校准结果的泛化稳定性
 
 ---
 
@@ -85,11 +85,13 @@ Bus simulation; parameter inversion; multi-level calibration; Bayesian optimizat
 - Step D：L2 同化/约束（EnKF 或你使用的状态更新机制）
 - Step E：输出 θ* 并做鲁棒验证
 
-### 4.2 Dual Surrogate Model
+### 4.2 Surrogate Model with Uncertainty Quantification
 
-- Kriging：全局趋势 + 不确定性
-- RBF：局部逼近
-- 融合方式：加权集成/stacking（写清楚你实现的那种）
+- **Kriging (Gaussian Process)**：核心代理模型，提供预测均值 + 预测方差
+  - 预测均值：加速目标函数评估，减少仿真次数
+  - 预测方差：量化参数不确定性，指导 EI 采集函数的探索-利用权衡
+- **RBF 对比实验**：作为消融研究的一部分，对比 Kriging-RBF 融合方案与单一 Kriging
+- 实验发现：在当前 7 维平滑参数空间下，单一 Kriging 模型已具备足够拟合能力（见 6.5 节消融讨论）
 
 ### 4.3 Bayesian Optimization Details
 
@@ -110,7 +112,8 @@ Bus simulation; parameter inversion; multi-level calibration; Bayesian optimizat
 ---
 
 ## 5. Experimental Setup
-双代理Kriging+RBF双层J1+J2
+
+> 最终模型：贝叶斯代理 (Kriging) + 双层目标 J1+J2
 ### 5.1 Study Area & Route Selection
 
 - 线路信息：长度、站点数、主要走廊、早晚高峰特征
@@ -122,12 +125,14 @@ Bus simulation; parameter inversion; multi-level calibration; Bayesian optimizat
 - 对齐站点事件（arrive/depart）
 - 路段速度聚合（时间窗）
 
-### 5.3 Baselines（必须有，且至少 3 个）
+### 5.3 Baselines
 
-- B1：手工经验参数 / 默认参数
-- B2：单代理Kriging单层J1
-- B3：双代理Kriging+RBF单层J1
-- B4：单代理Kriging双层J1+J2
+- B1：手工经验参数 / 默认参数（无优化）
+- B2：单代理 Kriging + 单层 J1（验证代理模型基本效果）
+- B3：Kriging-RBF 融合 + 单层 J1（验证融合方案是否带来增益）
+- B4：单代理 Kriging + 双层 J1+J2（验证多层目标的贡献）
+
+> **Note**: 消融实验预期 B4 > B2 > B1；B3 与 B2 差异取决于问题结构
 
 ### 5.4 Evaluation Protocol
 
@@ -156,10 +161,13 @@ Bus simulation; parameter inversion; multi-level calibration; Bayesian optimizat
 - 跨小时段/跨日：P90、worst-case、K-S
 - 讨论：为什么多层校准更稳（参数可辨识性、约束更强）
 
-### 6.5 Ablation Study（强烈建议）
+### 6.5 Ablation Study
 
-- 去掉 L2 同化 / 去掉双代理 / 去掉分布项
-- 看鲁棒性掉多少
+- **B2 vs B3 对比**：验证 Kriging-RBF 融合是否带来额外增益
+  - 若 B3 约等于 B2：说明问题空间平滑，单一代理已足够
+  - 若 B3 > B2：说明融合方案在复杂问题上有优势
+- **B4 vs B2 对比**：验证双层目标 J1+J2 的贡献（核心验证）
+- **去掉 L2 同化 / 去掉分布项**：评估鲁棒性下降程度
 
 ### 6.6 Limitations
 

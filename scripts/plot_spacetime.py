@@ -34,9 +34,9 @@ def interpolate_points(row, num_points=10):
     t_vals = np.linspace(t1_h, t2_h, num_points)
     
     return pd.DataFrame({
-        'Distance [m]': d_vals,
-        'Time of Day [HH:MM]': t_vals,
-        'Speed [km/h]': row['speed_kmh']
+        'Distance (m)': d_vals,
+        'Time of Day (HH:MM)': t_vals,
+        'Speed (km/h)': row['speed_kmh']
     })
 
 def main():
@@ -48,7 +48,18 @@ def main():
     parser.add_argument('--route', default='68X')
     args = parser.parse_args()
 
-    sns.set_theme(style="whitegrid", context="talk")
+    # sns.set_theme(style="whitegrid", context="talk") # Removed to enforce own style
+    
+    # IEEE Style Configuration
+    plt.rcParams['font.family'] = 'serif'
+    plt.rcParams['font.serif'] = ['Times New Roman']
+    plt.rcParams['axes.unicode_minus'] = False
+    plt.rcParams['font.size'] = 8
+    plt.rcParams['axes.labelsize'] = 8
+    plt.rcParams['axes.titlesize'] = 8
+    plt.rcParams['legend.fontsize'] = 8
+    plt.rcParams['xtick.labelsize'] = 8
+    plt.rcParams['ytick.labelsize'] = 8
     
     dist_df = load_route_stop_dist(args.real_dist)
     dist_df = dist_df[dist_df['route'] == args.route]
@@ -199,12 +210,12 @@ def main():
     # Ah, `full_df` is ALREADY created. I need to filter `full_df`.
     
     full_df = full_df[
-        (full_df['Distance [m]'] >= start_dist) & 
-        (full_df['Distance [m]'] <= effective_end_dist)
+        (full_df['Distance (m)'] >= start_dist) & 
+        (full_df['Distance (m)'] <= effective_end_dist)
     ]
     
     # Plotting
-    fig, axes = plt.subplots(2, 1, figsize=(12, 10), sharex=True, sharey=True, constrained_layout=True)
+    fig, axes = plt.subplots(2, 1, figsize=(3.5, 3.0), sharex=True, sharey=True, constrained_layout=True) # IEEE approx column width ~3.5 inch
     
     # Define Colormaps matching the Blue (Real) / Orange (Sim) theme
     # We want Speed to be visualized. 
@@ -242,14 +253,20 @@ def main():
         # Plot
         # Adjust marker size and alpha for visibility
         # User complained "Too pale". Set alpha=1.0, s=20.
-        sc = ax.scatter(src_data["Distance [m]"], src_data["Time of Day [HH:MM]"], 
-                        c=src_data["Speed [km/h]"], cmap=cmap, norm=norm, 
-                        s=20, linewidth=0, marker='o', alpha=1.0)
+        sc = ax.scatter(src_data["Distance (m)"], src_data["Time of Day (HH:MM)"], 
+                        c=src_data["Speed (km/h)"], cmap=cmap, norm=norm, 
+                        s=5, linewidth=0, marker='o', alpha=1.0) # Reduced size for high density
         
-        ax.set_title(src, color=source_colors.get(src, 'black'), fontweight='bold')
+        ax.set_title(src, color='black', fontweight='bold', fontsize=8)
         ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, p: f"{int(x):02d}:{int((x-int(x))*60):02d}"))
         ax.set_ylim(17, 18.2)
+        ax.set_ylabel("Time (HH:MM)", fontsize=8)
+        if i == 1:
+            ax.set_xlabel("Distance (m)", fontsize=8)
         
+        # Grid
+        ax.grid(True, linestyle='--', alpha=0.5)
+
         # Individual Colorbar? Or shared?
         # User wants unified look. Two heatmaps are hard to unify with one bar if they are different colors.
         # But maybe just one colorbar is not enough.
@@ -257,11 +274,12 @@ def main():
         # Or better: Use user's previous "Unified" request which might imply simple colors? 
         # No, "Space-Time" needs speed. 
         # Let's add a colorbar for each ax.
-        cbar = fig.colorbar(sc, ax=ax, pad=0.01, aspect=15)
-        cbar.set_label('Speed [km/h]')
+        cbar = fig.colorbar(sc, ax=ax, pad=0.02, aspect=15)
+        cbar.set_label('Speed (km/h)', fontsize=8)
+        cbar.ax.tick_params(labelsize=8)
 
-    sns.despine(fig=fig, right=True, top=True)
-    plt.savefig(args.out, dpi=400)
+    # sns.despine(fig=fig, right=True, top=True) # Not needed with grid/box
+    plt.savefig(args.out, dpi=300, bbox_inches='tight')
     print(f"Saved {args.out}")
 
 if __name__ == "__main__":

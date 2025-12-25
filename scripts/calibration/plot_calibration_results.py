@@ -8,14 +8,40 @@ from typing import Optional, Dict, Any
 import numpy as np
 
 # Set seaborn theme for publication quality
-sns.set_theme(style="whitegrid", context="paper")
-# Font settings for better readability in papers
+# sns.set_theme(style="whitegrid", context="paper") # Disabled for IEEE style
+# Font settings for IEEE papers: Times New Roman
 plt.rcParams.update({
-    'font.family': 'sans-serif',
-    'font.sans-serif': ['Arial', 'DejaVu Sans'],
+    'font.family': 'serif',
+    'font.serif': ['Times New Roman'],
+    'axes.unicode_minus': False,
+    'mathtext.fontset': 'stix',
+    'font.size': 8,
+    'axes.labelsize': 8,
+    'axes.titlesize': 8,
+    'legend.fontsize': 8,
+    'xtick.labelsize': 8,
+    'ytick.labelsize': 8,
     'pdf.fonttype': 42,
     'ps.fonttype': 42
 })
+
+def get_param_unit(param_name: str) -> str:
+    """获取参数的物理单位"""
+    units = {
+        't_board': 's',
+        't_fixed': 's',
+        'tau': 's',
+        'sigma': '',
+        'minGap': 'm',
+        'accel': 'm/s^2',
+        'decel': 'm/s^2',
+        'sim_time': 's',
+        'rmse': '',
+        'rmse_68x': '',
+        'rmse_960': '',
+        'penalty': ''
+    }
+    return units.get(param_name, '')
 
 def load_log(log_path: str) -> pd.DataFrame:
     """
@@ -263,7 +289,10 @@ def find_latest_log(base_dir: str) -> str:
 def main():
     parser = argparse.ArgumentParser(description="Generate publication-quality calibration convergence plots.")
     parser.add_argument("--log", type=str, help="Path to the log CSV file (default: finds latest)")
-    parser.add_argument("--output", type=str, default="data/calibration/l1_convergence.png", help="Output image path")
+    parser.add_argument("--label", type=str, default="l1",
+                        help="Experiment label for output files (e.g., B2, B3)")
+    parser.add_argument("--output", type=str, default=None, 
+                        help="Output image path (default: plots/{label}_convergence.png)")
     parser.add_argument("--title", type=str, default="L1 Calibration Convergence Analysis", help="Plot title")
     parser.add_argument("--ylabel", type=str, default="RMSE (Calibration Error)", help="Y-axis label")
     parser.add_argument("--logy", action="store_true", help="Use log scale for Y axis (useful for large residuals)")
@@ -272,7 +301,7 @@ def main():
     parser.add_argument("--save-svg", action="store_true", help="Also save as SVG")
     parser.add_argument("--show", action="store_true", help="Show plot window after saving")
     parser.add_argument("--dpi", type=int, default=300, help="DPI for output image (default 300)")
-    parser.add_argument("--figsize", type=float, nargs=2, default=[11.0, 7.0], help="Figure size (width height)")
+    parser.add_argument("--figsize", type=float, nargs=2, default=[7.16, 3.5], help="Figure size (width height)")
     
     args = parser.parse_args()
 
@@ -287,11 +316,11 @@ def main():
         df = load_log(log_file)
         summary = compute_summary(df)
         
-        # Determine output path absolute
-        if not os.path.isabs(args.output):
-            output_path = os.path.join(project_root, args.output)
+        # 确定输出路径：使用 --label 构建默认路径
+        if args.output:
+            output_path = args.output if os.path.isabs(args.output) else os.path.join(project_root, args.output)
         else:
-            output_path = args.output
+            output_path = os.path.join(project_root, f"plots/{args.label}_convergence.png")
             
         # Summary text output (Enhanced format)
         print("\n" + "="*60)
@@ -312,6 +341,75 @@ def main():
                 val_str = f"{v:.4f}" if isinstance(v, float) else str(v)
                 print(f"  > {k:15}: {val_str}")
         print("="*60 + "\n")
+        
+        # 保存摘要文本到文件
+        summary_path = os.path.join(project_root, f"data/calibration/{args.label}_calibration_summary.txt")
+        os.makedirs(os.path.dirname(summary_path), exist_ok=True)
+        with open(summary_path, 'w', encoding='utf-8') as f:
+            f.write("\n" + "="*80 + "\n")
+            f.write("L1 CALIBRATION SUMMARY REPORT\n")
+            f.write(f"Generated: {pd.Timestamp.now().strftime('%Y-%m-%d')}\n")
+            f.write("="*80 + "\n\n")
+            
+            # 优化设置
+            n_total = len(df)
+            n_init = len(df[~df['type'].str.contains('bo', case=False)])
+            n_bo = n_total - n_init
+            n_warm = len(df[df['type'].str.contains('warm', case=False)])
+            f.write("OPTIMIZATION SETTINGS:\n")
+            f.write(f"  - Total Iterations: {n_total}\n")
+            f.write(f"  - Initial Samples (LHS): {n_init - n_warm}\n")
+            f.write(f"  - Bayesian Optimization: {n_bo}\n")
+            f.write(f"  - Warm Start Points: {n_warm}\n\n")
+            
+            # 收敛分析
+            first_10_avg = df.head(10)['rmse'].mean()
+            last_10_avg = df.tail(10)['rmse'].mean()
+            improvement_pct = (first_10_avg - last_10_avg) / first_10_avg * 100 if first_10_avg != 0 else 0
+            f.write("CONVERGENCE ANALYSIS:\n")
+            f.write(f"  - First 10 Avg Loss: {first_10_avg:.2f}\n")
+            f.write(f"  - Last 10 Avg Loss: {last_10_avg:.2f}\n")
+            f.write(f"  - Improvement: {improvement_pct:.1f}%\n\n")
+            
+            # 约束有效性
+            if 'rmse_960' in df.columns:
+                threshold = 350
+                violations = (df['rmse_960'] > threshold).sum()
+                f.write("CONSTRAINT EFFECTIVENESS:\n")
+                f.write(f"  - Constraint Threshold: {threshold} (960 RMSE)\n")
+                f.write(f"  - Violations: {violations} / {n_total} ({violations/n_total*100:.1f}%)\n")
+                f.write(f"  - Satisfaction Rate: {(1 - violations/n_total)*100:.1f}%\n\n")
+            
+            # 最佳结果
+            best_params = summary['best_params']
+            f.write(f"BEST RESULT (Iteration {summary['best_iter']}):\n")
+            f.write("  Parameters:\n")
+            for k, v in best_params.items():
+                if k not in meta_cols:
+                    val_str = f"{v:.4f}" if isinstance(v, float) else str(v)
+                    unit = get_param_unit(k)
+                    f.write(f"    {k:8} = {val_str} {unit}\n")
+            f.write("  \n")
+            f.write("  Performance:\n")
+            f.write(f"    Combined Loss: {summary['best_rmse']:.2f}\n")
+            if 'rmse_68x' in best_params:
+                f.write(f"    68X RMSE:      {best_params['rmse_68x']:.2f} (Target)\n")
+            if 'rmse_960' in best_params:
+                in_constraint = "Within Constraint" if best_params['rmse_960'] <= 350 else "VIOLATED"
+                f.write(f"    960 RMSE:      {best_params['rmse_960']:.2f} ({in_constraint})\n")
+            f.write("\n")
+            
+            # 质量评估
+            f.write("QUALITY ASSESSMENT:\n")
+            if 'rmse_68x' in best_params:
+                q68 = "EXCELLENT" if best_params['rmse_68x'] < 160 else ("GOOD" if best_params['rmse_68x'] < 200 else "ACCEPTABLE")
+                f.write(f"  68X: {q68}\n")
+            if 'rmse_960' in best_params:
+                q960 = "WITHIN CONSTRAINT" if best_params['rmse_960'] <= 350 else "NEEDS ATTENTION"
+                f.write(f"  960: {q960}\n")
+            f.write("\n" + "="*80 + "\n")
+        
+        print(f"Summary saved to: {summary_path}")
         
         make_plot(df, summary, output_path, args)
         

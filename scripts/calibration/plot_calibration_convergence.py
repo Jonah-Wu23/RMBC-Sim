@@ -15,26 +15,29 @@ import warnings
 # Suppress FutureWarnings from seaborn
 warnings.filterwarnings('ignore', category=FutureWarning)
 
-# Set publication-quality style with Times New Roman
-plt.style.use('seaborn-v0_8-whitegrid')
+# Set publication-quality style with Times New Roman (IEEE Style)
+# plt.style.use('seaborn-v0_8-whitegrid') # Disabled for IEEE style
 plt.rcParams.update({
-    'font.size': 11,
-    'axes.labelsize': 12,
-    'axes.titlesize': 13,
-    'legend.fontsize': 10,
+    'font.size': 8,
+    'axes.labelsize': 8,
+    'axes.titlesize': 8,
+    'legend.fontsize': 8,
+    'xtick.labelsize': 8,
+    'ytick.labelsize': 8,
     'figure.dpi': 150,
     'savefig.dpi': 300,
     'savefig.bbox': 'tight',
     'font.family': 'serif',
     'font.serif': ['Times New Roman', 'DejaVu Serif'],
-    'mathtext.fontset': 'stix'
+    'mathtext.fontset': 'stix',
+    'axes.unicode_minus': False
 })
 
 
 def plot_convergence_dual(df, output_dir):
     """Generate dual-panel convergence plot (Combined Loss + Per-Route RMSE)"""
     
-    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+    fig, axes = plt.subplots(1, 2, figsize=(7.16, 2.5))  # IEEE double column width
     
     # Panel 1: Combined Loss with Cumulative Best
     ax1 = axes[0]
@@ -44,10 +47,10 @@ def plot_convergence_dual(df, output_dir):
     
     # Plot all iterations (support warm start types)
     colors = {
-        'initial': '#3498db', 
-        'bo': '#e74c3c',
-        'warm_initial': '#85c1e9',  # 浅蓝色表示热启动的初始点
-        'warm_bo': '#f1948a'        # 浅红色表示热启动的BO点
+        'initial': '#1f77b4',  # Blue for LHS Initial
+        'bo': '#ff7f0e',        # Orange for Bayesian Opt.
+        'warm_initial': '#aec7e8',  # Light blue for warm start initial
+        'warm_bo': '#ffbb78'        # Light orange for warm start BO
     }
     labels = {
         'initial': 'LHS Initial',
@@ -137,7 +140,7 @@ def plot_parameter_evolution(df, output_dir):
     param_data = df[params].copy()
     param_normalized = (param_data - param_data.min()) / (param_data.max() - param_data.min())
     
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=(7.16, 2.5))  # IEEE double column width
     
     # Create heatmap
     sns.heatmap(param_normalized.T, cmap='RdYlBu_r', ax=ax,
@@ -147,12 +150,13 @@ def plot_parameter_evolution(df, output_dir):
     
     # Mark best iteration
     best_iter = df['rmse'].idxmin()
-    ax.axvline(x=best_iter + 0.5, color='gold', linewidth=3, linestyle='-')
-    ax.text(best_iter + 0.7, -0.3, 'BEST', fontsize=10, color='gold', fontweight='bold')
+    ax.axvline(x=best_iter + 0.5, color='black', linewidth=2, linestyle='--')
+    # Position BEST text at the top (y < 0) to avoid x-axis labels at bottom
+    ax.text(best_iter + 0.7, -0.2, 'BEST', fontsize=8, color='black', fontweight='bold')
     
     ax.set_xlabel('Iteration')
     ax.set_ylabel('Parameter')
-    ax.set_title('Parameter Exploration History')
+    ax.set_title('Parameter Exploration History', pad=20)
     
     plt.tight_layout()
     
@@ -165,7 +169,7 @@ def plot_parameter_evolution(df, output_dir):
 def plot_phase_comparison(df, output_dir):
     """Generate box plot comparing LHS vs BO phases"""
     
-    fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+    fig, axes = plt.subplots(1, 3, figsize=(7.16, 2.5))  # IEEE double column width
     
     # Prepare data for seaborn (support warm start types)
     phase_map = {
@@ -177,7 +181,7 @@ def plot_phase_comparison(df, output_dir):
     df['Phase'] = df['type'].map(lambda x: phase_map.get(x, x))
     
     metrics = [('rmse', 'Combined Loss'), ('rmse_68x', '68X RMSE'), ('rmse_960', '960 RMSE')]
-    palette = {'LHS Initial': '#3498db', 'Bayesian Opt.': '#e74c3c', 'Warm Start': '#9b59b6'}
+    palette = {'LHS Initial': '#1f77b4', 'Bayesian Opt.': '#ff7f0e', 'Warm Start': '#2ca02c'}
     
     for ax, (metric, title) in zip(axes, metrics):
         # Filter out constraint-violated entries for clearer visualization

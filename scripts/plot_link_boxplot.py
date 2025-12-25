@@ -18,7 +18,19 @@ def main():
     parser.add_argument('--route', default='68X')
     args = parser.parse_args()
 
-    sns.set_theme(style="ticks", context="talk")
+    # sns.set_theme(style="ticks", context="talk") # Disabled for IEEE style
+    
+    # IEEE Style Configuration (8pt fonts with small figure size)
+    plt.rcParams['font.family'] = 'serif'
+    plt.rcParams['font.serif'] = ['Times New Roman']
+    plt.rcParams['axes.unicode_minus'] = False
+    plt.rcParams['mathtext.fontset'] = 'stix'
+    plt.rcParams['font.size'] = 8
+    plt.rcParams['axes.labelsize'] = 8
+    plt.rcParams['axes.titlesize'] = 8
+    plt.rcParams['legend.fontsize'] = 7
+    plt.rcParams['xtick.labelsize'] = 7
+    plt.rcParams['ytick.labelsize'] = 7
     
     # Load Data
     dist_df = load_route_stop_dist(args.real_dist)
@@ -126,7 +138,7 @@ def main():
     
     filtered_df = full_df[full_df['seq'].isin(top_vars)]
     
-    plt.figure(figsize=(14, 8))
+    plt.figure(figsize=(7.16, 3.0))  # IEEE double column width
     
     # Unified colors
     custom_palette = {'Real World': '#1f77b4', 'Simulation': '#ff7f0e'}
@@ -135,13 +147,12 @@ def main():
     sns.boxplot(data=filtered_df, x="seq", y="speed_kmh", hue="Source", 
                 palette=custom_palette, width=0.6, fliersize=3)
     
-    plt.title(f"Link Speed Variability (Key Segments - {args.route})")
     plt.xlabel("Link Sequence ID")
-    plt.ylabel("Speed [km/h]")
+    plt.ylabel("Speed (km/h)")
     
     sns.despine(trim=True)
     plt.tight_layout()
-    plt.savefig(args.out, dpi=400)
+    plt.savefig(args.out, dpi=300, bbox_inches='tight')
     print(f"Saved Boxplot to {args.out}")
 
 if __name__ == "__main__":

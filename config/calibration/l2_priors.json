@@ -1,0 +1,41 @@
+{
+    "description": "L2 宏观参数先验分布配置 (IES 校准)",
+    "l1_frozen_source": "config/calibration/best_l1_parameters.json",
+    "parameters": [
+        {
+            "name": "capacityFactor",
+            "mu": 1.0,
+            "sigma": 0.15,
+            "min": 0.3,
+            "max": 1.5,
+            "scope": "global",
+            "sumo_attribute": "net.xml edge capacity scaling",
+            "description": "全网流量瓶颈因子，控制道路通行能力"
+        },
+        {
+            "name": "minGap_background",
+            "mu": 2.5,
+            "sigma": 0.5,
+            "min": 0.5,
+            "max": 8.0,
+            "scope": "background_vtype",
+            "sumo_attribute": "vType minGap",
+            "description": "背景车辆最小跟车间距，控制拥堵时排队密度"
+        },
+        {
+            "name": "impatience",
+            "mu": 0.5,
+            "sigma": 0.2,
+            "min": 0.0,
+            "max": 1.0,
+            "scope": "background_vtype",
+            "sumo_attribute": "vType impatience",
+            "description": "不耐烦程度，控制拥堵时变道积极性"
+        }
+    ],
+    "ensemble_config": {
+        "ensemble_size": 20,
+        "max_iterations": 5,
+        "observation_noise_std": 10.0
+    }
+}

@@ -21,7 +21,19 @@ def main():
 
     # Unified Color Scheme
     files_colors = {'Real World': '#1f77b4', 'Simulation': '#ff7f0e'}
-    sns.set_theme(style="whitegrid", context="talk")
+    # sns.set_theme(style="whitegrid", context="talk") # Disabled for IEEE style
+    
+    # IEEE Style Configuration (8pt fonts with small figure size)
+    plt.rcParams['font.family'] = 'serif'
+    plt.rcParams['font.serif'] = ['Times New Roman']
+    plt.rcParams['axes.unicode_minus'] = False
+    plt.rcParams['mathtext.fontset'] = 'stix'
+    plt.rcParams['font.size'] = 8
+    plt.rcParams['axes.labelsize'] = 8
+    plt.rcParams['axes.titlesize'] = 8
+    plt.rcParams['legend.fontsize'] = 7
+    plt.rcParams['xtick.labelsize'] = 7
+    plt.rcParams['ytick.labelsize'] = 7
 
     # 1. Load Data
     # 1. Load Data
@@ -137,15 +149,14 @@ def main():
     # 4. Final Plotting
     full_df = pd.concat([df_real_plot, df_sim_plot])
     
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(3.5, 2.5))  # IEEE single column width
     
     # Use markers to clearly see "Stations"
     sns.lineplot(data=full_df, x="dist", y="cum_time", hue="Source", style="Source",
                  markers=True, dashes=False, palette=files_colors, markersize=7)
     
-    plt.title(f"Trajectory Alignment: {args.route} (Starts at Seq {start_seq})")
-    plt.xlabel(f"Distance from Baseline Stop (Seq {start_seq}) [m]")
-    plt.ylabel("Cumulative Travel Time [s]")
+    plt.xlabel(f"Distance from Baseline Stop (Seq {start_seq}) (m)")
+    plt.ylabel("Cumulative Travel Time (s)")
     
     # Give the (0,0) origin some breathing room
     plt.xlim(left=-200) 
@@ -153,7 +164,7 @@ def main():
     
     sns.despine()
     plt.tight_layout()
-    plt.savefig(args.out, dpi=400)
+    plt.savefig(args.out, dpi=300, bbox_inches='tight')
     print(f"Saved Aligned Trajectory Plot to {args.out}")
 
 if __name__ == "__main__":

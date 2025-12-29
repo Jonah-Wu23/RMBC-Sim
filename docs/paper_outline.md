@@ -43,7 +43,7 @@ Bus simulation; parameter inversion; multi-level calibration; Bayesian optimizat
 
 2.1 Bus simulation calibration (SUMO/微观仿真参数)  
 2.2 Surrogate-based optimization (Kriging/RBF/BO)  
-2.3 Data assimilation for traffic (EnKF/状态估计，简述即可)  
+2.3 Data assimilation for traffic (IES，简述即可)  
 2.4 Robust calibration / distributional evaluation (K-S, quantile loss, etc.)
 
 > 写法：每小节 6–10 句，最后一句落到“本文怎么补齐缺口”。
@@ -82,7 +82,7 @@ Bus simulation; parameter inversion; multi-level calibration; Bayesian optimizat
 - Step A：初始化采样（LHS/随机）跑仿真，得到 (θ, J1, J2)
 - Step B：训练双代理（Kriging + RBF）拟合 J(θ) 或 (J1,J2)
 - Step C：BO（EI）提出新 θ，追加仿真迭代
-- Step D：L2 同化/约束（EnKF 或你使用的状态更新机制）
+- Step D：L2 同化/约束（IES）
 - Step E：输出 θ* 并做鲁棒验证
 
 ### 4.2 Surrogate Model with Uncertainty Quantification
@@ -99,7 +99,7 @@ Bus simulation; parameter inversion; multi-level calibration; Bayesian optimizat
 - 预算：N0 初始 + N_iter 迭代
 - 终止：最优改进 < ε 或预算用完
 
-### 4.4 L2 Data Assimilation / Constraint（有则写）
+### 【需要重写，应为IES】4.4 L2 Data Assimilation / Constraint（有则写）
 
 - EnKF：状态 x、观测 y、更新公式（简写一行）
 - 解释：让宏观速度/拥堵形态与现实同步，减少“只靠调参数硬拟合”
@@ -113,7 +113,7 @@ Bus simulation; parameter inversion; multi-level calibration; Bayesian optimizat
 
 ## 5. Experimental Setup
 
-> 最终模型：贝叶斯代理 (Kriging) + 双层目标 J1+J2
+> 最终模型：L1 贝叶斯代理 (Kriging) + L2 IES + 双层目标 J1+J2
 ### 5.1 Study Area & Route Selection
 
 - 线路信息：长度、站点数、主要走廊、早晚高峰特征
@@ -130,7 +130,7 @@ Bus simulation; parameter inversion; multi-level calibration; Bayesian optimizat
 - B1：手工经验参数 / 默认参数（无优化）
 - B2：单代理 Kriging + 单层 J1（验证代理模型基本效果）
 - B3：Kriging-RBF 融合 + 单层 J1（验证融合方案是否带来增益）
-- B4：单代理 Kriging + 双层 J1+J2（验证多层目标的贡献）
+- B4：IES + 双层 J1+J2（验证多层目标的贡献）
 
 > **Note**: 消融实验预期 B4 > B2 > B1；B3 与 B2 差异取决于问题结构
 

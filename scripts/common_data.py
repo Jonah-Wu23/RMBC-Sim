@@ -54,6 +54,17 @@ def load_real_link_speeds(csv_path):
 def load_route_stop_dist(csv_path):
     return pd.read_csv(csv_path)
 
+def get_dist_map(dist_df, key_col='seq'):
+    """
+    获取距离映射，优先使用 cum_dist_m_dir，NaN 时回退到 cum_dist_m
+    """
+    if 'cum_dist_m_dir' in dist_df.columns:
+        # 用 cum_dist_m 填充 cum_dist_m_dir 的 NaN
+        dist_vals = dist_df['cum_dist_m_dir'].fillna(dist_df['cum_dist_m'])
+    else:
+        dist_vals = dist_df['cum_dist_m']
+    return dict(zip(dist_df[key_col], dist_vals))
+
 def build_sim_trajectory(sim_df, dist_df, start_time_offset=0):
     if sim_df.empty: return pd.DataFrame()
     
@@ -63,8 +74,22 @@ def build_sim_trajectory(sim_df, dist_df, start_time_offset=0):
         
     sim_df = sim_df.dropna(subset=['bus_stop_id'])
     
-    merged = pd.merge(sim_df, dist_df[['stop_id', 'seq', 'cum_dist_m']], 
+    # 使用有向距离口径 (cum_dist_m_dir)，若不存在则回退到 cum_dist_m
+    # 当 cum_dist_m_dir 存在但某些行为 NaN 时，用 cum_dist_m 填充
+    if 'cum_dist_m_dir' in dist_df.columns:
+        dist_df = dist_df.copy()
+        dist_df['_dist_merged'] = dist_df['cum_dist_m_dir'].fillna(dist_df['cum_dist_m'])
+        dist_col = '_dist_merged'
+    else:
+        dist_col = 'cum_dist_m'
+    
+    merge_cols = ['stop_id', 'seq', dist_col]
+    
+    merged = pd.merge(sim_df, dist_df[merge_cols], 
                       left_on='bus_stop_id', right_on='stop_id', how='inner')
+    
+    # 统一列名为 cum_dist_m 以保持下游兼容性
+    merged['cum_dist_m'] = merged[dist_col]
     
     merged = merged.sort_values(['vehicle_id', 'started'])
     merged['arrival_time'] = merged['started'] + start_time_offset

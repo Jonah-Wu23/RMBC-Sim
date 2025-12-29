@@ -104,7 +104,8 @@ class IESLoop:
         self.obs_var_floor = obs_var_floor ** 2  # 转换为方差
         self.current_damping = update_damping  # 运行时阻尼（可自适应调整）
         
-        np.random.seed(seed)
+        self.base_seed = seed  # 保存基础 seed
+        np.random.seed(seed)  # 初始化用于 __init__ 阶段
         
         # 加载配置
         self._load_priors()
@@ -120,12 +121,12 @@ class IESLoop:
         self.log_path = self.root / "data" / "calibration" / f"{label}_ies_log.csv"
         ensure_dir(str(self.log_path))
         
-        # SUMO 相关路径
+        # SUMO 相关路径 (B4-Sanity: 统一使用研究区域口径)
         self.base_sumocfg = self.root / "sumo" / "config" / "experiment2_calibrated.sumocfg"
-        self.net_file = self.root / "sumo" / "net" / "hk_irn_v3.net.xml"
-        self.bus_stops = self.root / "sumo" / "additional" / "bus_stops.add.xml"
-        self.bus_route = self.root / "sumo" / "routes" / "fixed_routes.rou.xml"
-        self.bg_route_base = self.root / "sumo" / "routes" / "background_clipped.rou.xml"
+        self.net_file = self.root / "sumo" / "net" / "hk_cropped.net.xml"  # 研究区域网络
+        self.bus_stops = self.root / "sumo" / "additional" / "bus_stops_cropped.add.xml"  # cropped 站点
+        self.bus_route = self.root / "sumo" / "routes" / "fixed_routes_cropped.rou.xml"  # cropped 路由
+        self.bg_route_base = self.root / "sumo" / "routes" / "background_cropped.rou.xml"  # cropped 背景
         
         # 计算组归一权重
         self._compute_group_weights()
@@ -220,12 +221,16 @@ class IESLoop:
             print(f"[IES] 加载优化 L1 参数 (B2): {self.l1_params}")
 
     def _load_observation_vector(self) -> None:
-        """加载观测向量（优先使用 corridor 版本）"""
-        # 优先使用 corridor 版本，fallback 到原始版本
+        """加载观测向量（优先使用 M11 / corridor 版本）"""
+        # 优先级: M11 > corridor > full
+        obs_path_m11 = self.root / "data" / "calibration" / "l2_observation_vector_corridor_M11.csv"
         obs_path_corridor = self.root / "data" / "calibration" / "l2_observation_vector_corridor.csv"
         obs_path_full = self.root / "data" / "calibration" / "l2_observation_vector.csv"
         
-        if obs_path_corridor.exists():
+        if obs_path_m11.exists():
+            obs_path = obs_path_m11
+            print(f"[IES] 使用 M11 观测向量 (11点正式口径): {obs_path}")
+        elif obs_path_corridor.exists():
             obs_path = obs_path_corridor
             print(f"[IES] 使用 corridor 观测向量: {obs_path}")
         else:
@@ -251,12 +256,16 @@ class IESLoop:
         print(f"[IES] 加载观测向量: {len(self.Y_obs)} 个观测点")
 
     def _load_link_edge_mapping(self) -> None:
-        """加载链路-边映射表（优先使用 corridor 版本）"""
-        # 优先使用 corridor 版本，fallback 到原始版本
+        """加载链路-边映射表（优先使用 M11 / corridor 版本）"""
+        # 优先级: M11 > corridor > full
+        mapping_path_m11 = self.root / "config" / "calibration" / "link_edge_mapping_corridor_M11.csv"
         mapping_path_corridor = self.root / "config" / "calibration" / "link_edge_mapping_corridor.csv"
         mapping_path_full = self.root / "config" / "calibration" / "link_edge_mapping.csv"
         
-        if mapping_path_corridor.exists():
+        if mapping_path_m11.exists():
+            mapping_path = mapping_path_m11
+            print(f"[IES] 使用 M11 映射表 (11点正式口径): {mapping_path}")
+        elif mapping_path_corridor.exists():
             mapping_path = mapping_path_corridor
             print(f"[IES] 使用 corridor 映射表: {mapping_path}")
         else:
@@ -323,17 +332,23 @@ class IESLoop:
         
         print(f"[IES] 组归一权重计算完成: {n_groups} 组, 权重范围 [{self.group_weights.min():.3f}, {self.group_weights.max():.3f}]")
 
-    def generate_ensemble(self, mu: np.ndarray, P: np.ndarray) -> np.ndarray:
+    def generate_ensemble(self, mu: np.ndarray, P: np.ndarray, iteration: int = 0) -> np.ndarray:
         """
         生成系综样本
         
         Args:
             mu: 当前参数均值 (dim,)
             P: 当前协方差矩阵 (dim, dim)
+            iteration: 当前迭代轮次（用于 seed 递增）
         
         Returns:
             X_ensemble: 形状 (N, dim) 的参数矩阵
         """
+        # B4-Sanity 修复：每轮迭代使用不同的 seed
+        iter_seed = self.base_seed + iteration * 1000
+        np.random.seed(iter_seed)
+        print(f"[IES] 迭代 {iteration} 使用 seed = {iter_seed}")
+        
         X_ensemble = np.random.multivariate_normal(mu, P, self.ensemble_size)
         
         # 边界裁剪
@@ -459,7 +474,7 @@ class IESLoop:
         return str(sumocfg_path), str(edgedata_path)
 
     def _create_edgedata_additional(self, add_path: str, output_path: str) -> None:
-        """创建 edgedata 输出的 additional 文件"""
+        """创建 edgedata 输出的 additional 文件 (只统计公交车)"""
         additional = ET.Element('additional')
         
         edgedata = ET.SubElement(additional, 'edgeData')
@@ -468,6 +483,9 @@ class IESLoop:
         edgedata.set('begin', '0')
         edgedata.set('end', '3600')
         edgedata.set('freq', '3600')  # 整个时段一个 interval
+        # 关键修复：只统计公交车的速度（而不是全交通流）
+        edgedata.set('vTypes', 'kmb_double_decker')
+        edgedata.set('excludeEmpty', 'true')  # 排除公交没经过的边
         
         tree = ET.ElementTree(additional)
         tree.write(add_path, encoding='utf-8', xml_declaration=True)
@@ -810,11 +828,31 @@ class IESLoop:
         residuals = Y_obs_usable - Y_bar
         rmse = np.sqrt(np.mean(residuals ** 2))
         
-        # K-S 距离（附带诊断打印）
-        # 诊断: 打印 Y_obs 和 Y_bar 的前 5 个值，排查 K-S 恒定问题
+        # ============================================================
+        # 口径诊断打印（Step 0: 强制口径自检）
+        # ============================================================
         n_diag = min(5, len(Y_obs_usable))
-        print(f"[IES] K-S 诊断: Y_obs[:5] = {Y_obs_usable[:n_diag].round(2).tolist()}")
-        print(f"[IES] K-S 诊断: Y_bar[:5] = {Y_bar[:n_diag].round(2).tolist()}")
+        print(f"\n[IES] ====== 口径诊断 ======")
+        print(f"[IES] 有效观测点: {n_usable_obs}/{M}")
+        
+        # 缺失观测点 ID
+        missing_ids = self.obs_df.loc[~obs_usable, 'observation_id'].tolist()
+        if missing_ids:
+            print(f"[IES] 缺失观测点 ID: {missing_ids}")
+        
+        # min/median/max 对比
+        print(f"[IES] Y_obs: min={Y_obs_usable.min():.2f}, median={np.median(Y_obs_usable):.2f}, max={Y_obs_usable.max():.2f} km/h")
+        print(f"[IES] Y_bar: min={Y_bar.min():.2f}, median={np.median(Y_bar):.2f}, max={Y_bar.max():.2f} km/h")
+        
+        # 比值诊断（关键！看数量级）
+        ratio = np.median(Y_bar) / np.median(Y_obs_usable) if np.median(Y_obs_usable) > 0 else float('nan')
+        print(f"[IES] Y_bar/Y_obs 中位数比值: {ratio:.2f}x")
+        if ratio > 2 or ratio < 0.5:
+            print(f"[WARN] ⚠️ 数量级差距过大！可能存在口径不一致（单位/统计对象）")
+        
+        print(f"[IES] Y_obs[:5] = {Y_obs_usable[:n_diag].round(2).tolist()}")
+        print(f"[IES] Y_bar[:5] = {Y_bar[:n_diag].round(2).tolist()}")
+        print(f"[IES] =======================\n")
         
         try:
             ks_stat, _ = stats.ks_2samp(Y_bar, Y_obs_usable)
@@ -852,8 +890,8 @@ class IESLoop:
             
             # 3.2 系综生成
             print(f"[IES] 当前参数均值: {dict(zip(self.param_names, mu_current))}")
-            X_ensemble = self.generate_ensemble(mu_current, P_current)
-            print(f"[IES] 生成 {self.ensemble_size} 个系综样本")
+            X_ensemble = self.generate_ensemble(mu_current, P_current, iteration=k+1)
+            print(f"[IES] 生成 {self.ensemble_size} 个系综样本 (seed={self.base_seed + (k+1)*1000})")
             
             # 3.3 生成配置并并行仿真
             configs = self.generate_sumo_configs(k + 1, X_ensemble)

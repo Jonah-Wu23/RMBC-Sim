@@ -1,0 +1,79 @@
+{
+  "68X_inbound": {
+    "start_stop_id": "EC19750840FFEDDC",
+    "end_stop_id": "7DD772B7D55C54B2",
+    "stops": [
+      "EC19750840FFEDDC",
+      "B76B249D3D253008",
+      "A7F35DC09E1A1528",
+      "D242B538BA760551",
+      "11ED493F674F4888",
+      "BA765A2BCCE21F5C",
+      "BE510511B0A7344E",
+      "BE1A19A3705F5B70",
+      "95731C2B3563CF5E",
+      "4AFCFC726ADBD5F7",
+      "DD9DF46F3BA040EE",
+      "B7C0A83790F94D99",
+      "06566A7FE3C6466A",
+      "7DD772B7D55C54B2"
+    ],
+    "kmb_start_dist": 0.0,
+    "kmb_end_dist": 5747.323
+  },
+  "68X_outbound": {
+    "start_stop_id": "50E78EB09845863E",
+    "end_stop_id": "EC19750840FFEDDC",
+    "stops": [
+      "50E78EB09845863E",
+      "09A156B1A802D093",
+      "BD34A7B702373B12",
+      "E30C2815DA280036",
+      "C06334CA2AF7814B",
+      "812E72C257C94B73",
+      "18C138014DF5B0C8",
+      "0FDE3A87457539BC",
+      "30B08A7B2B2B623F",
+      "7ADC6D521E6BECE6",
+      "E02E10C9135624F9",
+      "145515B1D2C60CAF",
+      "EC19750840FFEDDC"
+    ],
+    "kmb_start_dist": 26870.56,
+    "kmb_end_dist": 32115.65
+  },
+  "960_inbound": {
+    "start_stop_id": "ADC51A7EEEE43D6F",
+    "end_stop_id": "AD97EA183A25102C",
+    "stops": [
+      "ADC51A7EEEE43D6F",
+      "C3D2F84C0F0FF415",
+      "47A2AA98F8E20AE2",
+      "6F9CEABEE36E8682",
+      "A63B90588F747496",
+      "83B717529F9794BC",
+      "1D8A902219897402",
+      "A81B13297DB1C481",
+      "13E0A0449C73F4DE",
+      "AD97EA183A25102C"
+    ],
+    "kmb_start_dist": 0.0,
+    "kmb_end_dist": 6723.578
+  },
+  "960_outbound": {
+    "start_stop_id": "72F743E4D464E498",
+    "end_stop_id": "ADC51A7EEEE43D6F",
+    "stops": [
+      "72F743E4D464E498",
+      "25D811895B82ABCA",
+      "709C8604AFB90F27",
+      "8379C4B1265C27F7",
+      "C804CCACB2781EEE",
+      "AD1B202B678A3B56",
+      "B30799FB3732222B",
+      "ADC51A7EEEE43D6F"
+    ],
+    "kmb_start_dist": 31924.054,
+    "kmb_end_dist": 39535.875
+  }
+}

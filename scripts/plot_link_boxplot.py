@@ -7,7 +7,7 @@ import sys
 import os
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from common_data import load_sim_data, load_route_stop_dist, build_sim_trajectory, load_real_link_speeds
+from common_data import load_sim_data, load_route_stop_dist, build_sim_trajectory, load_real_link_speeds, get_dist_map
 
 def main():
     parser = argparse.ArgumentParser()
@@ -69,8 +69,8 @@ def main():
          pass 
 
     if min_sim_seq is not None: 
-        # Calculate Effective Bounds
-        dist_map = dist_df.set_index('seq')['cum_dist_m'].to_dict()
+        # Calculate Effective Bounds - 使用 get_dist_map
+        dist_map = get_dist_map(dist_df, 'seq')
         start_dist = dist_map.get(min_sim_seq, 0)
         sim_max_abs = dist_map.get(max_sim_seq, start_dist)
         effective_end_dist = min(sim_max_abs, start_dist + 5000)
@@ -87,9 +87,9 @@ def main():
     
     sim_traj = build_sim_trajectory(sim_raw, dist_df)
     
-    # Calculate Sim Link Speeds
+    # Calculate Sim Link Speeds - 使用 get_dist_map
     sim_link_data = []
-    dist_map = dist_df.set_index('seq')['cum_dist_m'].to_dict()
+    dist_map = get_dist_map(dist_df, 'seq')
     
     for vid, group in sim_traj.groupby('vehicle_id'):
         group = group.sort_values('seq')

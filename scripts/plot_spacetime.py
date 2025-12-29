@@ -10,7 +10,7 @@ import matplotlib.ticker as ticker
 import matplotlib.colors as mcolors
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from common_data import load_sim_data, load_route_stop_dist, build_sim_trajectory, load_real_link_speeds
+from common_data import load_sim_data, load_route_stop_dist, build_sim_trajectory, load_real_link_speeds, get_dist_map
 
 def interpolate_points(row, num_points=10):
     d1, d2 = row['dist_start'], row['dist_end']
@@ -63,7 +63,8 @@ def main():
     
     dist_df = load_route_stop_dist(args.real_dist)
     dist_df = dist_df[dist_df['route'] == args.route]
-    seq_dist_map = dist_df.set_index('seq')['cum_dist_m'].to_dict()
+    # 使用 get_dist_map 处理 cum_dist_m_dir 的 NaN
+    seq_dist_map = get_dist_map(dist_df, 'seq')
     
     real_links = load_real_link_speeds(args.real_links)
     real_links = real_links[real_links['route'] == args.route]
@@ -170,7 +171,8 @@ def main():
     print(f"Spacetime Filter: Research Area Seq {min_sim_seq} to {max_sim_seq}")
     
     # Calculate Distances for strict cropping
-    dist_map = dist_df.set_index('seq')['cum_dist_m'].to_dict()
+    # 使用 get_dist_map 处理 NaN
+    dist_map = get_dist_map(dist_df, 'seq')
     start_dist = dist_map.get(min_sim_seq, 0)
     
     # Determine bounds: Min(SimMax, Start+5000)

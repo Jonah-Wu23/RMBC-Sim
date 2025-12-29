@@ -8,7 +8,7 @@ import argparse
 
 # Ensure we can import common_data
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from common_data import load_sim_data, load_route_stop_dist, build_sim_trajectory, load_real_link_speeds
+from common_data import load_sim_data, load_route_stop_dist, build_sim_trajectory, load_real_link_speeds, get_dist_map
 
 def main():
     parser = argparse.ArgumentParser()
@@ -121,7 +121,8 @@ def main():
     # Sim speeds
     # Recompute sim link speeds: Dist / (Arr_next - Dep_curr)
     sim_speed_list = []
-    dist_map = dist_df.set_index('seq')['cum_dist_m'].to_dict()
+    # 使用 get_dist_map 处理 NaN
+    dist_map = get_dist_map(dist_df, 'seq')
     
     for vid, group in sim_traj.groupby('vehicle_id'):
         group = group.sort_values('seq')

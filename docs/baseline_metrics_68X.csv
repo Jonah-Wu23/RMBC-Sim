@@ -1,4 +1,4 @@
 Metric,Value,Unit
 RMSE (Travel Time),148.0,s
 MAPE (Travel Time),43.55503237198352,%
-Wasserstein (Speed),6.334137448914103,Distance
+Wasserstein (Speed),7.9541794749628405,Distance

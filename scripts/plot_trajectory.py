@@ -8,7 +8,7 @@ import os
 import numpy as np
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from common_data import load_sim_data, load_route_stop_dist, build_sim_trajectory, load_real_link_speeds
+from common_data import load_sim_data, load_route_stop_dist, build_sim_trajectory, load_real_link_speeds, get_dist_map
 
 def main():
     parser = argparse.ArgumentParser()
@@ -39,7 +39,8 @@ def main():
     # 1. Load Data
     dist_df = load_route_stop_dist(args.real_dist)
     dist_df = dist_df[dist_df['route'] == args.route]
-    dist_map = dist_df.set_index('seq')['cum_dist_m'].to_dict()
+    # 使用 get_dist_map 处理 cum_dist_m_dir 的 NaN
+    dist_map = get_dist_map(dist_df, 'seq')
 
     sim_raw = load_sim_data(args.sim)
     
@@ -58,7 +59,7 @@ def main():
     
     # Filter dist_df strictly to this bound
     dist_df = dist_df[dist_df['bound'] == target_bound]
-    dist_map = dist_df.set_index('seq')['cum_dist_m'].to_dict()
+    dist_map = get_dist_map(dist_df, 'seq')
     stop_to_seq = dist_df.set_index('stop_id')['seq'].to_dict()
 
     sim_seqs = [stop_to_seq[s] for s in sim_stops_set if s in stop_to_seq]

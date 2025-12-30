@@ -16,7 +16,10 @@ def main():
     REAL_LINKS = "data/processed/link_speeds.csv"
     REAL_DIST = "data/processed/kmb_route_stop_dist.csv"
     REAL_ETA = "data/processed/station_eta.csv" # For future use if needed
-    SIM_XML = "sumo/output/stopinfo_exp2_cropped.xml"
+    REAL_ETA = "data/processed/station_eta.csv" # For future use if needed
+    # Corrected Sim File: B1 Baseline (Freeflow / Default Params), generated from baseline_b1.sumocfg
+    SIM_XML = "sumo/output/stopinfo_b1.xml"
+    ROUTE = "68X"
     ROUTE = "68X"
     
     os.makedirs("plots", exist_ok=True)

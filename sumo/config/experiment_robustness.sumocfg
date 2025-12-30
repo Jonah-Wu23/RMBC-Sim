@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <!-- P14 Off-Peak Robustness Test Configuration (v2) -->
+    <!-- Frozen L2 Parameters from P13 -->
+    <!-- Decoupled Scaling: Background (alpha=0.9 via file) + Bus (1.0 via file) -->
+    <!-- Global scale REMOVED -->
+
+    <input>
+        <net-file value="../net/hk_cropped.net.xml"/>
+        <route-files value="../routes/fixed_routes_cropped.rou.xml,../routes/background_offpeak_09.rou.xml"/>
+        <additional-files value="../additional/bus_stops_cropped.add.xml"/>
+    </input>
+
+    <time>
+        <begin value="0"/>
+        <end value="3900"/>
+    </time>
+
+    <processing>
+        <ignore-route-errors value="true"/>
+        <time-to-teleport value="300"/>
+    </processing>
+
+    <report>
+        <verbose value="true"/>
+        <no-step-log value="true"/>
+    </report>
+    
+    <output>
+        <stop-output value="../output/offpeak_stopinfo.xml"/>
+        <tripinfo-output value="../output/offpeak_tripinfo.xml"/>
+        <statistic-output value="../output/offpeak_stats.xml"/>
+    </output>
+
+</configuration>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="../net/hk_cropped.net.xml"/>
+        <!-- REMOVED background_cropped.rou.xml for B1 Baseline (Freeflow) -->
+        <route-files value="../routes/fixed_routes_cropped.rou.xml"/>
+        <additional-files value="../additional/bus_stops_cropped.add.xml"/>
+    </input>
+
+    <time>
+        <begin value="0"/>
+        <end value="3600"/>
+    </time>
+
+    <processing>
+        <ignore-route-errors value="true"/>
+        <time-to-teleport value="300"/>
+    </processing>
+
+    <report>
+        <verbose value="true"/>
+        <no-step-log value="true"/>
+    </report>
+    
+    <output>
+        <stop-output value="../output/stopinfo_b1.xml"/>
+        <tripinfo-output value="../output/tripinfo_b1.xml"/>
+    </output>
+
+</configuration>

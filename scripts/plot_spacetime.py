@@ -36,7 +36,8 @@ def interpolate_points(row, num_points=10):
     return pd.DataFrame({
         'Distance (m)': d_vals,
         'Time of Day (HH:MM)': t_vals,
-        'Speed (km/h)': row['speed_kmh']
+        'Speed (km/h)': row['speed_kmh'],
+        'TravelTime': row.get('travel_time_s', 0)
     })
 
 def main():
@@ -46,6 +47,9 @@ def main():
     parser.add_argument('--sim', required=True)
     parser.add_argument('--out', required=True)
     parser.add_argument('--route', default='68X')
+    parser.add_argument('--hour', type=int, default=17, help='Start hour of analysis (e.g. 17 for 17:00-18:00)')
+    parser.add_argument('--ghost', action='store_true', help='Enable 3-panel Ghost/Clean/Sim plot')
+    parser.add_argument('--t_critical', type=float, default=325.0, help='Critical time threshold for ghost filtering')
     args = parser.parse_args()
 
     # sns.set_theme(style="whitegrid", context="talk") # Removed to enforce own style
@@ -76,16 +80,16 @@ def main():
          real_links['arrival_ts'] = real_links['arrival_ts'].dt.tz_convert('Asia/Hong_Kong')
 
     real_links['h'] = real_links['departure_ts'].dt.hour
-    real_links = real_links[real_links['h'] == 17] # Filter 17:xx
+    real_links = real_links[real_links['h'] == args.hour] # Filter Hour
     
     if real_links.empty:
-        print("Warning: Real data empty after filtering for Hour 17 HK.")  
+        print(f"Warning: Real data empty after filtering for Hour {args.hour} HK.")  
     sim_raw = load_sim_data(args.sim)
     sim_traj = build_sim_trajectory(sim_raw, dist_df)
     sim_start_offset_sec = 0 # Assume sim outputs absolute time or aligned relative
     # Actually, logic requires verifying SIM start time. 
     # For now, we align SIM 0 to 17:00 (17.0 hours)
-    SIM_START_HOUR = 17.0
+    SIM_START_HOUR = float(args.hour)
 
     plot_data_list = []
     
@@ -113,7 +117,8 @@ def main():
             seg = {
                 'dist_start': seq_dist_map[s1], 'dist_end': seq_dist_map[s2],
                 'time_start': row['departure_ts'], 'time_end': row['arrival_ts'],
-                'speed_kmh': row['speed_kmh']
+                'speed_kmh': row['speed_kmh'],
+                'travel_time_s': row.get('travel_time_s', 0)
             }
             pts = interpolate_points(seg, 15)
             if not pts.empty:
@@ -216,73 +221,78 @@ def main():
         (full_df['Distance (m)'] <= effective_end_dist)
     ]
     
-    # Plotting
-    fig, axes = plt.subplots(2, 1, figsize=(3.5, 3.0), sharex=True, sharey=True, constrained_layout=True) # IEEE approx column width ~3.5 inch
+    # Plotting Configuration
+    if args.ghost:
+        nrows = 3
+        fig_height = 5.0
+        # Config: (Title, Source_Key, Mode, Colormap)
+        sources_cfg = [
+            ('Ghost System (Real Raw)', 'Real World', 'all', 'Greys'),
+            ('Real (Op-L2-v1.1 / Rule C)', 'Real World', 'clean', 'Blues'),
+            ('Simulation', 'Simulation', 'all', 'Oranges')
+        ]
+    else:
+        nrows = 2
+        fig_height = 3.5
+        sources_cfg = [
+            ('Real (Op-L2-v1.1)', 'Real World', 'clean', 'Blues'), 
+            ('Simulation', 'Simulation', 'all', 'Oranges')
+        ]
+
+    fig, axes = plt.subplots(nrows, 1, figsize=(3.5, fig_height), sharex=True, sharey=True, constrained_layout=True)
+    if nrows == 1: axes = [axes]
     
-    # Define Colormaps matching the Blue (Real) / Orange (Sim) theme
-    # We want Speed to be visualized. 
-    # Real (Blue): Low Speed = Light Blue, High Speed = Dark Blue
-    # Sim (Orange): Low Speed = Light Orange, High Speed = Dark Orange
-    cmaps = {'Real World': 'Blues', 'Simulation': 'Oranges'}
-    source_colors = {'Real World': '#1f77b4', 'Simulation': '#ff7f0e'}
+    # Unified Scale but Different Colormaps
+    vmin, vmax = 0, 70
+    
+    def get_truncated_cmap(name, min_val=0.4, max_val=1.0):
+        base_cmap = plt.get_cmap(name)
+        new_colors = base_cmap(np.linspace(min_val, max_val, 256))
+        return mcolors.LinearSegmentedColormap.from_list(f"trunc({name})", new_colors)
 
-    for i, src in enumerate(['Real World', 'Simulation']):
+    for i, (title, src_key, mode, cmap_name) in enumerate(sources_cfg):
         ax = axes[i]
-        src_data = full_df[full_df['Source'] == src]
-        if src_data.empty: continue
         
-        # Filter again just in case for Sim data if not done
-        # (Sim data is intrinsically within range, but Real needs verify)
-        if src == 'Real World':
-            # full_df might have mixed rows, filter by Dist if needed, but seq filter above should work.
-            pass
+        # Filter Data
+        df_src = full_df[full_df['Source'] == src_key].copy()
+        
+        if mode == 'clean' and src_key == 'Real World':
+            # Apply Rule C: Tick out Ghost Jams
+            # Ghost: Time > 300 AND Speed < 5.
+            # Clean: NOT (Time > 325 AND Speed < 5)
+            # Note: args.t_critical default 325.
+            mask_ghost = (df_src['TravelTime'] > args.t_critical) & (df_src['Speed (km/h)'] < 5.0)
+            df_src = df_src[~mask_ghost]
+        
+        if df_src.empty: continue
 
-        # Scatter with per-source colormap
-        # We need a mappable for the colorbar
-        # Custom Truncated Colormaps to avoid pale colors
-        # Start from 0.4 intensity to ensure visibility even at 0 speed (if mapped)
-        if src == 'Real World':
-            base_cmap = plt.cm.Blues
-            new_colors = base_cmap(np.linspace(0.4, 1.0, 256))
-            cmap = mcolors.LinearSegmentedColormap.from_list("DarkBlues", new_colors)
-        else:
-            base_cmap = plt.cm.Oranges
-            new_colors = base_cmap(np.linspace(0.4, 1.0, 256))
-            cmap = mcolors.LinearSegmentedColormap.from_list("DarkOranges", new_colors)
-
-        norm = plt.Normalize(0, 70) # Speed range 0-70 km/h
+        norm = plt.Normalize(vmin, vmax)
         
-        # Plot
-        # Adjust marker size and alpha for visibility
-        # User complained "Too pale". Set alpha=1.0, s=20.
-        sc = ax.scatter(src_data["Distance (m)"], src_data["Time of Day (HH:MM)"], 
-                        c=src_data["Speed (km/h)"], cmap=cmap, norm=norm, 
-                        s=5, linewidth=0, marker='o', alpha=1.0) # Reduced size for high density
+        # Use Truncated Colormap to ensure visibility (min alpha/intensity 0.4)
+        # This is necessary because 'Blues'/'Oranges' start at white (invisible)
+        trunc_cmap = get_truncated_cmap(cmap_name)
         
-        ax.set_title(src, color='black', fontweight='bold', fontsize=8)
+        sc = ax.scatter(df_src["Distance (m)"], df_src["Time of Day (HH:MM)"], 
+                        c=df_src["Speed (km/h)"], cmap=trunc_cmap, norm=norm, 
+                        s=12, linewidth=0, marker='o', alpha=1.0)
+        
+        ax.set_title(title, color='black', fontweight='bold', fontsize=8)
         ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, p: f"{int(x):02d}:{int((x-int(x))*60):02d}"))
-        ax.set_ylim(17, 18.2)
+        ax.set_ylim(args.hour, args.hour + 1.2)
         ax.set_ylabel("Time (HH:MM)", fontsize=8)
-        if i == 1:
+        
+        if i == nrows - 1:
             ax.set_xlabel("Distance (m)", fontsize=8)
         
-        # Grid
         ax.grid(True, linestyle='--', alpha=0.5)
 
-        # Individual Colorbar? Or shared?
-        # User wants unified look. Two heatmaps are hard to unify with one bar if they are different colors.
-        # But maybe just one colorbar is not enough.
-        # Let's add small colorbars next to each?
-        # Or better: Use user's previous "Unified" request which might imply simple colors? 
-        # No, "Space-Time" needs speed. 
-        # Let's add a colorbar for each ax.
         cbar = fig.colorbar(sc, ax=ax, pad=0.02, aspect=15)
         cbar.set_label('Speed (km/h)', fontsize=8)
         cbar.ax.tick_params(labelsize=8)
 
-    # sns.despine(fig=fig, right=True, top=True) # Not needed with grid/box
     plt.savefig(args.out, dpi=300, bbox_inches='tight')
     print(f"Saved {args.out}")
+
 
 if __name__ == "__main__":
     main()

@@ -14,3 +14,11 @@ docs\pdf_text
 
 # 忽略agent文件夹
 .agent
+
+# Python caches / local artifacts
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Local smoke outputs
+plots/_smoke/

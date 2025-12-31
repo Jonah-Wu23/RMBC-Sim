@@ -1,125 +1,98 @@
-# RCMDT: Robust Calibration of Mobility Digital Twins
-**Codebase for IEEE SMC 2026 Submission**
+# RCMDT: Observation-Operator-Aware Calibration of Mobility Digital Twins
 
-## 📌 Replication Guide
+Codebase for an IEEE SMC 2026 paper draft on robust calibration of bus corridor digital twins. The current paper storyline lives in `docs/paper_outline.md`.
 
-Use this guide to reproduce the key experimental results, specifically the **Baseline (B1)** verification and the **Zero-Shot Robustness (P14)** test.
+## What This Project Claims (In One Page)
 
-### 1. Prerequisites
+This repo implements and evaluates **RCMDT**, a hierarchical calibration loop (BO outer loop + IES inner loop) for bus corridor mobility digital twins, with a paper contribution that is deliberately **not** “we calibrated better”, but:
 
-*   **OS**: Windows 10/11 (Validated) or Linux
-*   **Python**: 3.11+
-*   **SUMO**: 1.20.0 (Must be in system `PATH`)
-    *   Verify with: `sumo --version`
+- **Observation Operator Audit:** “Real” door-to-door (D2D) measurements can be contaminated by non-transport operational semantics (schedule adherence, holding/layover). Robust conclusions require an auditable observation operator.
+- **Regime Separation (Rule C):** We isolate non-transport “ghost jams” with a reproducible rule: flag samples if `(T > T*) ∧ (v_eff < v*)` using `T* = 325s`, `v* = 5 km/h`.
+- **Robustness Evidence:** Robustness is validated at the **distribution level** (K-S + worst-window stress test). K-S is used as **validation evidence**, not as the calibration objective.
+- **Diagnostics (Not Validation):** Trajectory decomposition and dwell/holding-proxy plots answer *where mechanisms differ*, not whether the calibrated model is “correct”.
 
-### 2. Setup
+## Paper Alignment
 
-Install required Python libraries:
+- Paper outline: `docs/paper_outline.md`
+- Experiment registry + run notes: `docs/experiments.md`
+- Data/compliance notes: `DATA.md`
+- Main P14 figures (already generated): `plots/P14_ghost_audit.png`, `plots/P14_robustness_cdf.png`
+
+## Repository Layout
+
+- `scripts/`: analysis, calibration, visualization utilities
+- `sumo/`: SUMO configs, networks, routes, outputs
+- `data/`: peak-hour datasets (calibration side)
+- `data2/`: off-peak datasets (robustness / transfer side)
+- `plots/`: paper figures and diagnostics
+
+Note: some folders (e.g., `data/`, `data2/`) may be git-ignored depending on your workflow; see `.gitignore`.
+
+## Requirements
+
+- Windows 10/11 (tested), Python 3.11+, SUMO 1.20.0 (`sumo --version`)
+- Python packages:
+  ```bash
+  pip install -r requirements.txt
+  ```
+  Optional (used by other scripts): `pip install -r requirements-optional.txt`
+
+## Quickstart: Reproduce The P14 Evidence Chain (Recommended)
+
+The P14 story is: **operator audit → distributional robustness (K-S) → regime separation diagnostics**.
+
+1) Run off-peak simulation:
 ```bash
-pip install pandas numpy matplotlib seaborn scipy shapely geopandas
+sumo -c sumo/config/experiment_robustness.sumocfg
 ```
 
-### 3. Data Structure
+2) Compute robustness metrics (raw vs Rule C clean):
+```bash
+python scripts/evaluate_robustness.py --real data2/processed/link_stats_offpeak.csv --sim sumo/output/offpeak_stopinfo.xml --dist data/processed/kmb_route_stop_dist.csv --t_critical 325 --speed_kmh 5 --max_dist_m 1500
+```
 
-*   `data/` : **Training Data** (Peak Hour 17:00-18:00) - For Calibration (L1/L2)
-*   `data2/` : **Testing Data** (Off-Peak Hour 15:00-16:00) - For Zero-Shot Validation
-*   `sumo/` : Simulation Files (Net, Routes, Configs)
-    *   `sumo/net/hk_cropped.net.xml`: Cropped Research Area
-*   `scripts/` : Python Analysis & Utility Scripts
-*   `plots/` :  Generated Figures (Output Directory)
+3) Generate the two main P14 figures (audit + CDF):
+```bash
+python scripts/visualization/plot_p14_robustness.py --raw data2/processed/link_stats_offpeak.csv --sim sumo/output/offpeak_stopinfo.xml --dist data/processed/kmb_route_stop_dist.csv --t_critical 325 --speed_kmh 5 --max_dist_m 1500 --worst_window_ks 0.3337
+```
+Outputs:
+- `plots/P14_ghost_audit.png`
+- `plots/P14_robustness_cdf.png`
 
----
+## Smoke Test (No Real Data / No SUMO)
 
-### 4. Reproduction Steps
+This repo includes synthetic fixtures so reviewers can run a minimal end-to-end check without any private data:
 
-#### Phase 1: Baseline Verification (Experiment B1)
-*Goal: Verify the physical baseline under free-flow conditions (No background traffic).*
+```bash
+python scripts/smoke/p14_smoke.py
+```
 
-1.  **Run Simulation** (Freeflow):
-    ```bash
-    sumo -c sumo/config/baseline_b1.sumocfg
-    ```
-    *   Expected Runtime: < 10 seconds
-    *   Output: `sumo/output/stopinfo_b1.xml` (approx. 44KB)
+Or in PowerShell:
+```powershell
+.\reproduce.ps1
+```
 
-2.  **Generate Plots**:
-    ```bash
-    python scripts/evaluate_baseline.py
-    ```
-    *   Outputs: `plots/spacetime_*_baseline.png` (High-Vis Blue Trajectories)
+## Optional Diagnostics (Use For Mechanism Explanations Only)
 
-#### Phase 1.5: Calibration Verification (Experiment B2)
-*Goal: Verify the performance of the Optimized L1 Parameters.*
+Trajectory decomposition (stepped/full-time vs traffic-only) is diagnostic and should not be used as the primary validation evidence:
 
-1.  **Run Simulation** (Calibrated + Background):
-    ```bash
-    sumo -c sumo/config/experiment2_calibrated.sumocfg
-    ```
-2.  **Verify RMSE**:
-    ```bash
-    python scripts/metrics_calc.py --real_links "data/processed/link_speeds.csv" --real_dist "data/processed/kmb_route_stop_dist.csv" --sim "sumo/output/stopinfo_exp2.xml" --out "docs/b2_metrics_68X.csv" --route 68X
-    ```
-    *   *Target*: RMSE < 160s.
+```bash
+python scripts/visualization/plot_trajectory_stepped.py --real_links data2/processed/link_stats_offpeak.csv --real_dist data/processed/kmb_route_stop_dist.csv --sim sumo/output/offpeak_stopinfo.xml --out plots/trajectory_stepped_68X.png --route 68X --t_critical 325 --speed_kmh 5
+python scripts/visualization/plot_trajectory_stepped.py --real_links data2/processed/link_stats_offpeak.csv --real_dist data/processed/kmb_route_stop_dist.csv --sim sumo/output/offpeak_stopinfo.xml --out plots/trajectory_stepped_960.png --route 960 --t_critical 325 --speed_kmh 5
+```
 
-#### [Advanced] Phase 1.0: L1 Micro-Inversion (Bayesian Optimization)
-*Goal: Reproduce the parameter inversion process (The "Outer Loop").*
-*(Warning: Computationally Expensive, ~6-10 hours)*
+Holding proxy vs simulated dwell (diagnostic):
+```bash
+python scripts/visualization/plot_dwell_distribution.py
+```
 
-1.  **Run Optimization**:
-    ```bash
-    python scripts/calibration/run_calibration_l1_loop.py --rounds 25 --init_points 15
-    ```
-2.  **Plot Convergence** (Fig 2 in Paper):
-    ```bash
-    python scripts/calibration/plot_calibration_convergence.py --log data/calibration/B2_log.csv
-    ```
-    *   Output: `plots/l1_calibration_convergence.png`
+## Calibration Runs (Advanced / Expensive)
 
-#### [Advanced] Phase 1.6: L2 Macro-Assimilation (IES) (Experiment B4)
-*Goal: Reproduce the Iterative Ensemble Smoother (The "Inner Loop").*
+- L1 Bayesian optimization (outer loop): `scripts/calibration/`
+- L2 IES assimilation (inner loop): `scripts/calibration/`
+- For the authoritative run settings and what each label means (B1–P14), follow `docs/experiments.md`.
 
-1.  **Run IES Loop**:
-    ```bash
-    python scripts/calibration/run_ies_loop.py --ensemble_size 8 --iterations 5
-    ```
-    *   Output: `data/calibration/ies_results.csv`
+## Troubleshooting
 
-#### Phase 2: Zero-Shot Robustness (Experiment P14)
-*Goal: Validate generalization to off-peak regime with frozen parameters.*
-
-1.  **Run Simulation** (Off-peak Demand with Frozen L2):
-    ```bash
-    sumo -c sumo/config/experiment_robustness.sumocfg
-    ```
-    *   Expected Runtime: ~1-2 minutes
-    *   Output: `sumo/output/offpeak_stopinfo.xml`
-
-2.  **Evaluate Metrics** (Statistical Analysis):
-    ```bash
-    python scripts/evaluate_robustness.py --sim sumo/output/offpeak_stopinfo.xml
-    ```
-    *   *Output*: Prints KS Distance, RMSE, and P90 Speed metrics to console.
-
-3.  **Generate Visualizations** (SMC Figures):
-    
-    *   **Ghost Audit & Robustness CDF**:
-        ```bash
-        python scripts/visualization/plot_p14_robustness.py --sim sumo/output/offpeak_stopinfo.xml
-        ```
-        *Output*: `plots/P14_ghost_audit.png`, `plots/P14_robustness_cdf.png`
-
-    *   **Spacetime Diagrams** (Off-peak):
-        ```bash
-        python scripts/plot_spacetime.py --real_links data2/processed/link_times_offpeak.csv --real_dist data/processed/kmb_route_stop_dist.csv --sim sumo/output/offpeak_stopinfo.xml --out plots/offpeak_spacetime_68X.png --route 68X --hour 15 --ghost --t_critical 325
-        python scripts/plot_spacetime.py --real_links data2/processed/link_times_offpeak.csv --real_dist data/processed/kmb_route_stop_dist.csv --sim sumo/output/offpeak_stopinfo.xml --out plots/offpeak_spacetime_960.png --route 960 --hour 15 --ghost --t_critical 325
-        ```
-        *Output*: `plots/offpeak_spacetime_*.png`
-
----
-
-### 5. Troubleshooting
-
-*   **Empty Plots / No Data**:
-    *   Check `sumo/output/*.xml` file sizes. If < 2KB, the simulation failed or produced no output. Check `logs/` for errors.
-*   **KS > 0.5 (Fail) in P14**:
-    *   Ensure `evaluate_robustness.py` is successfully filtering "Ghost Jams". The default rule is **Rule C (T* = 325s)**. If the raw data is used directly, KS will naturally be > 0.5 due to the Measurement Model Mismatch.
+- SUMO outputs empty/small: check `sumo/output/*.xml` sizes and `sumo/output/*.log` logs.
+- P14 “raw” K-S is high (~0.5+): this is expected before observation operator audit / regime separation (see `plots/P14_ghost_audit.png` and `docs/paper_outline.md`).

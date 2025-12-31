@@ -34,65 +34,6 @@ plt.rcParams['legend.fontsize'] = 7
 plt.rcParams['xtick.labelsize'] = 7
 plt.rcParams['ytick.labelsize'] = 7
 
-def load_sim_speeds(xml_path):
-    print(f"Loading Sim: {xml_path}")
-    try:
-        tree = ET.parse(xml_path)
-        df_stops = []
-        for stop in tree.getroot().findall('.//stopinfo'):
-             df_stops.append({
-                'vehicle_id': stop.get('id'),
-                'arrival': float(stop.get('started', 0)),
-                'departure': float(stop.get('ended', 0)),
-                'stop_id': stop.get('busStop')
-            })
-        if not df_stops:
-            return np.array([])
-        
-        df = pd.DataFrame(df_stops)
-        results = []
-        for veh_id, veh_data in df.groupby('vehicle_id'):
-            veh_data = veh_data.sort_values('arrival').reset_index(drop=True)
-            for i in range(len(veh_data) - 1):
-                departure = veh_data.loc[i, 'departure']
-                arrival = veh_data.loc[i+1, 'arrival']
-                tt = arrival - departure
-                if tt > 0:
-                    speed_kmh = (500 / 1000) / (tt / 3600)  # Approx 500m avg dist
-                    # Better: if we had exact dist. For now use P14 assumptions implicitly or just align D2D TT if possible.
-                    # Wait, evaluate_robustness used exact dist if available or avg.
-                    # Since we don't have link dist here easily, we rely on the fact that evaluate_robustness printed speeds.
-                    # Actually, evaluate_robustness logic:
-                    # speed = (link_dist / 1000) / (tt / 3600).
-                    # We can visualize Travel Times distribution directly?
-                    # The user asked for "Speed CDF".
-                    # Real data has 'speed_median'.
-                    # For Sim, we need distance.
-                    # QUICK FIX: Let's assume average link distance ~500m if we can't map. 
-                    # OR: Use the 'evaluate_robustness.py' output speeds if we could dump them.
-                    # But better: Load 'link_stats_Rule_M.csv' which has real speeds.
-                    # For Sim, we really need the distances for accurate speed.
-                    # Hack: Use the distribution of Real Distances to sample? No.
-                    # Correct way: match Sim stops to Link definitions.
-                    # Complex.
-                    # OFFSET: In evaluate_robustness, map Sim (stop A->B) to Real (stop A->B).
-                    pass
-        
-        # ACTUALLY: Let's use the speeds calculated in 'evaluate_robustness.py'.
-        # I will modify evaluate_robustness to perform the PLOT, or duplicate the logic here.
-        # Duplicating logic is safer.
-        pass
-    except Exception as e:
-        print(e)
-        return np.array([])
-    return np.array([]) 
-
-# Optimized: Since I cannot easily map Sim Stop->Stop to Distance without the Distance Map file,
-# I will use a simplified approach:
-# Load the 'link_stats_offpeak.csv' (Real) and trust its speeds.
-# For Sim, I need the distances. 
-# I will LOAD 'data/processed/kmb_route_stop_dist.csv' to get distances.
-
 def load_sim_speeds_accurate(xml_path, dist_file):
     print(f"Loading Sim Speeds with Distances from {dist_file}")
     df_dist = pd.read_csv(dist_file)
@@ -146,14 +87,39 @@ def load_sim_speeds_accurate(xml_path, dist_file):
                     
     return np.array(speeds)
 
-def plot_ghost_audit(real_file_raw, output_path):
+def apply_rule_c(df_raw: pd.DataFrame, t_critical: float, speed_kmh: float, max_dist_m: float) -> tuple[pd.Series, pd.Series]:
+    missing = [c for c in ("tt_median", "speed_median", "dist_m") if c not in df_raw.columns]
+    if missing:
+        raise ValueError(f"Missing columns in real stats CSV: {missing}")
+    cond_ghost = (df_raw["tt_median"] > t_critical) & (df_raw["speed_median"] < speed_kmh) & (df_raw["dist_m"] < max_dist_m)
+    return cond_ghost, ~cond_ghost
+
+def _is_fixture_mode(raw_path: str, fixture_flag: bool) -> bool:
+    if fixture_flag:
+        return True
+    p = str(raw_path).replace("\\", "/").lower()
+    return "/tests/fixtures/" in p or p.endswith("/tests/fixtures") or "/fixtures/" in p
+
+def _add_fixture_watermark(ax: plt.Axes) -> None:
+    ax.text(
+        0.5,
+        0.5,
+        "FIXTURE",
+        transform=ax.transAxes,
+        ha="center",
+        va="center",
+        fontsize=28,
+        color="black",
+        alpha=0.10,
+        rotation=25,
+        zorder=0,
+    )
+
+def plot_ghost_audit(real_file_raw, output_path, t_critical: float, speed_kmh: float, max_dist_m: float, fixture: bool = False):
     print(f"\nPlotting Ghost Audit: {real_file_raw}")
     df = pd.read_csv(real_file_raw)
     
-    # Define Ghost Jams / Clean Split
-    # Using T* = 325s from user finding
-    T_star = 325
-    clean_mask = (df['tt_median'] <= T_star) | (df['speed_median'] >= 5.0)
+    _, clean_mask = apply_rule_c(df, t_critical, speed_kmh, max_dist_m)
     clean_tt = df.loc[clean_mask, 'tt_median'].dropna().values
     clean_speed = df.loc[clean_mask, 'speed_median'].dropna().values
     
@@ -168,11 +134,13 @@ def plot_ghost_audit(real_file_raw, output_path):
     # Plot Clean (Overlay)
     ax1.hist(clean_tt, bins=bins, color='#1f77b4', alpha=0.7, label='Clean (Valid)', density=True)
     
-    ax1.axvline(325, color='black', linestyle='--', linewidth=1, label='Critical T*=325s')
+    ax1.axvline(t_critical, color='black', linestyle='--', linewidth=1, label=f'Critical T*={t_critical:g}s')
     ax1.set_xlabel('Travel Time (s)')
     ax1.set_ylabel('Density')
     ax1.set_title('(a) Measurement Audit (Raw vs Clean)', fontweight='bold')
     ax1.legend()
+    if fixture:
+        _add_fixture_watermark(ax1)
     
     # 2. Speed vs Time Scatter
     ax2 = axes[1]
@@ -182,19 +150,31 @@ def plot_ghost_audit(real_file_raw, output_path):
     # Plot Clean as foreground (Blue)
     ax2.scatter(clean_tt, clean_speed, alpha=0.6, s=10, c='#1f77b4', label='Clean (Op-L2-v1.1)')
     
-    ax2.axhline(5, color='gray', linestyle=':', label='5 km/h limit')
-    ax2.axvline(325, color='black', linestyle='--', label='T*=325s')
+    ax2.axhline(speed_kmh, color='gray', linestyle=':', label=f'{speed_kmh:g} km/h limit')
+    ax2.axvline(t_critical, color='black', linestyle='--', label=f'T*={t_critical:g}s')
     
     ax2.set_xlabel('Travel Time (s)')
     ax2.set_ylabel('Speed (km/h)')
     ax2.set_title('(b) Filter Logic (Rule C)', fontweight='bold')
     ax2.legend()
+    if fixture:
+        _add_fixture_watermark(ax2)
     
     plt.tight_layout()
     plt.savefig(output_path, dpi=300)
     print(f"Saved {output_path}")
 
-def plot_robustness_cdf(real_csv_raw, real_csv_clean, sim_xml, dist_file, output_path):
+def plot_robustness_cdf(
+    real_csv_raw,
+    sim_xml,
+    dist_file,
+    output_path,
+    t_critical: float,
+    speed_kmh: float,
+    max_dist_m: float,
+    worst_window_ks: float | None = None,
+    fixture: bool = False,
+):
     print(f"\nPlotting Robustness CDF: {output_path}")
     
     # Load Data
@@ -209,10 +189,8 @@ def plot_robustness_cdf(real_csv_raw, real_csv_clean, sim_xml, dist_file, output
     # KS=0.28 vs 0.29. The User specifically asked for "Rule C KS=0.2977". 
     # To be precise, I should apply T > 325 filter on df_raw.
     
-    # Filter for Rule C (T > 325, Speed < 5, Dist < 1500)
-    # Re-implement filtering
-    cond_ghost = (df_raw['tt_median'] > 325) & (df_raw['speed_median'] < 5.0) & (df_raw['dist_m'] < 1500)
-    clean_speeds = df_raw.loc[~cond_ghost, 'speed_median'].dropna().values
+    cond_ghost, clean_mask = apply_rule_c(df_raw, t_critical, speed_kmh, max_dist_m)
+    clean_speeds = df_raw.loc[clean_mask, 'speed_median'].dropna().values
 
     
     sim_speeds = load_sim_speeds_accurate(sim_xml, dist_file)
@@ -239,15 +217,16 @@ def plot_robustness_cdf(real_csv_raw, real_csv_clean, sim_xml, dist_file, output
     ks_raw, _ = ks_2samp(raw_speeds, sim_speeds)
     ks_clean, _ = ks_2samp(clean_speeds, sim_speeds)
     
-    text = (
-        f"KS(raw)={ks_raw:.2f}\n"
-        f"KS(clean)={ks_clean:.4f}\n"
-        "Worst 15-min window: KS=0.3337"
-    )
+    lines = [f"KS(raw)={ks_raw:.2f}", f"KS(clean)={ks_clean:.4f}"]
+    if (not fixture) and (worst_window_ks is not None):
+        lines.append(f"Worst 15-min window: KS={worst_window_ks:.4f}")
+    text = "\n".join(lines)
     # Move text to bottom right (above legend) to avoid Raw curve overlap in top-left
     # User requested shift to upper-right relative to previous (0.40, 0.20)
     ax.text(0.50, 0.35, text, transform=ax.transAxes, fontsize=7, 
             bbox=dict(facecolor='white', alpha=0.9, edgecolor='gray', boxstyle='round,pad=0.5'))
+    if fixture:
+        _add_fixture_watermark(ax)
     
     plt.tight_layout()
     plt.savefig(output_path, dpi=300)
@@ -256,16 +235,31 @@ def plot_robustness_cdf(real_csv_raw, real_csv_clean, sim_xml, dist_file, output
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--raw", default="data2/processed/link_stats_offpeak.csv")
-    parser.add_argument("--clean", default="data2/processed/link_stats_Rule_M_clean.csv")
     parser.add_argument("--sim", default="sumo/output/offpeak_v2_offpeak_stopinfo.xml")
     parser.add_argument("--dist", default="data/processed/kmb_route_stop_dist.csv")
     parser.add_argument("--out-audit", default="plots/P14_ghost_audit.png")
     parser.add_argument("--out-cdf", default="plots/P14_robustness_cdf.png")
+    parser.add_argument("--t_critical", type=float, default=325, help="Rule C: travel time threshold T* (s)")
+    parser.add_argument("--speed_kmh", type=float, default=5, help="Rule C: speed threshold v* (km/h)")
+    parser.add_argument("--max_dist_m", type=float, default=1500, help="Rule C: apply only when dist_m < max_dist_m")
+    parser.add_argument("--worst_window_ks", type=float, default=None, help="Optional: annotate worst 15-min window KS in CDF plot")
+    parser.add_argument("--fixture", action="store_true", help="Fixture mode: watermark outputs and omit paper-only annotations")
     
     args = parser.parse_args()
+    fixture_mode = _is_fixture_mode(args.raw, args.fixture)
     
     if os.path.exists(args.raw):
-        plot_ghost_audit(args.raw, args.out_audit)
+        plot_ghost_audit(args.raw, args.out_audit, args.t_critical, args.speed_kmh, args.max_dist_m, fixture=fixture_mode)
     
     if os.path.exists(args.raw) and os.path.exists(args.sim) and os.path.exists(args.dist):
-        plot_robustness_cdf(args.raw, args.clean, args.sim, args.dist, args.out_cdf)
+        plot_robustness_cdf(
+            args.raw,
+            args.sim,
+            args.dist,
+            args.out_cdf,
+            args.t_critical,
+            args.speed_kmh,
+            args.max_dist_m,
+            worst_window_ks=args.worst_window_ks,
+            fixture=fixture_mode,
+        )

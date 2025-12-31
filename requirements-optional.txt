@@ -1,0 +1,5 @@
+# Optional dependencies used by other scripts/analyses
+seaborn>=0.13,<1
+shapely>=2.0,<3
+geopandas>=0.14,<1
+

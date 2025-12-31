@@ -844,7 +844,7 @@ Week 4 的所有实验（B4, B4_v2）均基于 **Op-L2-v0 (Moving-only Speed)** 
     *   IES 推高 CF 至 **2.5** (Upper Bound)。
     *   Sim Speed 依然停在 **10–15 km/h**，远高于 Real Speed (~5 km/h)。
     *   KS / RMSE 改善微乎其微。
-*   **Decision (Critical)**: 暂停参数搜索。怀疑这一巨大的 Gap 不是参数问题，而是观测 **Definitions** 问题。启动口径审计 (P11)。
+*   **Decision (Critical)**: 暂停参数搜索。怀疑这一巨大的 Gap 来源于观测 **Definitions** 问题。启动口径审计 (P11)。
 *   **Artifacts**: `B4_fail.log`
 
 ### P11-0 Experiment: Caliber Audit (System Observability Analysis)
@@ -873,7 +873,7 @@ Week 4 的所有实验（B4, B4_v2）均基于 **Op-L2-v0 (Moving-only Speed)** 
 
 ### P13 Experiment: Saturation & Stop Criteria
 *   **Goal**: 探索 IES 在 D2D 口径下的极限能力。
-*   **Trigger Condition**: CF continued to rise to **2.5**, but Speed plateaued at **5.9 km/h**.
+*   **Trigger Condition**: CF continued to rise to **2.5**; Speed plateaued at **5.9 km/h**.
 *   **P13-3 Analysis**:
     *   Core edges cover >80% traffic volume.
     *   Global CF $\approx$ Corridor CF. Reweighting or Corridor-specific tuning yields diminishing returns.
@@ -929,7 +929,7 @@ V1+V2 已完成并进入主线；V3 经质量闸门确认原"RULE_BLOCKED"属误
 * 真实分类：LONG_DETOUR=4，MINOR_DETOUR=11。
 * 可压缩性：4 条 LONG_DETOUR 全部 `gap=0`（bus_path_len = passenger_path_len），说明绕行非 bus 限制导致，优先通过 VIA_ROUTING 对齐线路而非继续改网。
 
-> passenger 与 bus 最短路一致（gap=0），说明绕行不是由 bus 限制造成，无法通过放宽 allow/补 bus-only connection 大幅缩短；因此采用 VIA_ROUTING 对齐 KMB 线路是更稳妥的收敛策略。
+> passenger 与 bus 最短路一致（gap=0），说明绕行由 bus 限制以外的因素造成，无法通过放宽 allow/补 bus-only connection 大幅缩短；因此采用 VIA_ROUTING 对齐 KMB 线路是更稳妥的收敛策略。
 
 ### 分类规则修正（语义定义）
 
@@ -1181,7 +1181,7 @@ optimal_sequence = viterbi(candidates, cost)
 *   **Adjustment**: Scale background traffic $\alpha=0.9$, Bus traffic 100%.
 *   **Result**: **FAIL** (KS = 0.5398).
     *   Gap widened (Sim speed maintained ~12km/h, Real still ~4.5km/h).
-    *   **Conclusion**: Demand scaling is not the root cause. The "Real" data distribution (<5km/h) is physically impossible for off-peak non-congested flow.
+    *   **Conclusion**: Demand scaling is a secondary factor. The "Real" data distribution (<5km/h) is physically impossible for off-peak non-congested flow.
 
 ### P14 Audit: Ghost Jams (Measurement Model Mismatch)
 *   **Audit**: Executed `p14_data_audit.py` on real link data.

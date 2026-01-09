@@ -47,8 +47,15 @@ def load_sim_data(xml_path):
 
 def load_real_link_speeds(csv_path):
     df = pd.read_csv(csv_path)
-    df['departure_ts'] = pd.to_datetime(df['departure_ts'], errors='coerce')
-    df['arrival_ts'] = pd.to_datetime(df['arrival_ts'], errors='coerce')
+    if 'departure_ts' in df.columns:
+        df['departure_ts'] = pd.to_datetime(df['departure_ts'], errors='coerce')
+    if 'arrival_ts' in df.columns:
+        df['arrival_ts'] = pd.to_datetime(df['arrival_ts'], errors='coerce')
+    if 'travel_time_s' not in df.columns:
+        if 'tt_mean' in df.columns:
+            df['travel_time_s'] = df['tt_mean']
+        elif 'tt_median' in df.columns:
+            df['travel_time_s'] = df['tt_median']
     return df
 
 def load_route_stop_dist(csv_path):

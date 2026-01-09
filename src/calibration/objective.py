@@ -7,6 +7,46 @@ import os
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'scripts'))
 from common_data import load_sim_data, load_route_stop_dist, build_sim_trajectory, load_real_link_speeds
 
+def _compute_cumulative_time_errors(sim_traj: pd.DataFrame, real_links: pd.DataFrame) -> np.ndarray:
+    if sim_traj.empty or real_links.empty:
+        return np.array([])
+    if 'travel_time_s' not in real_links.columns:
+        return np.array([])
+    if not {'from_seq', 'to_seq'}.issubset(real_links.columns):
+        return np.array([])
+
+    real_link_stats = real_links.groupby(['from_seq', 'to_seq'])['travel_time_s'].mean().reset_index()
+    real_link_stats = real_link_stats.sort_values('from_seq')
+    real_cum_time = {1: 0}
+    for _, row in real_link_stats.iterrows():
+        f, t = row['from_seq'], row['to_seq']
+        if f in real_cum_time:
+            real_cum_time[t] = real_cum_time[f] + row['travel_time_s']
+
+    real_time_df = pd.DataFrame(list(real_cum_time.items()), columns=['seq', 'real_time_s'])
+
+    sim_trips = []
+    for _, group in sim_traj.groupby('vehicle_id'):
+        group = group.sort_values('seq')
+        min_seq = group['seq'].min()
+        start_time = group.loc[group['seq'] == min_seq, 'arrival_time'].values[0]
+        group = group.copy()
+        group['rel_time_s'] = group['arrival_time'] - start_time
+        sim_trips.append(group[['seq', 'rel_time_s']])
+
+    if not sim_trips:
+        return np.array([])
+
+    sim_all = pd.concat(sim_trips)
+    sim_stats = sim_all.groupby('seq')['rel_time_s'].mean().reset_index().rename(columns={'rel_time_s': 'sim_time_s'})
+
+    comparison = pd.merge(real_time_df, sim_stats, on='seq', how='inner')
+    valid_comp = comparison[comparison['seq'] > 1]
+    if valid_comp.empty:
+        return np.array([])
+
+    return (valid_comp['sim_time_s'] - valid_comp['real_time_s']).to_numpy()
+
 def calculate_l1_rmse(sim_xml_path, real_links_csv, route_stop_dist_csv, route='68X', bound='I'):
     """
     计算站点级行程时间的 RMSE (J1 指标)
@@ -28,45 +68,15 @@ def calculate_l1_rmse(sim_xml_path, real_links_csv, route_stop_dist_csv, route='
     real_links = load_real_link_speeds(real_links_csv)
     real_links = real_links[(real_links['route'] == route) & (real_links['bound'] == target_bound)]
     
-    # 2. 计算真实值 (累积行程时间)
-    real_link_stats = real_links.groupby(['from_seq', 'to_seq'])['travel_time_s'].mean().reset_index()
-    real_link_stats = real_link_stats.sort_values('from_seq')
-    real_cum_time = {1: 0}
-    for _, row in real_link_stats.iterrows():
-        f, t = row['from_seq'], row['to_seq']
-        if f in real_cum_time:
-            real_cum_time[t] = real_cum_time[f] + row['travel_time_s']
-    
-    real_time_df = pd.DataFrame(list(real_cum_time.items()), columns=['seq', 'real_time_s'])
-
-    # 3. 处理仿真数据 (累积行程时间)
     sim_traj = build_sim_trajectory(sim_raw, dist_df)
     if sim_traj.empty:
         return 1e6
-        
-    sim_trips = []
-    for vid, group in sim_traj.groupby('vehicle_id'):
-        group = group.sort_values('seq')
-        min_seq = group['seq'].min()
-        start_time = group.loc[group['seq'] == min_seq, 'arrival_time'].values[0]
-        group['rel_time_s'] = group['arrival_time'] - start_time
-        sim_trips.append(group[['seq', 'rel_time_s']])
-    
-    if not sim_trips:
+
+    errors = _compute_cumulative_time_errors(sim_traj, real_links)
+    if errors.size == 0:
         return 1e6
 
-    sim_all = pd.concat(sim_trips)
-    sim_stats = sim_all.groupby('seq')['rel_time_s'].mean().reset_index().rename(columns={'rel_time_s': 'sim_time_s'})
-    
-    # 4. 合并并计算 RMSE
-    comparison = pd.merge(real_time_df, sim_stats, on='seq', how='inner')
-    
-    # 我们只关注序列大于 1 的点（seq=1 时 error 恒为 0）
-    valid_comp = comparison[comparison['seq'] > 1]
-    if valid_comp.empty:
-        return 1e6
-        
-    rmse = np.sqrt(((valid_comp['sim_time_s'] - valid_comp['real_time_s']) ** 2).mean())
+    rmse = np.sqrt(np.mean(errors ** 2))
     return rmse
 
 
@@ -216,18 +226,23 @@ def calculate_l1_robust_objective(
     real_links = load_real_link_speeds(real_links_csv)
     real_links = real_links[(real_links['route'] == route) & (real_links['bound'] == target_bound)]
     
-    # 2. 计算真实链路时间分布
-    real_link_times = real_links.groupby(['from_seq', 'to_seq'])['travel_time_s'].apply(list).to_dict()
-    real_link_means = real_links.groupby(['from_seq', 'to_seq'])['travel_time_s'].mean()
-    
-    # 3. 处理仿真数据
+    # 2. 处理仿真数据
     sim_traj = build_sim_trajectory(sim_raw, dist_df)
     if sim_traj.empty:
         return _empty_metrics()
-    
-    # 计算仿真链路时间
+
+    cum_errors = _compute_cumulative_time_errors(sim_traj, real_links)
+    if cum_errors.size == 0:
+        return _empty_metrics()
+
+    cum_errors = np.array(cum_errors)
+    rmse = np.sqrt(np.mean(cum_errors ** 2))
+
+    # 计算链路时间分布与链路误差 (用于 KS / Wasserstein / Tail)
+    real_link_times = real_links.groupby(['from_seq', 'to_seq'])['travel_time_s'].apply(list).to_dict()
+
     sim_link_times = {}
-    for vid, group in sim_traj.groupby('vehicle_id'):
+    for _, group in sim_traj.groupby('vehicle_id'):
         group = group.sort_values('seq')
         for i in range(len(group) - 1):
             row1 = group.iloc[i]
@@ -236,44 +251,41 @@ def calculate_l1_robust_objective(
             travel_time = row2['arrival_time'] - row1['departure_time']
             if travel_time > 0:
                 sim_link_times.setdefault(key, []).append(travel_time)
-    
-    # 4. 计算各项指标
+
     all_real_times = []
     all_sim_times = []
-    errors = []
-    
+    link_errors = []
     for key, sim_times in sim_link_times.items():
         if key in real_link_times:
             real_times = real_link_times[key]
             all_real_times.extend(real_times)
             all_sim_times.extend(sim_times)
-            
-            # 误差：仿真均值 vs 真实均值
             sim_mean = np.mean(sim_times)
             real_mean = np.mean(real_times)
-            errors.append(sim_mean - real_mean)
-    
-    if not errors:
-        return _empty_metrics()
-    
-    errors = np.array(errors)
+            link_errors.append(sim_mean - real_mean)
+
     all_real_times = np.array(all_real_times)
     all_sim_times = np.array(all_sim_times)
-    
-    # RMSE
-    rmse = np.sqrt(np.mean(errors ** 2))
-    
+    if len(link_errors) == 0:
+        return _empty_metrics()
+
     # K-S 统计量
     ks_stat = calculate_ks_distance(all_sim_times, all_real_times) if use_ks else 0.0
-    
+
     # Wasserstein 距离
     wasserstein = calculate_wasserstein_distance(all_sim_times, all_real_times)
-    
+
+    # 误差统计 (基于链路误差分布)
+    link_errors = np.array(link_errors)
+    abs_errors = np.abs(link_errors)
+    mean_abs = float(np.mean(abs_errors))
+    std_abs = float(np.std(abs_errors))
+
     # 鲁棒损失
-    robust = robust_loss(errors, lambda_std) if use_robust else rmse
-    
+    robust = mean_abs + lambda_std * std_abs if use_robust else rmse
+
     # 分位数损失
-    q_loss = quantile_loss(errors, quantile)
+    q_loss = quantile_loss(link_errors, quantile)
     
     # 综合目标（加权组合）
     combined = robust + ks_weight * ks_stat if use_ks else robust
@@ -283,6 +295,8 @@ def calculate_l1_robust_objective(
         'ks_stat': ks_stat,
         'wasserstein': wasserstein,
         'robust_loss': robust,
+        'mean_abs': mean_abs,
+        'std_abs': std_abs,
         'quantile_loss': q_loss,
         'combined': combined
     }
@@ -295,6 +309,8 @@ def _empty_metrics() -> Dict[str, float]:
         'ks_stat': 1.0,
         'wasserstein': 1e6,
         'robust_loss': 1e6,
+        'mean_abs': 1e6,
+        'std_abs': 1e6,
         'quantile_loss': 1e6,
         'combined': 1e6
     }

@@ -81,7 +81,7 @@ SCENARIOS = {
     },
     "pm_peak": {
         "hkt_time": "17:35-18:35",
-        "real_stats": PROJECT_ROOT / "data2" / "processed" / "link_stats_peak.csv",
+        "real_stats": PROJECT_ROOT / "data" / "processed" / "link_stats.csv",
         "base_config": PROJECT_ROOT / "sumo" / "config" / "experiment2_calibrated.sumocfg",
         "base_bg_routes": PROJECT_ROOT / "sumo" / "routes" / "background_corridor_source_filtered_test.rou.xml",
         "bus_routes": PROJECT_ROOT / "sumo" / "routes" / "fixed_routes_cropped.rou.xml",
@@ -389,7 +389,8 @@ def run_scale_sweep_batch(
     scales: List[float],
     configs: List[str],
     seeds: List[int],
-    simulate_only: bool = False
+    simulate_only: bool = False,
+    n_jobs: int = 1
 ) -> pd.DataFrame:
     """
     批量运行 scale sweep 实验
@@ -401,13 +402,28 @@ def run_scale_sweep_batch(
         configs: 配置列表
         seeds: seed 列表
         simulate_only: 仅模拟
+        n_jobs: 并行作业数（默认 1 = 串行）
     
     Returns:
         结果 DataFrame
     """
-    results = []
-    total = len(scenarios) * len(duration_hours) * len(scales) * len(configs) * len(seeds)
-    current = 0
+    # 生成所有实验参数组合
+    experiments = []
+    for scenario in scenarios:
+        for duration in duration_hours:
+            for scale in scales:
+                for config_id in configs:
+                    for seed in seeds:
+                        experiments.append({
+                            'scenario': scenario,
+                            'duration_hours': duration,
+                            'scale': scale,
+                            'config_id': config_id,
+                            'seed': seed,
+                            'simulate_only': simulate_only
+                        })
+    
+    total = len(experiments)
     
     print(f"\n{'='*70}")
     print(f"Scale Sweep 批量实验")
@@ -418,29 +434,41 @@ def run_scale_sweep_batch(
     print(f"  - Scales: {scales}")
     print(f"  - Configs: {configs}")
     print(f"  - Seeds: {seeds}")
+    print(f"  - 并行作业数: {n_jobs}")
     print(f"{'='*70}\n")
     
-    for scenario in scenarios:
-        for duration in duration_hours:
-            for scale in scales:
-                for config_id in configs:
-                    for seed in seeds:
-                        current += 1
-                        print(f"\n[{current}/{total}] {scenario} {duration}h scale={scale:.2f} {config_id} seed={seed}")
-                        
-                        result = run_single_experiment(
-                            scenario=scenario,
-                            duration_hours=duration,
-                            scale=scale,
-                            config_id=config_id,
-                            seed=seed,
-                            simulate_only=simulate_only
-                        )
-                        
-                        if result:
-                            results.append(result)
+    if n_jobs > 1:
+        # 并行执行
+        from multiprocessing import Pool
+        import tqdm
+        
+        print(f"使用 {n_jobs} 个进程并行运行...")
+        with Pool(processes=n_jobs) as pool:
+            results = list(tqdm.tqdm(
+                pool.imap(_run_experiment_wrapper, experiments),
+                total=total,
+                desc="运行实验"
+            ))
+    else:
+        # 串行执行
+        results = []
+        for idx, exp in enumerate(experiments, 1):
+            print(f"\n[{idx}/{total}] {exp['scenario']} {exp['duration_hours']}h "
+                  f"scale={exp['scale']:.2f} {exp['config_id']} seed={exp['seed']}")
+            
+            result = run_single_experiment(**exp)
+            if result:
+                results.append(result)
+    
+    # 过滤掉 None 结果
+    results = [r for r in results if r is not None]
     
     return pd.DataFrame(results)
+
+
+def _run_experiment_wrapper(exp_params: dict):
+    """并行执行包装器"""
+    return run_single_experiment(**exp_params)
 
 
 # ============================================================================
@@ -455,6 +483,9 @@ def compute_summary_statistics(df_results: pd.DataFrame) -> pd.DataFrame:
     - ks_speed_mean/std/ci95
     - ks_tt_mean/std/ci95
     - pass_rate
+    - n_events_mean/std (采样量)
+    - n_sim_mean/std (仿真观测数)
+    - n_clean_mean/std (清洗后观测数)
     """
     summary_rows = []
     
@@ -490,12 +521,26 @@ def compute_summary_statistics(df_results: pd.DataFrame) -> pd.DataFrame:
         # Pass rate
         pass_rate = group['passed'].mean() if 'passed' in group.columns else np.nan
         
+        # 采样量统计（关键：避免 reviewer 质疑"靠采样量变大得到更好 KS"）
+        n_events_mean = group['n_events'].mean()
+        n_events_std = group['n_events'].std()
+        n_sim_mean = group['n_sim'].mean()
+        n_sim_std = group['n_sim'].std()
+        n_clean_mean = group['n_clean'].mean()
+        n_clean_std = group['n_clean'].std()
+        
         summary_rows.append({
             'scenario': scenario,
             'duration_hours': duration,
             'scale': scale,
             'config_id': config_id,
             'n_runs': n,
+            'n_events_mean': n_events_mean,
+            'n_events_std': n_events_std,
+            'n_sim_mean': n_sim_mean,
+            'n_sim_std': n_sim_std,
+            'n_clean_mean': n_clean_mean,
+            'n_clean_std': n_clean_std,
             'ks_speed_mean': ks_speed_mean,
             'ks_speed_std': ks_speed_std,
             'ks_speed_ci_low': ks_speed_ci[0],
@@ -574,13 +619,17 @@ def generate_summary_markdown(df_summary: pd.DataFrame, output_path: Path) -> No
     )
     
     cols = ['scenario', 'duration_hours', 'scale', 'config_id', 'n_runs',
+            'n_events_mean', 'n_events_std', 'n_sim_mean', 'n_sim_std', 'n_clean_mean', 'n_clean_std',
             'ks_speed_mean', 'ks_speed_std', 'ks_speed_ci',
             'ks_tt_mean', 'ks_tt_std', 'ks_tt_ci', 'pass_rate']
-    df_display = df_display[cols]
-    df_display.columns = ['Scenario', 'Duration(h)', 'Scale', 'Config', 'N',
-                          'KS(speed)_μ', 'KS(speed)_σ', 'KS(speed)_CI95',
-                          'KS(TT)_μ', 'KS(TT)_σ', 'KS(TT)_CI95', 'Pass Rate']
     
+    df_display = df_display[cols].copy()
+    df_display.columns = [
+        'Scenario', 'Duration(h)', 'Scale', 'Config', 'N',
+        'Events_μ', 'Events_σ', 'Sim_μ', 'Sim_σ', 'Clean_μ', 'Clean_σ',
+        'KS(speed)_μ', 'KS(speed)_σ', 'KS(speed)_CI95',
+        'KS(TT)_μ', 'KS(TT)_σ', 'KS(TT)_CI95', 'Pass Rate'
+    ]
     md_lines.append(df_display.to_markdown(index=False, floatfmt=".4f"))
     md_lines.append("")
     md_lines.append("**说明**:")
@@ -664,6 +713,8 @@ def main():
                         help="仅模拟（不运行 SUMO）")
     parser.add_argument("--output", type=str, default=str(OUTPUT_BASE),
                         help="输出目录")
+    parser.add_argument("--n-jobs", type=int, default=1,
+                        help="并行作业数（默认 1 = 串行，推荐 4）")
     
     args = parser.parse_args()
     
@@ -674,7 +725,8 @@ def main():
         scales=args.scales,
         configs=args.configs,
         seeds=args.seeds,
-        simulate_only=args.simulate_only
+        simulate_only=args.simulate_only,
+        n_jobs=args.n_jobs
     )
     
     # 保存详细结果

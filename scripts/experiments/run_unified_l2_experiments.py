@@ -95,12 +95,33 @@ OUTPUT_DIR = PROJECT_ROOT / "data" / "experiments_v4" / "unified_l2"
 # Protocol Ablation 配置 (A0/A2/A3/A4)
 # =============================================================================
 
+def load_baseline_l1_params() -> Dict[str, float]:
+    """从 baseline_parameters.json 读取 L1 默认参数（t_board/t_fixed 使用默认值）"""
+    baseline_path = PROJECT_ROOT / "config" / "calibration" / "baseline_parameters.json"
+    if not baseline_path.exists():
+        return {
+            "tau": 1.0, "sigma": 0.5, "minGap": 2.5,
+            "accel": 2.5, "decel": 4.5,
+            "t_board": 2.0, "t_fixed": 5.0
+        }
+    
+    with open(baseline_path, "r", encoding="utf-8") as f:
+        baseline = json.load(f)
+    
+    bus = baseline.get("micro_parameters", {}).get("kmb_double_decker", {})
+    return {
+        "tau": float(bus.get("tau", 1.0)),
+        "sigma": float(bus.get("sigma", 0.5)),
+        "minGap": float(bus.get("minGap", 2.5)),
+        "accel": float(bus.get("accel", 2.5)),
+        "decel": float(bus.get("decel", 4.5)),
+        "t_board": 2.0,
+        "t_fixed": 5.0
+    }
+
+
 # A0: B1默认参数
-A0_PARAMS = {
-    "tau": 1.0, "sigma": 0.5, "minGap": 2.5,
-    "accel": 2.5, "decel": 4.5,
-    "t_board": 2.0, "t_fixed": 5.0
-}
+A0_PARAMS = load_baseline_l1_params()
 
 # A3: B2最优参数 (BO + Audit)
 A3_PARAMS = {
@@ -134,6 +155,14 @@ ABLATION_CONFIGS = {
         description="默认参数基线",
         bus_params=A0_PARAMS,
         use_l2=False
+    ),
+    "A2": AblationConfig(
+        config_id="A2",
+        name="Only-L2",
+        description="固定默认参数 + L2 状态同化",
+        bus_params=A0_PARAMS,  # 使用默认参数，不做 L1 校准
+        use_l2=True,
+        l2_params=A4_L2_PARAMS  # 使用与 A4 相同的 L2 参数作为初始值
     ),
     "A3": AblationConfig(
         config_id="A3",

@@ -97,6 +97,8 @@ class IESLoop:
         max_iters: int = 5,
         seed: int = 42,
         use_baseline: bool = True,  # True: 使用默认 L1 参数（B4）, False: 使用 B2 优化参数（B5）
+        l1_params_override: Optional[Dict[str, float]] = None,  # 显式覆盖 L1 参数（优先级最高）
+        apply_l1_params: bool = False,  # 是否将 L1 参数写入公交路由文件
         # === IES 稳定性增强参数 ===
         es_mda_alpha: float = None,  # ES-MDA 噪声放大因子，默认 = max_iters
         update_damping: float = 0.3,  # 更新阻尼系数 β
@@ -115,6 +117,7 @@ class IESLoop:
         self.max_iters = max_iters
         self.seed = seed
         self.use_baseline = use_baseline
+        self.apply_l1_params = apply_l1_params
         
         # 时间窗配置
         self.t_min = t_min
@@ -137,6 +140,9 @@ class IESLoop:
         # 加载配置
         self._load_priors()
         self._load_l1_frozen_params()
+        if l1_params_override:
+            self.l1_params = l1_params_override
+            print(f"[IES] 使用外部覆盖的 L1 参数: {self.l1_params}")
         self._load_observation_vector()
         self._load_link_edge_mapping()
         
@@ -159,6 +165,8 @@ class IESLoop:
         self.bus_stops = self.root / "sumo" / "additional" / "bus_stops_cropped.add.xml"  # cropped 站点
         self.bus_route = self.root / "sumo" / "routes" / "fixed_routes_cropped.rou.xml"  # cropped 路由
         self.bg_route_base = self.root / "sumo" / "routes" / "background_cropped.rou.xml"  # cropped 背景
+        if self.apply_l1_params:
+            self.bus_route = self._create_bus_route_with_l1_params()
         
         # 计算组归一权重
         self._compute_group_weights()
@@ -254,6 +262,45 @@ class IESLoop:
             
             self.l1_params = l1_config['best_parameters']
             print(f"[IES] 加载优化 L1 参数 (B2): {self.l1_params}")
+
+    def _create_bus_route_with_l1_params(self) -> Path:
+        """生成包含 L1 参数的公交路由文件（覆盖 vType 与停站 duration）"""
+        output_path = self.output_dir / "bus_route_l1.rou.xml"
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        tree = ET.parse(self.bus_route)
+        root = tree.getroot()
+        
+        # 1) 更新 vType 参数 (Krauss 核心模型)
+        for vtype in root.iter('vType'):
+            if vtype.get('id') == 'kmb_double_decker':
+                for key in ['accel', 'decel', 'sigma', 'tau', 'minGap']:
+                    if key in self.l1_params:
+                        vtype.set(key, f"{self.l1_params[key]:.2f}")
+        
+        # 2) 更新停站 duration (Physics-Informed Dwell)
+        weights_path = self.root / "config" / "calibration" / "bus_stop_weights.json"
+        if weights_path.exists():
+            with open(weights_path, 'r', encoding='utf-8') as f:
+                stop_weights = json.load(f)
+        else:
+            stop_weights = {}
+        
+        t_fixed = self.l1_params.get('t_fixed', 5.0)
+        t_board = self.l1_params.get('t_board', 2.0)
+        n_base = 15.0
+        
+        for stop in root.iter('stop'):
+            stop_id = stop.get('busStop')
+            if not stop_id:
+                continue
+            w_stop = stop_weights.get(stop_id, {}).get('weight', 1.0)
+            duration = t_fixed + t_board * (n_base * w_stop)
+            stop.set('duration', f"{duration:.2f}")
+        
+        tree.write(str(output_path), encoding='utf-8', xml_declaration=True)
+        print(f"[IES] 生成 L1 路由文件: {output_path}")
+        return output_path
 
     def _load_observation_vector(self) -> None:
         """加载观测向量（优先使用 M11 / corridor 版本）"""

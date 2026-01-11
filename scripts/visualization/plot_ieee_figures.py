@@ -270,7 +270,7 @@ def main():
         print(f"[Fig1] Warning: {summary_csv} not found")
     
     # 图2: Audit CDF
-    link_stats_csv = data_dir / "processed" / "link_stats.csv"
+    link_stats_csv = PROJECT_ROOT / "data2" / "processed" / "link_stats_offpeak.csv"
     sim_xml = PROJECT_ROOT / "sumo" / "output" / "offpeak_v2_offpeak_stopinfo.xml"
     dist_file = data_dir / "processed" / "kmb_route_stop_dist.csv"
     

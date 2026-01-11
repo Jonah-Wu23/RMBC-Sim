@@ -302,6 +302,121 @@ def calculate_l1_robust_objective(
     }
 
 
+def calculate_jl1_loss(
+    sim_xml_path: str,
+    real_links_csv: str,
+    route_stop_dist_csv: str,
+    route: str = '68X',
+    bound: str = 'I',
+    alpha: float = 1.0,
+    lambda_std: float = 0.5,
+    beta: float = 0.3
+) -> Dict[str, float]:
+    """
+    计算论文 Eq.(6) 的完整 JL1 复合损失
+    
+    JL1 = RMSE + α(MAE + λ·std(|ei|)) + β·Q0.9(|e|)
+        = √(1/n∑ei²) + α(1/n∑|ei| + λ·std(|ei|)) + β·Q0.9(|e|)
+    
+    Args:
+        sim_xml_path: SUMO 仿真输出 XML 路径
+        real_links_csv: 真实链路速度 CSV 路径
+        route_stop_dist_csv: 路线站点距离 CSV 路径
+        route: 线路名称
+        bound: 方向 ('I' or 'O')
+        alpha: MAE+dispersion 项权重（论文默认 1.0）
+        lambda_std: dispersion 权重（论文默认 0.5）
+        beta: 尾部风险权重（论文默认 0.3）
+        
+    Returns:
+        dict: 包含 JL1 各分项的字典
+            - rmse_term: RMSE 项
+            - mae_term: MAE (mean absolute error)
+            - std_term: std(|ei|) 分散度项
+            - dispersion_term: MAE + λ·std
+            - tail_term: P90 尾部风险项
+            - jl1: 完整复合损失
+            - errors: 原始误差向量 (用于后续分析)
+    """
+    # 1. 加载数据
+    sim_raw = load_sim_data(sim_xml_path)
+    if sim_raw.empty:
+        return _empty_jl1_metrics()
+    
+    dist_df = load_route_stop_dist(route_stop_dist_csv)
+    bound_map = {'I': 'inbound', 'O': 'outbound'}
+    target_bound = bound_map.get(bound, bound)
+    
+    dist_df = dist_df[(dist_df['route'] == route) & (dist_df['bound'] == target_bound)]
+    if dist_df.empty:
+        return _empty_jl1_metrics()
+    
+    real_links = load_real_link_speeds(real_links_csv)
+    real_links = real_links[(real_links['route'] == route) & (real_links['bound'] == target_bound)]
+    
+    # 2. 处理仿真数据
+    sim_traj = build_sim_trajectory(sim_raw, dist_df)
+    if sim_traj.empty:
+        return _empty_jl1_metrics()
+
+    # 3. 计算累计时间误差向量 ei
+    cum_errors = _compute_cumulative_time_errors(sim_traj, real_links)
+    if cum_errors.size == 0:
+        return _empty_jl1_metrics()
+
+    errors = np.array(cum_errors)
+    abs_errors = np.abs(errors)
+    n = len(errors)
+    
+    # 4. 计算 JL1 各分项（严格按照论文公式）
+    # Term 1: RMSE = √(1/n∑ei²)
+    rmse_term = float(np.sqrt(np.mean(errors ** 2)))
+    
+    # Term 2: MAE = 1/n∑|ei|
+    mae_term = float(np.mean(abs_errors))
+    
+    # Term 3: std(|ei|)
+    std_term = float(np.std(abs_errors))
+    
+    # Term 4: Dispersion = MAE + λ·std(|ei|)
+    dispersion_term = mae_term + lambda_std * std_term
+    
+    # Term 5: Tail = Q0.9(|e|)
+    tail_term = float(np.quantile(abs_errors, 0.9))
+    
+    # 5. 完整 JL1 = RMSE + α·Dispersion + β·Tail
+    jl1 = rmse_term + alpha * dispersion_term + beta * tail_term
+    
+    return {
+        'jl1': jl1,
+        'rmse_term': rmse_term,
+        'mae_term': mae_term,
+        'std_term': std_term,
+        'dispersion_term': dispersion_term,
+        'tail_term': tail_term,
+        'alpha': alpha,
+        'lambda_std': lambda_std,
+        'beta': beta,
+        'n_errors': n
+    }
+
+
+def _empty_jl1_metrics() -> Dict[str, float]:
+    """返回空/错误情况下的 JL1 默认指标"""
+    return {
+        'jl1': 1e6,
+        'rmse_term': 1e6,
+        'mae_term': 1e6,
+        'std_term': 1e6,
+        'dispersion_term': 1e6,
+        'tail_term': 1e6,
+        'alpha': 1.0,
+        'lambda_std': 0.5,
+        'beta': 0.3,
+        'n_errors': 0
+    }
+
+
 def _empty_metrics() -> Dict[str, float]:
     """返回空/错误情况下的默认指标"""
     return {

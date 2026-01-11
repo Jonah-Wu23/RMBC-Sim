@@ -45,7 +45,7 @@ COLOR_ORANGE = '#ff7f0e'
 COLOR_GRAY = '#7f7f7f'
 
 # 3×3 网格
-T_STAR_GRID = [300, 325, 350]  # seconds
+T_STAR_GRID = [275, 325, 375]  # seconds
 V_STAR_GRID = [4, 5, 6]  # km/h
 
 # IEEE 单栏宽度
@@ -277,7 +277,7 @@ def main():
     parser.add_argument(
         "--sensitivity-csv",
         type=str,
-        default=str(PROJECT_ROOT / "data" / "calibration_v3" / "sensitivity" / "threshold_sensitivity_results_v3.csv"),
+        default=str(PROJECT_ROOT / "data" / "calibration_v3" / "sensitivity" / "threshold_sensitivity_results_pmpeak.csv"),
         help="敏感性分析结果 CSV"
     )
     parser.add_argument(
@@ -314,8 +314,8 @@ def main():
     
     # 生成组合热力图
     print("[2] 生成组合热力图...")
-    output_combined = os.path.join(args.output_dir, "threshold_sensitivity_3x3_ieee.png")
-    plot_combined_heatmap(df, output_combined)
+    output_combined_png = os.path.join(args.output_dir, "Fig1_threshold_sensitivity_pmpeak.png")
+    plot_combined_heatmap(df, output_combined_png)
     
     # 生成单独热力图 (n_clean)
     print("[3] 生成 n_clean 热力图...")
